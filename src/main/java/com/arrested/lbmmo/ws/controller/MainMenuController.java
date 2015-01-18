@@ -40,7 +40,7 @@ public class MainMenuController extends AbstractServiceController {
 		return characterBeans;
 	}
 	
-	@RequestMapping(value="/login/{characterName}")
+	@RequestMapping(value="login/{characterName}")
 	@Transactional
 	public void login(@PathVariable String characterName) {
 		

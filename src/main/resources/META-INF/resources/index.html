@@ -4,16 +4,16 @@
 		<link rel="stylesheet" href="http://localhost:8080/app.css">
 	</head>
 	<body>
-		<div class="characterList"></div>
+		<div class="main-content"></div>
 		
 		<script type="text/javascript">
 		
 			var username = "dev.null.matt"
 			var password = "password";
 		
-			var $characterList = $(".characterList");
+			var $mainContent = $(".main-content");
 		
-			function updateCharacterList(element, index, array) {
+			function updateMainContent(element, index, array) {
 				var characterInfo = document.createElement("div");
 				var name = document.createElement("div");
 				var classLevel = document.createElement("div");
@@ -29,18 +29,18 @@
 				characterInfo.appendChild(name);
 				characterInfo.appendChild(classLevel);
 				
-				$characterList.append(characterInfo);
+				$mainContent.append(characterInfo);
 			}
 		
 			$.ajax({
 				type: "GET",
-				url: "http://localhost:8080/characters",
+				url: "http://localhost:8080/service/characters",
 				headers: {
     				"Authorization": "Basic " + btoa(username + ":" + password)
   				},
 				success: 
 					function(data) {
-						data.forEach(updateCharacterList);
+						data.forEach(updateMainContent);
 					}
 			});
 			
