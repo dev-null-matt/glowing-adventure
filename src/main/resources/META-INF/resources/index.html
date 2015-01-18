@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="http://localhost:8080/app.css">
+	</head>
+	<body>
+		<div class="characterList"></div>
+		
+		<script type="text/javascript">
+		
+			var username = "dev.null.matt"
+			var password = "password";
+		
+			var $characterList = $(".characterList");
+		
+			function updateCharacterList(element, index, array) {
+				var characterInfo = document.createElement("div");
+				var name = document.createElement("div");
+				var classLevel = document.createElement("div");
+				
+				characterInfo.className = "character-class-level";
+				
+				name.className = "character-name";
+				name.innerHTML = element.name;
+				
+				classLevel.className = "character-class-level";
+				classLevel.innerHTML = element.level + " " + element.class;
+				
+				characterInfo.appendChild(name);
+				characterInfo.appendChild(classLevel);
+				
+				$characterList.append(characterInfo);
+			}
+		
+			$.ajax({
+				type: "GET",
+				url: "http://localhost:8080/characters",
+				headers: {
+    				"Authorization": "Basic " + btoa(username + ":" + password)
+  				},
+				success: 
+					function(data) {
+						data.forEach(updateCharacterList);
+					}
+			});
+			
+			
+		</script>
+	</body>
+</html>

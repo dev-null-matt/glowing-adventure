@@ -20,7 +20,7 @@ public class QuestLogController extends AbstractServiceController {
 	@Autowired
 	private UserRepository userRepo;
 	
-	@RequestMapping("quest-log/quest-status")
+	@RequestMapping("quest-status")
 	public QuestBean questStatus() {
 		
 		Character character = getServiceUser().getLoggedInCharacter();
@@ -37,7 +37,7 @@ public class QuestLogController extends AbstractServiceController {
 		return questBean;
 	}
 	
-	@RequestMapping("quest-log/inactive-quests")
+	@RequestMapping("inactive-quests")
 	public Set<QuestBean> inactiveQuests() {
 		
 		Character character = getServiceUser().getLoggedInCharacter();

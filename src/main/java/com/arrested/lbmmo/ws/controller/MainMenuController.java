@@ -24,7 +24,7 @@ public class MainMenuController extends AbstractServiceController {
 	@Autowired
 	private UserRepository userRepo;
 	
-	@RequestMapping("main-menu/character-list")
+	@RequestMapping("characters")
 	public List<CharacterBean> characterList() {
 		
 		List<CharacterBean> characterBeans = new ArrayList<CharacterBean>();
@@ -40,7 +40,7 @@ public class MainMenuController extends AbstractServiceController {
 		return characterBeans;
 	}
 	
-	@RequestMapping(value="main-menu/login/{characterName}")
+	@RequestMapping(value="/login/{characterName}")
 	@Transactional
 	public void login(@PathVariable String characterName) {
 		
@@ -64,7 +64,7 @@ public class MainMenuController extends AbstractServiceController {
 		}
 	}
 	
-	@RequestMapping("main-menu/logout")
+	@RequestMapping("logout")
 	@Transactional
 	public void logout() {
 		
