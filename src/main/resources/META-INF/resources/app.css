@@ -39,6 +39,15 @@ html, body {
 	margin-bottom: 10px;
 }
 
+.character-info {
+	cursor: pointer;
+}
+
 .character-name {
 	font-weight: bold;
+	float: left;
+}
+
+.character-class-level {
+	margin-left: 80%;
 }

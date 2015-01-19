@@ -4,12 +4,21 @@
 		<link rel="stylesheet" href="http://localhost:8080/app.css">
 	</head>
 	<body>
-		<div class="main-content"></div>
+		<div class="main-content">
+			<div class="inputField">
+				<label class="instruction" for="username">Username</label>
+				<input id="username" type="text"></input>
+			</div>
+			<div class="inputField">
+				<label class="instruction" for="password">Password</label>
+				<input id="password" type="password"></input>
+			</div>
+			<div class="inputField">
+				<button id="login" type="button">Log In</input>
+			</div>
+		</div>
 		
 		<script type="text/javascript">
-		
-			var username = "dev.null.matt"
-			var password = "password";
 		
 			var $mainContent = $(".main-content");
 		
@@ -18,7 +27,7 @@
 				var name = document.createElement("div");
 				var classLevel = document.createElement("div");
 				
-				characterInfo.className = "character-class-level";
+				characterInfo.className = "character-info";
 				
 				name.className = "character-name";
 				name.innerHTML = element.name;
@@ -31,18 +40,41 @@
 				
 				$mainContent.append(characterInfo);
 			}
+			
+			function logCharacterIn() {
+			
+				var characterName = this.firstChild.textContent;
+			
+				$.ajax({
+						type: "POST",
+						url: "http://localhost:8080/service/login/" + characterName,
+						success: 
+							function(data) {
+								alert("Logged in as " + characterName);
+							}
+					});
+			}
 		
-			$.ajax({
-				type: "GET",
-				url: "http://localhost:8080/service/characters",
-				headers: {
-    				"Authorization": "Basic " + btoa(username + ":" + password)
-  				},
-				success: 
-					function(data) {
-						data.forEach(updateMainContent);
-					}
-			});
+			$("#login").click(
+				function() {
+				
+					var username = $("#username").val();
+					var password = $("#password").val();
+				
+					$.ajax({
+						type: "GET",
+						url: "http://localhost:8080/service/characters",
+						headers: {
+    						"Authorization": "Basic " + btoa(username + ":" + password)
+  						},
+						success: 
+							function(data) {
+								$mainContent.html("");
+								data.forEach(updateMainContent);
+								$(".character-info").click(logCharacterIn);
+							}
+					});
+				});
 			
 			
 		</script>
