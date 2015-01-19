@@ -14,47 +14,15 @@
 				<input id="password" type="password"></input>
 			</div>
 			<div class="inputField">
-				<button id="login" type="button">Log In</input>
+				<label class="error hidden" for="login">Incorrect username or password.</label>
+			</div>
+			<div class="inputField">
+				<button id="login" type="button">Log In</button>
 			</div>
 		</div>
 		
 		<script type="text/javascript">
-		
-			var $mainContent = $(".main-content");
-		
-			function updateMainContent(element, index, array) {
-				var characterInfo = document.createElement("div");
-				var name = document.createElement("div");
-				var classLevel = document.createElement("div");
-				
-				characterInfo.className = "character-info";
-				
-				name.className = "character-name";
-				name.innerHTML = element.name;
-				
-				classLevel.className = "character-class-level";
-				classLevel.innerHTML = element.level + " " + element.class;
-				
-				characterInfo.appendChild(name);
-				characterInfo.appendChild(classLevel);
-				
-				$mainContent.append(characterInfo);
-			}
-			
-			function logCharacterIn() {
-			
-				var characterName = this.firstChild.textContent;
-			
-				$.ajax({
-						type: "POST",
-						url: "http://localhost:8080/service/login/" + characterName,
-						success: 
-							function(data) {
-								alert("Logged in as " + characterName);
-							}
-					});
-			}
-		
+					
 			$("#login").click(
 				function() {
 				
@@ -63,15 +31,13 @@
 				
 					$.ajax({
 						type: "GET",
-						url: "http://localhost:8080/service/characters",
+						url: "/service/characters",
 						headers: {
     						"Authorization": "Basic " + btoa(username + ":" + password)
   						},
 						success: 
 							function(data) {
-								$mainContent.html("");
-								data.forEach(updateMainContent);
-								$(".character-info").click(logCharacterIn);
+								location = "pages/characterSelect.html";
 							}
 					});
 				});

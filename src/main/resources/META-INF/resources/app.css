@@ -17,6 +17,14 @@ html, body {
 	margin-left: auto;
 }
 
+.error {
+	color: red;
+}
+
+.hidden {
+	display: none;
+}
+
 .inputField {
 	width: 240px;
 	margin-right: auto;
