@@ -14,7 +14,7 @@
 				<input id="password" type="password"></input>
 			</div>
 			<div class="inputField">
-				<label class="error hidden" for="login">Incorrect username or password.</label>
+				<label id="loginError" class="error hidden" for="login">Incorrect username or password.</label>
 			</div>
 			<div class="inputField">
 				<button id="login" type="button">Log In</button>
@@ -38,6 +38,10 @@
 						success: 
 							function(data) {
 								location = "pages/characterSelect.html";
+							},
+						error: 
+							function() {
+								$("#loginError").removeClass("hidden");
 							}
 					});
 				});
