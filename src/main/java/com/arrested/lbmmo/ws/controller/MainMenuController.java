@@ -49,6 +49,10 @@ public class MainMenuController extends AbstractServiceController {
 	@Transactional
 	public void login(@PathVariable String characterName) {
 		
+		if (characterName.equals("-")) {
+			return;
+		}
+		
 		User user = userRepo.findByUsername(getServiceUser().getUsername()).get(0);
 		Character oldCharacter = user.getLoggedInCharacter();
 		Character newCharacter = null;
