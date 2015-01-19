@@ -3,6 +3,8 @@ package com.arrested.lbmmo.ws.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,9 @@ public class MainMenuController extends AbstractServiceController {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired(required=true)
+	private HttpServletRequest request;
 	
 	@RequestMapping("characters")
 	public List<CharacterBean> characterList() {
@@ -74,5 +79,7 @@ public class MainMenuController extends AbstractServiceController {
 			character.isLoggedIn(false);
 			characterRepo.save(character);
 		}
+		
+		request.getSession().invalidate();
 	}
 }
