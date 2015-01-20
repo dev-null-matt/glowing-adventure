@@ -1,59 +1,10 @@
 <html>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		<link rel="stylesheet" href="http://localhost:8080/app.css">
+		<script src="/js/characterSelect.js"></script>
+		<link rel="stylesheet" href="/css/app.css">
 	</head>
 	<body>
 		<div class="main-content"></div>
-		
-		<script type="text/javascript">
-
-			var $mainContent = $(".main-content");
-		
-			function updateMainContent(element, index, array) {
-				var characterInfo = document.createElement("div");
-				var name = document.createElement("div");
-				var classLevel = document.createElement("div");
-				
-				characterInfo.className = "character-info";
-				
-				name.className = "character-name";
-				name.innerHTML = element.name;
-				
-				classLevel.className = "character-class-level";
-				classLevel.innerHTML = element.level + " " + element.class;
-				
-				characterInfo.appendChild(name);
-				characterInfo.appendChild(classLevel);
-				
-				$mainContent.append(characterInfo);
-			}
-		
-			function logCharacterIn() {
-			
-				var characterName = this.firstChild.textContent;
-			
-				$.ajax({
-						type: "POST",
-						url: "/service/login/" + characterName,
-						success: 
-							function(data) {
-								alert("Logged in as " + characterName);
-							}
-					});
-			}
-		
-			$.ajax({
-				type: "GET",
-				url: "/service/characters",
-				success: 
-					function(data) {
-						$mainContent.html("");
-						data.forEach(updateMainContent);
-						$(".character-info").click(logCharacterIn);
-					}
-			});
-			
-		</script>
 	</body>
 </html>
