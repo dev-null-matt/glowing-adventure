@@ -1,6 +1,7 @@
 $( document ).ready(function() {
       var map;
       var youAreHere;
+      var nextObjective;
     
       function initialize() {
       	if (navigator.geolocation) {
@@ -36,8 +37,30 @@ $( document ).ready(function() {
 	  	  }
 	  	  
 	  	  map.setCenter(latLong);
+	  } 
+	  
+	  function pinNextObjective(data) {
+	  	if (data) {
+	  		var latLong = new google.maps.LatLng(
+	  				data.nextObjective.latitude,
+	  				data.nextObjective.longitude);
+
+	  		nextObjective = new google.maps.Marker({
+	  	  		position: latLong,
+	  	  		map: map,
+	  	  		title: 'Next objective'});
+	  	}
+	  }
+	  
+	  function readQuestObjectives() {
+	  			$.ajax({
+					type: "GET",
+					url: "/service/quest-status",
+					success: pinNextObjective
+			});
 	  }
       
       google.maps.event.addDomListener(window, 'load', initialize);
       $("#center").click(getLocation);
+      readQuestObjectives();
 });
