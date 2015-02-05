@@ -30,7 +30,7 @@ $( document ).ready(function() {
 				url: "/service/login/" + characterName,
 				success: 
 					function(data) {
-						alert("Logged in as " + characterName);
+						location = "/pages/map.html";
 					}
 			});
 	}
