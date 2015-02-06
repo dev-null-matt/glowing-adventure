@@ -32,22 +32,24 @@ public class MapController extends AbstractServiceController {
 			return encounter;
 		}
 		
+		double distance = distanceToObjective(position, character.getTrackedQuestInProgress().getCurrentObjective());
+		
 		for (QuestInProgress qip : character.getQuestsInProgress()) {
 			Objective objective = qip.getCurrentObjective();
-			
-			if (objective != null && isAtObjective(position, objective)) {
+			if (objective != null && distanceToObjective(position,objective) < WAYPOINT_RADIUS) {
 				encounter.getMessages().add("Updating " + objective.getQuest().getName());
 				qip.setCurrentStep(qip.getCurrentStep()+1);
 				qipRepo.save(qip);
 			}
 		}
 		
+		encounter.setMetersToNextObjective(distance);
 		encounter.setCombatEncounter(false);
 
 		return encounter;
 	}
 
-	private boolean isAtObjective(PositionBean position, Objective objective) {
-		return DistanceUtils.distance(objective.getWaypoint().getLatitude(), objective.getWaypoint().getLongitude(), position.getLatitude(), position.getLongitude()) < WAYPOINT_RADIUS;
+	private double distanceToObjective(PositionBean position, Objective objective) {
+		return DistanceUtils.distance(objective.getWaypoint().getLatitude(), objective.getWaypoint().getLongitude(), position.getLatitude(), position.getLongitude());
 	}
 }

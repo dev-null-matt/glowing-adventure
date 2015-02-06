@@ -3,6 +3,7 @@ $(document).ready(
 			var map;
 			var youAreHere;
 			var nextObjective;
+			var currentLocation;
 
 			function initialize() {
 				if (navigator.geolocation) {
@@ -41,6 +42,7 @@ $(document).ready(
 				}
 
 				map.setCenter(latLong);
+				currentLocation = latLong;
 			}
 
 			function pinNextObjective(data) {
@@ -69,8 +71,25 @@ $(document).ready(
 					success : pinNextObjective
 				});
 			}
+			
+			function sendLocationToServer() {
+				
+				var data = {
+					"latitude" : currentLocation.lat(),
+					"longitude" : currentLocation.lng()
+				};
+				
+				$.ajax({
+					type : "POST",
+					url : "/service/map/set-new-position",
+					data : JSON.stringify(data),
+					dataType : "application/json",
+					contentType : "application/json"
+				});
+			}
 
 			google.maps.event.addDomListener(window, 'load', initialize);
 			$("#center").click(getLocation);
 			readQuestObjectives();
+			window.setInterval(sendLocationToServer, 4500);
 		});
