@@ -7,6 +7,8 @@ public class EncounterBean {
 
 	private List<String> messages;
 	
+	private double metersToNextObjective;
+	
 	private boolean combatEncounter;
 
 	public EncounterBean() {
@@ -28,5 +30,13 @@ public class EncounterBean {
 
 	public void setCombatEncounter(boolean combatEncounter) {
 		this.combatEncounter = combatEncounter;
+	}
+	
+	public double getMetersToNextObjective() {
+		return metersToNextObjective;
+	}
+	
+	public void setMetersToNextObjective(double metersToNextObjective) {
+		this.metersToNextObjective = metersToNextObjective;
 	}
 }
