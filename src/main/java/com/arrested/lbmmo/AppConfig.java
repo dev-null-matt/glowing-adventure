@@ -3,6 +3,7 @@ package com.arrested.lbmmo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -58,19 +59,19 @@ public class AppConfig {
     	
     	BoneCPDataSource dataSource = new BoneCPDataSource();
 
-    	Properties applicationProperties = new Properties();
-    	
     	try {
-    		String filePath = getClass().getClassLoader().getResource("config/application.properties").getFile();
-    		applicationProperties.load(new FileInputStream(filePath));
-    	
-        	dataSource.setDriverClass(applicationProperties.getProperty("spring.datasource.driverClassName"));
-        	dataSource.setJdbcUrl(applicationProperties.getProperty("spring.datasource.url"));
-        	dataSource.setUsername(applicationProperties.getProperty("spring.datasource.username"));
-        	dataSource.setPassword(applicationProperties.getProperty("spring.datasource.password"));
-    	} catch (IOException e) {
-    		throw new IllegalStateException("application properties could not be found");
+	    	URI dbUri = new URI(System.getenv("DATABASE_URL"));
+	
+	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ":" + dbUri.getPort() + dbUri.getPath();
+	    	
+	        dataSource.setDriverClass("org.postgresql.Driver");
+	        dataSource.setJdbcUrl(dbUrl);
+	        dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
+	        dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
+    	} catch (Exception e) {
+    		throw new IllegalStateException(e.getMessage() + " while attempting to initialize data source.");
     	}
+    	
     	
         return dataSource;
     }
