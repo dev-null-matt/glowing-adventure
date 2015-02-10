@@ -14,7 +14,7 @@ $(document).ready(function() {
 		name.className = "characterName";
 		name.innerHTML = element.name;
 
-		classLevel.className = "character-class-level";
+		classLevel.className = "characterClassLevel";
 		classLevel.innerHTML = element.level + " " + element.class;
 
 		characterInfo.appendChild(name);
@@ -44,7 +44,7 @@ $(document).ready(function() {
 		success : function(data) {
 			$mainContent.html("");
 			data.forEach(updateMainContent);
-			$(".character-info").click(logCharacterIn);
+			$(".characterInfo").click(logCharacterIn);
 		}
 	});
 });
