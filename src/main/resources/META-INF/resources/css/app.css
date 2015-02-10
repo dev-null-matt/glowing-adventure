@@ -27,6 +27,10 @@ html, body {
 	width: 80px;
 }
 
+.wide {
+	width: 160px;	
+}
+
 .error {
 	color: red;
 }

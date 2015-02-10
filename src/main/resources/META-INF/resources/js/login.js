@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
 	$("#login").click(function() {
 
 		var username = $("#username").val();
@@ -17,5 +18,9 @@ $(document).ready(function() {
 				$("#loginError").removeClass("hidden");
 			}
 		});
+	});
+	
+	$("#newUser").click(function() {
+		location = "pages/newAccount.html";
 	});
 })
