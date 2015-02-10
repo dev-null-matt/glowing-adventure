@@ -1,15 +1,17 @@
 $(document).ready(function() {
 
-	var $mainContent = $(".main-content");
+	var $mainContent = $(".mainContent");
 
 	function updateMainContent(element, index, array) {
+		var controlContainer = document.createElement("div");
 		var characterInfo = document.createElement("div");
 		var name = document.createElement("div");
 		var classLevel = document.createElement("div");
 
-		characterInfo.className = "character-info";
+		controlContainer.className = "controlContainer";
+		characterInfo.className = "characterInfo";
 
-		name.className = "character-name";
+		name.className = "characterName";
 		name.innerHTML = element.name;
 
 		classLevel.className = "character-class-level";
@@ -18,7 +20,9 @@ $(document).ready(function() {
 		characterInfo.appendChild(name);
 		characterInfo.appendChild(classLevel);
 
-		$mainContent.append(characterInfo);
+		controlContainer.appendChild(characterInfo);
+
+		$mainContent.append(controlContainer);
 	}
 
 	function logCharacterIn() {
