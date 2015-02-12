@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+	$login = $("#username");
+	$loginTaken = $("#loginTaken");
+
 	$email = $("#email");
 	$emailConfirm = $("#emailConfirm");
 	$emailNoMatch = $("#emailNoMatch");
@@ -9,16 +12,33 @@ $(document).ready(function() {
 	$passwordConfirm = $("#passwordConfirm");
 	$passwordNoMatch = $("#passwordNoMatch");
 	
-	$("#username").change(function() {
-		// Check to see if there is an account with this name already.
-	});
+	$login.change(validateLogin);
 	
-	$("#email").change(validateEmails);
-	$("#emailConfirm").change(validateEmails);
+	$email.change(validateEmails);
+	$emailConfirm.change(validateEmails);
 	
-	$("#password").change(validatePasswords);
-	$("#passwordConfirm").change(validatePasswords);
+	$password.change(validatePasswords);
+	$passwordConfirm.change(validatePasswords);
 });
+
+function validateLogin() {
+	
+	var login = $login.val();
+	
+	if (login) {
+		$.ajax({
+			type : "GET",
+			url : "/service/accountCreation/isLoginRegistered/" + login + "/",
+			success : function (data) {
+				if (data) {
+					$loginTaken.removeClass("hidden");
+				} else {
+					$loginTaken.addClass("hidden");
+				}
+			}
+		});
+	}
+}
 
 function validateEmails() {
 		
@@ -42,6 +62,7 @@ function validateEmails() {
 			});
 		} else {
 			$emailNoMatch.removeClass("hidden");
+			$emailTaken.addClass("hidden");
 		}
 	}
 }
