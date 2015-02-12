@@ -19,6 +19,8 @@ $(document).ready(function() {
 	
 	$password.change(validatePasswords);
 	$passwordConfirm.change(validatePasswords);
+	
+	$("#newUser").click(submit);
 });
 
 function validateLogin() {
@@ -78,4 +80,19 @@ function validatePasswords() {
 			$passwordNoMatch.removeClass("hidden");
 		}
 	}
+}
+
+function submit() {
+	$.ajax({
+		type : "PUT",
+		url : "/service/accountCreation/create/" + $login.val() + "/" + $email.val() + "/",
+		data : $password.val(),
+		success : function (data) {
+			if (data) {
+				alert("Account creation successful");
+			} else {
+				alert("There was a problem creating your account");
+			}
+ 		}
+	});
 }
