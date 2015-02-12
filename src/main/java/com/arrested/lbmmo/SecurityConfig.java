@@ -35,9 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 		
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		// Not auth required for options so that ajax works
 		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
+
+		// Account creation doesn't require auth
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/service/accountCreation/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/service/accountCreation/**").permitAll();
+		
+		// Services require auth
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/service/**").hasAuthority("USER").and().httpBasic();
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/service/**").hasAuthority("USER").and().httpBasic();
+
 		http.csrf().disable();
 	}
 	
