@@ -3,6 +3,7 @@ $(document).ready(function() {
 	$email = $("#email");
 	$emailConfirm = $("#emailConfirm");
 	$emailNoMatch = $("#emailNoMatch");
+	$emailTaken = $("#emailTaken");
 	
 	$password = $("#password");
 	$passwordConfirm = $("#passwordConfirm");
@@ -26,7 +27,19 @@ function validateEmails() {
 
 	if (email && emailConfirm ) {
 		if (email === emailConfirm) {
-			$emailNoMatch.addClass("hidden");	
+			$emailNoMatch.addClass("hidden");
+			
+			$.ajax({
+				type : "GET",
+				url : "/service/accountCreation/isEmailRegistered/" + email + "/",
+				success : function (data) {
+					if (data) {
+						$emailTaken.removeClass("hidden");
+					} else {
+						$emailTaken.addClass("hidden");
+					}
+				}
+			});
 		} else {
 			$emailNoMatch.removeClass("hidden");
 		}
