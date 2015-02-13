@@ -6,7 +6,7 @@ create sequence CHARACTER_ID;
 create table CHARACTER (
 	id 			integer PRIMARY KEY DEFAULT nextval('character_id'),
 	user_id 	integer NOT NULL REFERENCES user_account(id),
-	name 		varchar(64) UNIQUE NOT NULL
+	name 		varchar(64) UNIQUE NOT NULL,
 	logged_in	boolean NOT NULL default false
 );
 
