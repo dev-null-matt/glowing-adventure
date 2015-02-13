@@ -14,6 +14,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public List<User> findByEmail(String email);
 	
 	@Modifying
-	@Query(value="insert into USER_ACCOUNT (username,password,email,enabled) values (?1, crypt(?3, gen_salt('bf')), ?2,true)", nativeQuery = true)
+	@Query(value = "insert into USER_ACCOUNT (username,password,email,enabled) values (?1, crypt(?3, gen_salt('bf')), ?2,true)", nativeQuery = true)
 	public void createAccount(String username, String email, String password);
+	
+	@Modifying
+	@Query(value = "insert into USER_ROLE (user_id,role) values (?1, ?2)", nativeQuery = true)
+	public void giveUserRole(long id, String role);
 }

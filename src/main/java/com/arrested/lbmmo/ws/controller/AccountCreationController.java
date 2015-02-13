@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
 
 @RestController
@@ -39,9 +40,11 @@ public class AccountCreationController extends AbstractServiceController {
 			return false;
 		}
 		
-		System.out.println(login + " " + email + " " + password);
-		
 		userRepo.createAccount(login, email, password);
+		
+		User newUser = userRepo.findByUsername(login).get(0);
+
+		userRepo.giveUserRole(newUser.getId(), "USER");
 		
 		return true;
 	}
