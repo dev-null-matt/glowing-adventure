@@ -16,6 +16,10 @@ public class User {
 	@GeneratedValue
 	private long id;
 	
+	private String password;
+	
+	private String email;
+	
 	@OneToMany(mappedBy="user")
 	private Set<Character> characters;
 	
@@ -27,6 +31,10 @@ public class User {
 	
 	public String getUsername() {
 		return username;
+	}
+	
+	public String getEmail() {
+		return email;
 	}
 	
 	public Set<Character> getCharacters() {
