@@ -2,7 +2,7 @@
 Glowing Adventure is:
 * An enhanced reality / location based game
 * Super hero themed
-* Designed around famiar, 90's console rpg tropes
+* Designed around easily accessible, 90's console rpg tropes
 * Intended to be played with friends
 
 ### Check it out
