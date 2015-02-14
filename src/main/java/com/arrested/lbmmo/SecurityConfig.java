@@ -40,8 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
 
 		// Account creation doesn't require auth
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/service/accountCreation/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/service/accountCreation/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/service/account-creation/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/service/account-creation/**").permitAll();
 		
 		// Services require auth
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/service/**").hasAuthority("USER").and().httpBasic();
