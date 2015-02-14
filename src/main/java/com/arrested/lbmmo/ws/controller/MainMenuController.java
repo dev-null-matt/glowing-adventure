@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arrested.lbmmo.persistence.entity.Character;
@@ -30,7 +31,7 @@ public class MainMenuController extends AbstractServiceController {
 	@Autowired(required=true)
 	private HttpServletRequest request;
 	
-	@RequestMapping("characters")
+	@RequestMapping(value="characters", method=RequestMethod.GET)
 	public List<CharacterBean> characterList() {
 		
 		List<CharacterBean> characterBeans = new ArrayList<CharacterBean>();
@@ -46,7 +47,7 @@ public class MainMenuController extends AbstractServiceController {
 		return characterBeans;
 	}
 	
-	@RequestMapping(value="login/{characterName}")
+	@RequestMapping(value="login/{characterName}", method=RequestMethod.PUT)
 	@Transactional
 	public void login(@PathVariable String characterName) {
 		
@@ -74,7 +75,7 @@ public class MainMenuController extends AbstractServiceController {
 		}
 	}
 	
-	@RequestMapping("logout")
+	@RequestMapping(value="logout", method=RequestMethod.PUT)
 	@Transactional
 	public void logout() {
 		

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arrested.lbmmo.persistence.entity.Character;
@@ -21,7 +22,7 @@ public class QuestLogController extends AbstractServiceController {
 	@Autowired
 	private UserRepository userRepo;
 	
-	@RequestMapping("quest-status")
+	@RequestMapping(value="quest-status", method=RequestMethod.GET)
 	public QuestBean questStatus() {
 		
 		Character character = getServiceUser().getLoggedInCharacter();
@@ -38,7 +39,7 @@ public class QuestLogController extends AbstractServiceController {
 		return questBean;
 	}
 	
-	@RequestMapping("inactive-quests")
+	@RequestMapping(value="inactive-quests", method=RequestMethod.GET)
 	public Set<QuestBean> inactiveQuests() {
 		
 		Character character = getServiceUser().getLoggedInCharacter();

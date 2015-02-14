@@ -23,7 +23,7 @@ public class MapController extends AbstractServiceController {
 	
 	private static final int WAYPOINT_RADIUS = 20;
 	
-	@RequestMapping(value="set-new-position", method=RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value="set-new-position", method=RequestMethod.PUT, consumes = "application/json")
 	public EncounterBean setNewPosition(@RequestBody PositionBean position) {
 		
 		EncounterBean encounter = new EncounterBean();
