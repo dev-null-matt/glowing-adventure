@@ -15,6 +15,7 @@ import com.arrested.lbmmo.ws.bean.request.PositionBean;
 import com.arrested.lbmmo.ws.bean.response.EncounterBean;
 
 @RestController
+@RequestMapping("/service/map/")
 public class MapController extends AbstractServiceController {
 
 	@Autowired
@@ -22,7 +23,7 @@ public class MapController extends AbstractServiceController {
 	
 	private static final int WAYPOINT_RADIUS = 20;
 	
-	@RequestMapping(value="map/set-new-position", method=RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value="set-new-position", method=RequestMethod.POST, consumes = "application/json")
 	public EncounterBean setNewPosition(@RequestBody PositionBean position) {
 		
 		EncounterBean encounter = new EncounterBean();

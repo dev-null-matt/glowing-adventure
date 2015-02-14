@@ -18,6 +18,7 @@ import com.arrested.lbmmo.persistence.repository.UserRepository;
 import com.arrested.lbmmo.ws.bean.response.CharacterBean;
 
 @RestController
+@RequestMapping("/service/main-menu/")
 public class MainMenuController extends AbstractServiceController {
 	
 	@Autowired

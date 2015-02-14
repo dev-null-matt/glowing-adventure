@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
 
-@RequestMapping("service")
+@RequestMapping("/service")
 public abstract class AbstractServiceController {
 
 	@Autowired

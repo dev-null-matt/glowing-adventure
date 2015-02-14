@@ -15,6 +15,7 @@ import com.arrested.lbmmo.ws.bean.response.LocationBean;
 import com.arrested.lbmmo.ws.bean.response.QuestBean;
 
 @RestController
+@RequestMapping("/service/quest-log/")
 public class QuestLogController extends AbstractServiceController {
 	
 	@Autowired
