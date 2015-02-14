@@ -1,5 +1,8 @@
-$(document).ready(
-		function() {
+$(document).ready(function() {
+
+			mapUrl = "/service/map/";
+			questLogUrl = "/service/quest-log/";
+
 			var map;
 			var youAreHere;
 			var nextObjective;
@@ -67,21 +70,21 @@ $(document).ready(
 			function readQuestObjectives() {
 				$.ajax({
 					type : "GET",
-					url : "/service/quest-status",
+					url : questLogUrl + "quest-status",
 					success : pinNextObjective
 				});
 			}
-			
+
 			function sendLocationToServer() {
-				
+
 				var data = {
 					"latitude" : currentLocation.lat(),
 					"longitude" : currentLocation.lng()
 				};
-				
+
 				$.ajax({
 					type : "POST",
-					url : "/service/map/set-new-position",
+					url : mapUrl + "set-new-position",
 					data : JSON.stringify(data),
 					dataType : "application/json",
 					contentType : "application/json"

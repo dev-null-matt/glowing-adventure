@@ -1,13 +1,15 @@
 $(document).ready(function() {
 
+	mainMenuUrl = "service/main-menu/";
+	
 	$("#login").click(function() {
 
 		var username = $("#username").val();
 		var password = $("#password").val();
 
 		$.ajax({
-			type : "GET",
-			url : "/service/login/-",
+			type : "PUT",
+			url : mainMenuUrl + "login/-",
 			headers : {
 				"Authorization" : "Basic " + btoa(username + ":" + password)
 			},
