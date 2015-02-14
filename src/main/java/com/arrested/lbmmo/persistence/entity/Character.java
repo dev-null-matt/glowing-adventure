@@ -4,10 +4,12 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +17,8 @@ import javax.persistence.Table;
 public class Character {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="character_seq_gen")
+	@SequenceGenerator(name="character_seq_gen", sequenceName="CHARACTER_ID")
 	private long id;
 	
 	@ManyToOne
@@ -28,6 +31,18 @@ public class Character {
 	private String name;
 	
 	private boolean loggedIn;
+	
+	public Character() {
+		
+	}
+	
+	public Character(String name, User user) {
+		
+		this.name = name;
+		this.user = user;
+		
+		loggedIn = false;
+	}
 	
 	public String getName() {
 		return this.name;

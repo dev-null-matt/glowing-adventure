@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CharacterRepository extends JpaRepository<Character, Long> {
 
+	public Set<Character> findByName(String name);
 	public Set<Character> findByNameAndUserId(String name, long userId);
 }

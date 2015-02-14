@@ -47,7 +47,20 @@ public class MainMenuController extends AbstractServiceController {
 		return characterBeans;
 	}
 	
-	@RequestMapping(value="login/{characterName}", method=RequestMethod.PUT)
+	@RequestMapping(value="create-character/{characterName}")
+	@Transactional
+	public boolean createCharacter(@PathVariable String characterName) {
+		
+		if (!characterRepo.findByName(characterName).isEmpty()) {
+			return false;
+		}
+		
+		characterRepo.save(new Character(characterName, getServiceUser()));
+		
+		return true;
+	}
+	
+	@RequestMapping(value="login/{characterName}")
 	@Transactional
 	public void login(@PathVariable String characterName) {
 		
