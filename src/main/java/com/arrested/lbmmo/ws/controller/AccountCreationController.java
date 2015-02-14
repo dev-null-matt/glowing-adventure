@@ -30,7 +30,7 @@ public class AccountCreationController extends AbstractServiceController {
 		return ! userRepo.findByUsername(login).isEmpty();
 	}
 	
-	@RequestMapping(value="create/{login}/{email}", method=RequestMethod.POST)
+	@RequestMapping(value="create/{login}/{email}", method=RequestMethod.PUT)
 	@Transactional
 	public boolean createUser(@PathVariable String login, @PathVariable String email, @RequestBody String password) {
 		
