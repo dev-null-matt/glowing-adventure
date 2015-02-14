@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+	baseUrl = "/service/account-creation/";
+	
 	$login = $("#username");
 	$loginTaken = $("#loginTaken");
 
@@ -30,7 +32,7 @@ function validateLogin() {
 	if (login) {
 		$.ajax({
 			type : "GET",
-			url : "/service/accountCreation/isLoginRegistered/" + login + "/",
+			url : baseUrl + "isLoginRegistered/" + login + "/",
 			success : function (data) {
 				if (data) {
 					$loginTaken.removeClass("hidden");
@@ -53,7 +55,7 @@ function validateEmails() {
 			
 			$.ajax({
 				type : "GET",
-				url : "/service/accountCreation/isEmailRegistered/" + email + "/",
+				url : baseUrl +  "isEmailRegistered/" + email + "/",
 				success : function (data) {
 					if (data) {
 						$emailTaken.removeClass("hidden");
@@ -85,7 +87,7 @@ function validatePasswords() {
 function submit() {
 	$.ajax({
 		type : "PUT",
-		url : "/service/accountCreation/create/" + $login.val() + "/" + $email.val() + "/",
+		url : baseUrl + "create/" + $login.val() + "/" + $email.val() + "/",
 		data : $password.val(),
 		success : function (data) {
 			if (data) {

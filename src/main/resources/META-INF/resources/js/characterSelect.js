@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+	mainMenuUrl = "/service/main-menu/";
+	
 	var $mainContent = $(".mainContent");
 
 	function updateMainContent(element, index, array) {
@@ -30,8 +32,8 @@ $(document).ready(function() {
 		var characterName = this.firstChild.textContent;
 
 		$.ajax({
-			type : "POST",
-			url : "/service/login/" + characterName,
+			type : "PUT",
+			url : mainMenuUrl + "login/" + characterName,
 			success : function(data) {
 				location = "/pages/map.html";
 			}
@@ -40,7 +42,7 @@ $(document).ready(function() {
 
 	$.ajax({
 		type : "GET",
-		url : "/service/characters",
+		url : mainMenuUrl + "characters",
 		success : function(data) {
 			$mainContent.html("");
 			data.forEach(updateMainContent);
