@@ -53,6 +53,14 @@ public class MainMenuController extends AbstractServiceController {
 		return characterBeans;
 	}
 	
+	@RequestMapping(value="can-create-character")
+	public boolean canCreateCharacter() {
+		
+		SystemSetting maxCharacters = systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS);
+		
+		return getServiceUser().getCharacters().size() < maxCharacters.getIntValue();
+	}
+	
 	@RequestMapping(value="create-character/{characterName}")
 	@Transactional
 	public boolean createCharacter(@PathVariable String characterName) {
@@ -63,9 +71,7 @@ public class MainMenuController extends AbstractServiceController {
 			return false;
 		}
 		
-		SystemSetting maxCharacters = systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS);
-		
-		if (user.getCharacters().size() >= maxCharacters.getIntValue()) {
+		if (!canCreateCharacter()) {
 			return false;
 		}
 	

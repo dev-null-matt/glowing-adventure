@@ -66,6 +66,17 @@ public class MainMenuControllerTest {
 	}
 	
 	@Test
+	public void canCreateCharacterNegativeTest() {
+	
+		SystemSetting setting = new SystemSetting();
+		setting.setIntValue(1);
+
+		Mockito.when(systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS)).thenReturn(setting);
+
+		Assert.assertFalse(controller.canCreateCharacter());
+	}
+	
+	@Test
 	public void createCharacterNameExistsTest() {
 		
 		Mockito.when(characterRepo.findByNameAndUserId("testCharacter", 1)).thenReturn(characters);
@@ -79,7 +90,6 @@ public class MainMenuControllerTest {
 		SystemSetting setting = new SystemSetting();
 		setting.setIntValue(1);
 
-		Mockito.when(characterRepo.findByNameAndUserId("testCharacter2", 1)).thenReturn(characters);
 		Mockito.when(systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS)).thenReturn(setting);
 
 		Assert.assertFalse(controller.createCharacter("testCharacter"));
