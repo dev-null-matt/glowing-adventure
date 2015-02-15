@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arrested.lbmmo.persistence.entity.Character;
+import com.arrested.lbmmo.persistence.entity.SystemSetting;
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.CharacterRepository;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
+import com.arrested.lbmmo.util.SystemSettingDao;
+import com.arrested.lbmmo.util.SystemSettings;
 import com.arrested.lbmmo.ws.bean.response.CharacterBean;
 
 @RestController
@@ -24,6 +27,9 @@ public class MainMenuController extends AbstractServiceController {
 	
 	@Autowired
 	private CharacterRepository characterRepo;
+	
+	@Autowired
+	private SystemSettingDao systemSettingsDao;
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -36,7 +42,7 @@ public class MainMenuController extends AbstractServiceController {
 		
 		List<CharacterBean> characterBeans = new ArrayList<CharacterBean>();
 		
-		for (Character character : this.getServiceUser().getCharacters()) {
+		for (Character character : getServiceUser().getCharacters()) {
 			
 			CharacterBean cb = new CharacterBean();
 			cb.setName(character.getName());
@@ -55,7 +61,14 @@ public class MainMenuController extends AbstractServiceController {
 			return false;
 		}
 		
-		characterRepo.save(new Character(characterName, getServiceUser()));
+		User user = getServiceUser();
+		SystemSetting maxCharacters = systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS);
+		
+		if (user.getCharacters().size() >= maxCharacters.getIntValue()) {
+			return false;
+		}
+	
+		characterRepo.save(new Character(characterName, user));
 		
 		return true;
 	}
