@@ -57,11 +57,12 @@ public class MainMenuController extends AbstractServiceController {
 	@Transactional
 	public boolean createCharacter(@PathVariable String characterName) {
 		
-		if (!characterRepo.findByName(characterName).isEmpty()) {
+		User user = getServiceUser();
+		
+		if (!characterRepo.findByNameAndUserId(characterName, user.getId()).isEmpty()) {
 			return false;
 		}
 		
-		User user = getServiceUser();
 		SystemSetting maxCharacters = systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS);
 		
 		if (user.getCharacters().size() >= maxCharacters.getIntValue()) {

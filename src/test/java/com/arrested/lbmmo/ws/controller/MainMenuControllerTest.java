@@ -42,16 +42,33 @@ public class MainMenuControllerTest {
 	@Before
 	public void init() {
 		
+		MockitoAnnotations.initMocks(this);
+		
 		characters = new HashSet<Character>();
 		characters.add(new Character());
 		
-		MockitoAnnotations.initMocks(this);
+		User user = new User() {
+			@Override
+			public long getId() { 
+				return 1;
+			}
+			
+			@Override
+			public Set<Character> getCharacters() {
+				Set<Character> characters = new HashSet<Character>();
+				characters.add(new Character());
+				
+				return characters;
+			}
+		};
+
+		Mockito.when(activeUserService.getActiveUser()).thenReturn(user);
 	}
 	
 	@Test
 	public void createCharacterNameExistsTest() {
 		
-		Mockito.when(characterRepo.findByName("testCharacter")).thenReturn(characters);
+		Mockito.when(characterRepo.findByNameAndUserId("testCharacter", 1)).thenReturn(characters);
 		
 		Assert.assertFalse(controller.createCharacter("testCharacter"));
 	}
@@ -61,21 +78,10 @@ public class MainMenuControllerTest {
 
 		SystemSetting setting = new SystemSetting();
 		setting.setIntValue(1);
-		
-		User user = new User() {
-			@Override
-			public Set<Character> getCharacters() {
-				Set<Character> characters = new HashSet<Character>();
-				characters.add(new Character());
-				
-				return characters;
-			}
-		};
-		
-		Mockito.when(characterRepo.findByName("testCharacter2")).thenReturn(characters);
+
+		Mockito.when(characterRepo.findByNameAndUserId("testCharacter2", 1)).thenReturn(characters);
 		Mockito.when(systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS)).thenReturn(setting);
-		Mockito.when(activeUserService.getActiveUser()).thenReturn(user);
-		
+
 		Assert.assertFalse(controller.createCharacter("testCharacter"));
 	}
 }
