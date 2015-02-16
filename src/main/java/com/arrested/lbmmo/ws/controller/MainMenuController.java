@@ -53,7 +53,7 @@ public class MainMenuController extends AbstractServiceController {
 		return characterBeans;
 	}
 	
-	@RequestMapping(value="can-create-character")
+	@RequestMapping(value="can-create-character", method=RequestMethod.GET)
 	public boolean canCreateCharacter() {
 		
 		SystemSetting maxCharacters = systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS);
