@@ -36,7 +36,7 @@ public class MainMenuController extends AbstractServiceController {
 		
 		List<CharacterBean> characterBeans = new ArrayList<CharacterBean>();
 		
-		for (Character character : this.getServiceUser().getCharacters()) {
+		for (Character character : getServiceUser().getCharacters()) {
 			
 			CharacterBean cb = new CharacterBean();
 			cb.setName(character.getName());
@@ -46,8 +46,8 @@ public class MainMenuController extends AbstractServiceController {
 		
 		return characterBeans;
 	}
-	
-	@RequestMapping(value="login/{characterName}", method=RequestMethod.PUT)
+		
+	@RequestMapping(value="login/{characterName}")
 	@Transactional
 	public void login(@PathVariable String characterName) {
 		

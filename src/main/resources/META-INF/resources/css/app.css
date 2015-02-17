@@ -50,7 +50,7 @@ html, body {
 	padding: 5px;
 }
 
-.characterInfo {
+.controlTextContainer {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -60,6 +60,6 @@ html, body {
 	border-radius: 3px;
 }
 
-.characterName {
+.emphasized {
 	font-weight: bold;
 }

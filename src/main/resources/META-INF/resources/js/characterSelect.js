@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 	mainMenuUrl = "/service/main-menu/";
+	characterCreationUrl = "/service/character-creation/";
 	
 	var $mainContent = $(".mainContent");
 
@@ -11,12 +12,11 @@ $(document).ready(function() {
 		var classLevel = document.createElement("div");
 
 		controlContainer.className = "controlContainer";
-		characterInfo.className = "characterInfo";
+		characterInfo.className = "controlTextContainer characterInfo";
 
-		name.className = "characterName";
+		name.className = "emphasized";
 		name.innerHTML = element.name;
 
-		classLevel.className = "characterClassLevel";
 		classLevel.innerHTML = element.level + " " + element.class;
 
 		characterInfo.appendChild(name);
@@ -27,6 +27,39 @@ $(document).ready(function() {
 		$mainContent.append(controlContainer);
 	}
 
+	function addCreateNew() {
+		$.ajax({
+			type : "GET",
+			url : characterCreationUrl + "can-create-character",
+			success : function(data) {
+				
+				if(data) {
+				
+					var controlContainer = document.createElement("div");
+					var createNew = document.createElement("div");
+					var text = document.createElement("div");
+					
+					controlContainer.className = "controlContainer";
+					createNew.className = "controlTextContainer createNew";
+					text.className = "emphasized";
+					
+					text.innerHTML = "Create New Character";
+					
+					createNew.appendChild(text);
+					controlContainer.appendChild(createNew);
+					
+					createNew.onclick = goToCharacterCreation;
+					
+					$mainContent.append(controlContainer);
+				}
+			}
+		});
+	}
+	
+	function goToCharacterCreation() {
+		location = "/pages/createCharacter.html";
+	};
+	
 	function logCharacterIn() {
 
 		var characterName = this.firstChild.textContent;
@@ -44,8 +77,10 @@ $(document).ready(function() {
 		type : "GET",
 		url : mainMenuUrl + "characters",
 		success : function(data) {
-			$mainContent.html("");
-			data.forEach(updateMainContent);
+			
+			data.forEach(updateMainContent);			
+			addCreateNew();
+			
 			$(".characterInfo").click(logCharacterIn);
 		}
 	});
