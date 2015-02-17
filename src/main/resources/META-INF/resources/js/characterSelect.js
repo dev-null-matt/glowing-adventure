@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 	mainMenuUrl = "/service/main-menu/";
+	characterCreationUrl = "/service/character-creation/";
 	
 	var $mainContent = $(".mainContent");
 
@@ -29,7 +30,7 @@ $(document).ready(function() {
 	function addCreateNew() {
 		$.ajax({
 			type : "GET",
-			url : mainMenuUrl + "can-create-character",
+			url : characterCreationUrl + "can-create-character",
 			success : function(data) {
 				
 				if(data) {

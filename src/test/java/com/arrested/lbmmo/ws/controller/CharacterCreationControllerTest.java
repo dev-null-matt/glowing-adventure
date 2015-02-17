@@ -20,7 +20,7 @@ import com.arrested.lbmmo.util.ActiveUserService;
 import com.arrested.lbmmo.util.SystemSettingDao;
 import com.arrested.lbmmo.util.SystemSettings;
 
-public class MainMenuControllerTest {
+public class CharacterCreationControllerTest {
 
 	@Mock
 	private ActiveUserService activeUserService;
@@ -35,7 +35,7 @@ public class MainMenuControllerTest {
 	private UserRepository userRepo;
 	
 	@InjectMocks
-	private MainMenuController controller;
+	private CharacterCreationController controller;
 	
 	private Set<Character> characters;
 	

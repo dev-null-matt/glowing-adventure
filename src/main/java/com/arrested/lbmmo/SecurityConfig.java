@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 		// Services require auth
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/service/**").hasAuthority("USER").and().httpBasic();
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/service/**").hasAuthority("USER").and().httpBasic();
+		http.authorizeRequests().antMatchers(HttpMethod.PUT,"/service/**").hasAuthority("USER").and().httpBasic();
 
 		http.csrf().disable();
 	}

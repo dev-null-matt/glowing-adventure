@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arrested.lbmmo.persistence.entity.Character;
-import com.arrested.lbmmo.persistence.entity.SystemSetting;
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.CharacterRepository;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
-import com.arrested.lbmmo.util.SystemSettingDao;
-import com.arrested.lbmmo.util.SystemSettings;
 import com.arrested.lbmmo.ws.bean.response.CharacterBean;
 
 @RestController
@@ -27,9 +24,6 @@ public class MainMenuController extends AbstractServiceController {
 	
 	@Autowired
 	private CharacterRepository characterRepo;
-	
-	@Autowired
-	private SystemSettingDao systemSettingsDao;
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -52,34 +46,7 @@ public class MainMenuController extends AbstractServiceController {
 		
 		return characterBeans;
 	}
-	
-	@RequestMapping(value="can-create-character", method=RequestMethod.GET)
-	public boolean canCreateCharacter() {
 		
-		SystemSetting maxCharacters = systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS);
-		
-		return getServiceUser().getCharacters().size() < maxCharacters.getIntValue();
-	}
-	
-	@RequestMapping(value="create-character/{characterName}")
-	@Transactional
-	public boolean createCharacter(@PathVariable String characterName) {
-		
-		User user = getServiceUser();
-		
-		if (!characterRepo.findByNameAndUserId(characterName, user.getId()).isEmpty()) {
-			return false;
-		}
-		
-		if (!canCreateCharacter()) {
-			return false;
-		}
-	
-		characterRepo.save(new Character(characterName, user));
-		
-		return true;
-	}
-	
 	@RequestMapping(value="login/{characterName}")
 	@Transactional
 	public void login(@PathVariable String characterName) {
