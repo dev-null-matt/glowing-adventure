@@ -4,8 +4,9 @@ html, body {
 
 .contentContainer {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: space-around;
+	min-height: 180px;
 	width: 360px;
 	border: 2px solid #a1a1a1;
     background: #dddddd;
@@ -13,6 +14,9 @@ html, body {
 }
 
 .mainContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 	padding: 5px;
 }
 
