@@ -13,8 +13,7 @@ $(document).ready(function() {
 					var mapOptions = {
 						zoom : 14
 					};
-					map = new google.maps.Map(document
-							.getElementById('map-canvas'), mapOptions);
+					map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 					getLocation();
 				} else {
 					alert("Geolocation is not supported by this browser.");
@@ -23,7 +22,7 @@ $(document).ready(function() {
 
 			function getLocation() {
 				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(showPosition);
+					navigator.geolocation.watchPosition(showPosition);
 				} else {
 					alert("Geolocation is not supported by this browser.");
 				}
@@ -31,8 +30,7 @@ $(document).ready(function() {
 
 			function showPosition(position) {
 
-				var latLong = new google.maps.LatLng(position.coords.latitude,
-						position.coords.longitude);
+				var latLong = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
 				if (!youAreHere) {
 					youAreHere = new google.maps.Marker({
@@ -83,7 +81,7 @@ $(document).ready(function() {
 				};
 
 				$.ajax({
-					type : "POST",
+					type : "PUT",
 					url : mapUrl + "set-new-position",
 					data : JSON.stringify(data),
 					dataType : "application/json",
@@ -92,7 +90,6 @@ $(document).ready(function() {
 			}
 
 			google.maps.event.addDomListener(window, 'load', initialize);
-			$("#center").click(getLocation);
 			readQuestObjectives();
 			window.setInterval(sendLocationToServer, 4500);
 		});
