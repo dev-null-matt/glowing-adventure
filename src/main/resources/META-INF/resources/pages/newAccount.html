@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script src="/js/newAccount.js"></script>
@@ -7,40 +8,44 @@
 	<body>
 		<div class="contentContainer">
 			<div class="mainContent">
-				<div class="inputField">
-					<label class="instruction wide" for="username">Username</label>
-					<input id="username" type="text"></input>
+				<div>
+					<div class="inputField">
+						<label class="instruction wide" for="username">Username</label>
+						<input id="username" type="text"></input>
+					</div>
+					<div class="inputField">
+						<label id="loginTaken" class="error hidden" for="username">Username already in use</label>
+					</div>
+					<div class="inputField">
+						<label class="instruction wide" for="email">Email Address</label>
+						<input id="email" type="text"></input>
+					</div>
+					<div class="inputField">
+						<label class="instruction wide" for="emailConfirm">Confirm Email Address</label>
+						<input id="emailConfirm" type="text"></input>
+					</div>
+					<div class="inputField">
+						<label id="emailTaken" class="error hidden" for=emailConfirm>An account is already associated with this email</label>
+					</div>
+					<div class="inputField">
+						<label id="emailNoMatch" class="error hidden" for="emailConfirm">Email addresses do not match</label>
+					</div>
+					<div class="inputField">
+						<label class="instruction wide" for="password">Password</label>
+						<input id="password" type="password"></input>
+					</div>
+					<div class="inputField">
+						<label class="instruction wide" for="passwordConfirm">Confirm Password</label>
+						<input id="passwordConfirm" type="password"></input>
+					</div>
+					<div class="inputField">
+						<label id="passwordNoMatch" class="error hidden" for="passwordConfirm">Passwords do not match</label>
+					</div>
 				</div>
-				<div class="inputField">
-					<label id="loginTaken" class="error hidden" for="username">Username already in use</label>
-				</div>
-				<div class="inputField">
-					<label class="instruction wide" for="email">Email Address</label>
-					<input id="email" type="text"></input>
-				</div>
-				<div class="inputField">
-					<label class="instruction wide" for="emailConfirm">Confirm Email Address</label>
-					<input id="emailConfirm" type="text"></input>
-				</div>
-				<div class="inputField">
-					<label id="emailTaken" class="error hidden" for=emailConfirm>An account is already associated with this email</label>
-				</div>
-				<div class="inputField">
-					<label id="emailNoMatch" class="error hidden" for="emailConfirm">Email addresses do not match</label>
-				</div>
-				<div class="inputField">
-					<label class="instruction wide" for="password">Password</label>
-					<input id="password" type="password"></input>
-				</div>
-				<div class="inputField">
-					<label class="instruction wide" for="passwordConfirm">Confirm Password</label>
-					<input id="passwordConfirm" type="password"></input>
-				</div>
-				<div class="inputField">
-					<label id="passwordNoMatch" class="error hidden" for="passwordConfirm">Passwords do not match</label>
-				</div>
-				<div class="inputField">
-					<button id="newUser" type="button">Create Account</button>
+				<div>
+					<div class="inputField">
+						<button id="newUser" type="button">Create Account</button>
+					</div>
 				</div>
 			</div>
 		</div>

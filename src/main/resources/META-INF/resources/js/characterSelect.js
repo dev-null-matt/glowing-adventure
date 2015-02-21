@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 		controlContainer.appendChild(characterInfo);
 
-		$mainContent.append(controlContainer);
+		$mainContent.children()[0].appendChild(controlContainer);
 	}
 
 	function addCreateNew() {
@@ -50,7 +50,7 @@ $(document).ready(function() {
 					
 					createNew.onclick = goToCharacterCreation;
 					
-					$mainContent.append(controlContainer);
+					$mainContent.children()[1].appendChild(controlContainer);
 				}
 			}
 		});
