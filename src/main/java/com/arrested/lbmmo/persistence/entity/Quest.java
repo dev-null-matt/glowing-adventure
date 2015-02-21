@@ -26,16 +26,28 @@ public class Quest {
 	@OrderBy("quest_step asc")
 	private Set<Objective> objectives;
 	
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public long getId() {
 		return id;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public String getName() {
 		return name;
 	}
 
 	public Date getExpiration() {
 		return expiration;
+	}
+	
+	public void setObjectives(Set<Objective> objectives) {
+		this.objectives = objectives;
 	}
 	
 	public Set<Objective> getObjectives() {

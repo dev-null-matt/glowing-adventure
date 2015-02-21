@@ -31,6 +31,10 @@ public class QuestInProgress {
 		return id;
 	}
 
+	public void setQuest(Quest quest) {
+		this.quest = quest;
+	}
+	
 	public Quest getQuest() {
 		return quest;
 	}

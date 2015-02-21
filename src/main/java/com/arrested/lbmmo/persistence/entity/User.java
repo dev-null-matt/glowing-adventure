@@ -25,6 +25,10 @@ public class User {
 	
 	private String username;
 	
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -35,6 +39,10 @@ public class User {
 	
 	public String getEmail() {
 		return email;
+	}
+	
+	public void setCharacters(Set<Character> characters) {
+		this.characters = characters;
 	}
 	
 	public Set<Character> getCharacters() {

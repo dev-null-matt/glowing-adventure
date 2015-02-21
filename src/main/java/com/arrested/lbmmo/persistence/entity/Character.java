@@ -48,6 +48,10 @@ public class Character {
 		return this.name;
 	}
 	
+	public void setQuestsInProgress(Set<QuestInProgress> questsInProgress) {
+		this.questsInProgress = questsInProgress;
+	}
+	
 	public Set<QuestInProgress> getQuestsInProgress() {
 		return this.questsInProgress;
 	}
