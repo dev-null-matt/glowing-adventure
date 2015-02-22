@@ -29,7 +29,7 @@ public class MapController extends AbstractServiceController {
 		EncounterBean encounter = new EncounterBean();
 		Character character = getServiceUser().getLoggedInCharacter();
 		
-		if (character == null) {
+		if (character == null || character.getTrackedQuestInProgress() == null) {
 			return encounter;
 		}
 		
