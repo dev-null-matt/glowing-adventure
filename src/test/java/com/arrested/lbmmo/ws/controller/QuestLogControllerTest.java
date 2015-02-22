@@ -51,8 +51,13 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 
 		Character character = activeUserService.getActiveUser().getLoggedInCharacter();
 		
+		Quest quest = new Quest();
+		quest.setId(0);
+		quest.setName("Quest 0");
+		quest.setObjectives(new HashSet<Objective>());
+		
 		QuestInProgress qip = new QuestInProgress();
-		qip.setQuest(quests.get(0));
+		qip.setQuest(quest);
 		qip.setCurrentStep(0);
 		
 		character.getQuestsInProgress().add(qip);

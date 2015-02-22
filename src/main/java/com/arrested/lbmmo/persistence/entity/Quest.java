@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import com.google.common.base.Objects;
+
 @Entity
 @Table
 public class Quest {
@@ -52,5 +54,25 @@ public class Quest {
 	
 	public Set<Objective> getObjectives() {
 		return objectives;
+	}
+	
+	@Override
+	public boolean equals(Object o2) {
+		
+		if (o2 instanceof Quest) {
+			
+			Quest q2 = (Quest) o2;
+			
+			return  Objects.equal(id, q2.getId()) && Objects.equal(name, q2.getName());
+
+		} else {
+			
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id, name);
 	}
 }
