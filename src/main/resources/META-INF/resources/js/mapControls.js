@@ -1,95 +1,99 @@
+var mapUrl = "/service/map/";
+var questLogUrl = "/service/quest-log/";
+
+var map;
+var youAreHere;
+var nextObjective;
+var currentLocation;
+
 $(document).ready(function() {
+	google.maps.event.addDomListener(window, 'load', initialize);
+	readQuestObjectives();
+	window.setInterval(sendLocationToServer, 4500);
+});
 
-			mapUrl = "/service/map/";
-			questLogUrl = "/service/quest-log/";
+function initialize() {
+	if (navigator.geolocation) {
+		map = new google.maps.Map(document.getElementById('map-canvas'), {zoom : 14});
+		navigator.geolocation.watchPosition(showPosition);
+	} else {
+		alert("Geolocation is not supported by this browser.");
+	}
+}
 
-			var map;
-			var youAreHere;
-			var nextObjective;
-			var currentLocation;
+function readQuestObjectives() {
+	$.ajax({
+		type : "GET",
+		url : questLogUrl + "quest-status",
+		success : pinNextObjective
+	});
+}
 
-			function initialize() {
-				if (navigator.geolocation) {
-					var mapOptions = {
-						zoom : 14
-					};
-					map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-					getLocation();
-				} else {
-					alert("Geolocation is not supported by this browser.");
-				}
-			}
+function showPosition(position) {
 
-			function getLocation() {
-				if (navigator.geolocation) {
-					navigator.geolocation.watchPosition(showPosition);
-				} else {
-					alert("Geolocation is not supported by this browser.");
-				}
-			}
+	var latLong = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-			function showPosition(position) {
+	if (!youAreHere) {
 
-				var latLong = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		youAreHere = createMarker(latLong, 'You are here', '/images/icons/user.png');
 
-				if (!youAreHere) {
-					youAreHere = new google.maps.Marker({
-						position : latLong,
-						map : map,
-						title : 'You are here'
-					});
-				} else {
-					youAreHere.setPosition(latLong);
-				}
+	} else {
 
-				map.setCenter(latLong);
-				currentLocation = latLong;
-			}
+		youAreHere.setPosition(latLong);
+	}
 
-			function pinNextObjective(data) {
-				if (data) {
-					var latLong = new google.maps.LatLng(
-							data.nextObjective.latitude,
-							data.nextObjective.longitude);
-					if (!nextObjective) {
-						nextObjective = new google.maps.Marker({
-							position : latLong,
-							map : map,
-							title : 'Next objective'
-						});
-					} else {
-						nextObjective.setPosition(latLong);
-					}
-				} else {
-					// TODO: Remove nextObjective marker
-				}
-			}
+	map.setCenter(latLong);
+	currentLocation = latLong;
+}
 
-			function readQuestObjectives() {
-				$.ajax({
-					type : "GET",
-					url : questLogUrl + "quest-status",
-					success : pinNextObjective
-				});
-			}
+function pinNextObjective(data) {
 
-			function sendLocationToServer() {
+	if (data) {
 
-				var data = {
-					"latitude" : currentLocation.lat(),
-					"longitude" : currentLocation.lng()
-				};
+		var latLong = new google.maps.LatLng(data.nextObjective.latitude, data.nextObjective.longitude);
 
-				$.ajax({
-					type : "PUT",
-					url : mapUrl + "set-new-position",
-					data : JSON.stringify(data),
-					dataType : "application/json",
-					contentType : "application/json"
-				});
-			}
+		if (!nextObjective) {
 
-			google.maps.event.addDomListener(window, 'load', initialize);
-			readQuestObjectives();
-			window.setInterval(sendLocationToServer, 4500);
-		});
+			nextObjective = createMarker(latLong, 'Next objective', '/images/icons/flag.png');
+
+		} else {
+
+			nextObjective.setPosition(latLong);
+		}
+	} else {
+		// TODO: Remove nextObjective marker
+	}
+}
+
+function createMarker(latLong, label, imageUrl) {
+
+	var image = {
+		url : imageUrl,
+		size : new google.maps.Size(32, 32),
+		origin : new google.maps.Point(0, 0),
+		anchor : new google.maps.Point(16, 32)
+	};
+
+	return new google.maps.Marker({
+		position : latLong,
+		map : map,
+		title : label,
+		icon : image
+	});
+}
+
+function sendLocationToServer() {
+
+	var data = {
+		"latitude" : currentLocation.lat(),
+		"longitude" : currentLocation.lng()
+	};
+
+	$.ajax({
+		type : "PUT",
+		url : mapUrl + "set-new-position",
+		data : JSON.stringify(data),
+		dataType : "application/json",
+		contentType : "application/json"
+	});
+}
