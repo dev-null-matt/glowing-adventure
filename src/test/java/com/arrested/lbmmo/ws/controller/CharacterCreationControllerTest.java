@@ -9,21 +9,15 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import com.arrested.lbmmo.persistence.entity.Character;
 import com.arrested.lbmmo.persistence.entity.SystemSetting;
-import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.CharacterRepository;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
-import com.arrested.lbmmo.util.ActiveUserService;
 import com.arrested.lbmmo.util.SystemSettingDao;
 import com.arrested.lbmmo.util.SystemSettings;
 
-public class CharacterCreationControllerTest {
-
-	@Mock
-	private ActiveUserService activeUserService;
+public class CharacterCreationControllerTest extends AbstractMockedActiveUserServiceTest {
 	
 	@Mock
 	private CharacterRepository characterRepo;
@@ -41,28 +35,8 @@ public class CharacterCreationControllerTest {
 	
 	@Before
 	public void init() {
-		
-		MockitoAnnotations.initMocks(this);
-		
 		characters = new HashSet<Character>();
 		characters.add(new Character());
-		
-		User user = new User() {
-			@Override
-			public long getId() { 
-				return 1;
-			}
-			
-			@Override
-			public Set<Character> getCharacters() {
-				Set<Character> characters = new HashSet<Character>();
-				characters.add(new Character());
-				
-				return characters;
-			}
-		};
-
-		Mockito.when(activeUserService.getActiveUser()).thenReturn(user);
 	}
 	
 	@Test

@@ -1,95 +1,175 @@
+// Constants //////////////////////////////////////////////////////////////////
+var mapUrl = "/service/map/";
+var questLogUrl = "/service/quest-log/";
+
+// Display ////////////////////////////////////////////////////////////////////
+// Map
+var map;
+
+//Map markers
+var youAreHereMarker;
+var nextObjectiveMarker;
+var availableQuestMarkers;
+
+// Map info window
+var questLog;
+
+// Lat Long
+var currentLocation;
+
+// Model //////////////////////////////////////////////////////////////////////
+var pinnedQuest;
+
+// Setup //////////////////////////////////////////////////////////////////////
 $(document).ready(function() {
-
-			mapUrl = "/service/map/";
-			questLogUrl = "/service/quest-log/";
-
-			var map;
-			var youAreHere;
-			var nextObjective;
-			var currentLocation;
-
-			function initialize() {
-				if (navigator.geolocation) {
-					var mapOptions = {
-						zoom : 14
-					};
-					map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-					getLocation();
-				} else {
-					alert("Geolocation is not supported by this browser.");
-				}
-			}
-
-			function getLocation() {
-				if (navigator.geolocation) {
-					navigator.geolocation.watchPosition(showPosition);
-				} else {
-					alert("Geolocation is not supported by this browser.");
-				}
-			}
-
-			function showPosition(position) {
-
-				var latLong = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-				if (!youAreHere) {
-					youAreHere = new google.maps.Marker({
-						position : latLong,
-						map : map,
-						title : 'You are here'
-					});
-				} else {
-					youAreHere.setPosition(latLong);
-				}
-
-				map.setCenter(latLong);
-				currentLocation = latLong;
-			}
-
-			function pinNextObjective(data) {
-				if (data) {
-					var latLong = new google.maps.LatLng(
-							data.nextObjective.latitude,
-							data.nextObjective.longitude);
-					if (!nextObjective) {
-						nextObjective = new google.maps.Marker({
-							position : latLong,
-							map : map,
-							title : 'Next objective'
-						});
-					} else {
-						nextObjective.setPosition(latLong);
-					}
-				} else {
-					// TODO: Remove nextObjective marker
-				}
-			}
-
-			function readQuestObjectives() {
-				$.ajax({
-					type : "GET",
-					url : questLogUrl + "quest-status",
-					success : pinNextObjective
-				});
-			}
-
-			function sendLocationToServer() {
-
-				var data = {
-					"latitude" : currentLocation.lat(),
-					"longitude" : currentLocation.lng()
-				};
-
-				$.ajax({
-					type : "PUT",
-					url : mapUrl + "set-new-position",
-					data : JSON.stringify(data),
-					dataType : "application/json",
-					contentType : "application/json"
-				});
-			}
-
-			google.maps.event.addDomListener(window, 'load', initialize);
-			readQuestObjectives();
-			window.setInterval(sendLocationToServer, 4500);
+	google.maps.event.addDomListener(window, 'load', initialize);
+	readQuestObjectives();
+	window.setInterval(sendLocationToServer, 4500);
+	
+	$.get('/ui-elements/questLog.html').then(function(responseData) {
+		questLog = new google.maps.InfoWindow({
+		    content: responseData
 		});
+	});
+});
+
+function initialize() {
+	if (navigator.geolocation) {
+		map = new google.maps.Map(document.getElementById('map-canvas'), {zoom : 14});
+		navigator.geolocation.watchPosition(showPosition);
+	} else {
+		alert("Geolocation is not supported by this browser.");
+	}
+}
+
+// Ajax response handlers /////////////////////////////////////////////////////
+function pinNextObjective(data) {
+
+	if (data) {
+
+		var latLong = new google.maps.LatLng(data.nextObjective.latitude, data.nextObjective.longitude);
+
+		if (!nextObjectiveMarker) {
+
+			nextObjectiveMarker = createMarker(latLong, 'Next objective', '/images/icons/flag.png');
+
+		} else {
+
+			nextObjectiveMarker.setPosition(latLong);
+		}
+		
+		pinnedQuest = data.questName;
+		
+	} else {
+		// TODO: Remove nextObjective marker
+	}
+}
+
+function pinAvailableQuests(data) {
+	if (data) {
+		
+		var markers = [];
+		clearMarkers(availableQuestMarkers);
+		
+		data.forEach(function(quest, index) {
+			var latLong = new google.maps.LatLng(quest.nextObjective.latitude, quest.nextObjective.longitude);
+			markers[index] = createMarker(latLong, quest.name, '/images/icons/question.png');
+		});
+		
+		availableQuestMarkers = markers;
+	}
+}
+
+// Controls ///////////////////////////////////////////////////////////////////
+function showAvailableUpdated() {
+	if ($("#showAvailable").prop('checked')) {
+		$.ajax({
+			type: "GET",
+			url: questLogUrl + "available-quests",
+			success: pinAvailableQuests
+		});
+	} else {
+		clearMarkers(availableQuestMarkers);
+		availableQuestMarkers = [];
+	}
+}
+
+// Periodic update functions //////////////////////////////////////////////////
+function readQuestObjectives() {
+	$.ajax({
+		type : "GET",
+		url : questLogUrl + "quest-status",
+		success : pinNextObjective
+	});
+}
+
+function sendLocationToServer() {
+
+	if (currentLocation) {
+	
+		var data = {
+			"latitude" : currentLocation.lat(),
+			"longitude" : currentLocation.lng()
+		};
+	
+		$.ajax({
+			type : "PUT",
+			url : mapUrl + "set-new-position",
+			data : JSON.stringify(data),
+			dataType : "application/json",
+			contentType : "application/json"
+		});
+	}
+}
+
+function showPosition(position) {
+
+	var latLong = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+	if (!youAreHereMarker) {
+
+		youAreHereMarker = createMarker(latLong, 'You are here', '/images/icons/user.png');
+
+		google.maps.event.addListener(youAreHereMarker, 'click', function() {
+		    questLog.open(map, youAreHereMarker);
+		    $("#pinnedQuest").html(pinnedQuest);
+		    $("#showAvailable").change(showAvailableUpdated);
+		});
+		
+	} else {
+
+		youAreHereMarker.setPosition(latLong);
+	}
+
+	map.setCenter(latLong);
+	currentLocation = latLong;
+}
+
+//Helper functions ///////////////////////////////////////////////////////////
+function clearMarkers(markers) {
+	
+	if (!markers) {
+		return;
+	}
+	
+	markers.forEach(function(element) {
+		element.setMap(null);
+	});
+}
+
+function createMarker(latLong, label, imageUrl) {
+	
+	var image = {
+		url : imageUrl,
+		size : new google.maps.Size(32, 32),
+		origin : new google.maps.Point(0, 0),
+		anchor : new google.maps.Point(16, 32)
+	};
+
+	return new google.maps.Marker({
+		position : latLong,
+		map : map,
+		title : label,
+		icon : image
+	});
+}
