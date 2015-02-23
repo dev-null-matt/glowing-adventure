@@ -1,15 +1,36 @@
+// Constants //////////////////////////////////////////////////////////////////
 var mapUrl = "/service/map/";
 var questLogUrl = "/service/quest-log/";
 
+// Display ////////////////////////////////////////////////////////////////////
+// Map
 var map;
-var youAreHere;
-var nextObjective;
+
+//Map markers
+var youAreHereMarker;
+var nextObjectiveMarker;
+var availableQuestMarkers;
+
+// Map info window
+var questLog;
+
+// Lat Long
 var currentLocation;
 
+// Model //////////////////////////////////////////////////////////////////////
+var pinnedQuest;
+
+// Setup //////////////////////////////////////////////////////////////////////
 $(document).ready(function() {
 	google.maps.event.addDomListener(window, 'load', initialize);
 	readQuestObjectives();
 	window.setInterval(sendLocationToServer, 4500);
+	
+	$.get('/ui-elements/questLog.html').then(function(responseData) {
+		questLog = new google.maps.InfoWindow({
+		    content: responseData
+		});
+	});
 });
 
 function initialize() {
@@ -21,6 +42,59 @@ function initialize() {
 	}
 }
 
+// Ajax response handlers /////////////////////////////////////////////////////
+function pinNextObjective(data) {
+
+	if (data) {
+
+		var latLong = new google.maps.LatLng(data.nextObjective.latitude, data.nextObjective.longitude);
+
+		if (!nextObjectiveMarker) {
+
+			nextObjectiveMarker = createMarker(latLong, 'Next objective', '/images/icons/flag.png');
+
+		} else {
+
+			nextObjectiveMarker.setPosition(latLong);
+		}
+		
+		pinnedQuest = data.questName;
+		
+	} else {
+		// TODO: Remove nextObjective marker
+	}
+}
+
+function pinAvailableQuests(data) {
+	if (data) {
+		
+		var markers = [];
+		clearMarkers(availableQuestMarkers);
+		
+		data.forEach(function(quest, index) {
+			var latLong = new google.maps.LatLng(quest.nextObjective.latitude, quest.nextObjective.longitude);
+			markers[index] = createMarker(latLong, quest.name, '/images/icons/question.png');
+		});
+		
+		availableQuestMarkers = markers;
+	}
+}
+
+// Controls ///////////////////////////////////////////////////////////////////
+function showAvailableUpdated() {
+	if ($("#showAvailable").prop('checked')) {
+		$.ajax({
+			type: "GET",
+			url: questLogUrl + "available-quests",
+			success: pinAvailableQuests
+		});
+	} else {
+		clearMarkers(availableQuestMarkers);
+		availableQuestMarkers = [];
+	}
+}
+
+// Periodic update functions //////////////////////////////////////////////////
 function readQuestObjectives() {
 	$.ajax({
 		type : "GET",
@@ -29,44 +103,62 @@ function readQuestObjectives() {
 	});
 }
 
+function sendLocationToServer() {
+
+	if (currentLocation) {
+	
+		var data = {
+			"latitude" : currentLocation.lat(),
+			"longitude" : currentLocation.lng()
+		};
+	
+		$.ajax({
+			type : "PUT",
+			url : mapUrl + "set-new-position",
+			data : JSON.stringify(data),
+			dataType : "application/json",
+			contentType : "application/json"
+		});
+	}
+}
+
 function showPosition(position) {
 
 	var latLong = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-	if (!youAreHere) {
+	if (!youAreHereMarker) {
 
-		youAreHere = createMarker(latLong, 'You are here', '/images/icons/user.png');
+		youAreHereMarker = createMarker(latLong, 'You are here', '/images/icons/user.png');
 
+		google.maps.event.addListener(youAreHereMarker, 'click', function() {
+		    questLog.open(map, youAreHereMarker);
+		    $("#pinnedQuest").html(pinnedQuest);
+		    $("#showAvailable").change(showAvailableUpdated);
+		});
+		
 	} else {
 
-		youAreHere.setPosition(latLong);
+		youAreHereMarker.setPosition(latLong);
 	}
 
 	map.setCenter(latLong);
 	currentLocation = latLong;
 }
 
-function pinNextObjective(data) {
-
-	if (data) {
-
-		var latLong = new google.maps.LatLng(data.nextObjective.latitude, data.nextObjective.longitude);
-
-		if (!nextObjective) {
-
-			nextObjective = createMarker(latLong, 'Next objective', '/images/icons/flag.png');
-
-		} else {
-
-			nextObjective.setPosition(latLong);
-		}
-	} else {
-		// TODO: Remove nextObjective marker
+//Helper functions ///////////////////////////////////////////////////////////
+function clearMarkers(markers) {
+	
+	if (!markers) {
+		return;
 	}
+	
+	markers.forEach(function(element) {
+		element.setMap(null);
+	});
 }
 
 function createMarker(latLong, label, imageUrl) {
-
+	
 	var image = {
 		url : imageUrl,
 		size : new google.maps.Size(32, 32),
@@ -79,21 +171,5 @@ function createMarker(latLong, label, imageUrl) {
 		map : map,
 		title : label,
 		icon : image
-	});
-}
-
-function sendLocationToServer() {
-
-	var data = {
-		"latitude" : currentLocation.lat(),
-		"longitude" : currentLocation.lng()
-	};
-
-	$.ajax({
-		type : "PUT",
-		url : mapUrl + "set-new-position",
-		data : JSON.stringify(data),
-		dataType : "application/json",
-		contentType : "application/json"
 	});
 }
