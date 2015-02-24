@@ -23,7 +23,7 @@ import com.arrested.lbmmo.util.SystemSettings;
 
 public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest {
 	
-	private static final String QUEST_NAME = "TEST_QUEST";
+	private static final int QUESTS_IN_LOG = 5;
 	
 	@Mock
 	private CharacterRepository characterRepo;
@@ -37,25 +37,21 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 	@InjectMocks
 	private QuestLogController controller;
 	
-	private List<Quest> quests;
-	
 	@Before
 	public void init() {
 		
-		Quest quest = new Quest();
-		quest.setName(QUEST_NAME);
+		List<Quest> quests = new ArrayList<Quest>();
 		
-		Mockito.when(questRepo.findOne(0l)).thenReturn(quest);
-		
-		quests = new ArrayList<Quest>();
-		
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < QUESTS_IN_LOG; i++) {
+			
 			Quest q = new Quest();
 			q.setId(i);
 			q.setName("Quest " + i);
 			q.setObjectives(new HashSet<Objective>());
 			
-			quests.add(q);
+			Mockito.when(questRepo.findOne((long) i)).thenReturn(q);
+
+			quests.add(q);			
 		}
 		
 		Mockito.when(questRepo.findAll()).thenReturn(quests);
@@ -79,7 +75,7 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		
 		character.getQuestsInProgress().add(qip);
 		
-		Assert.assertEquals("Proper number of quests", quests.size() - 1, controller.getAvailableQuests().size());
+		Assert.assertEquals("Proper number of quests", QUESTS_IN_LOG - 1, controller.getAvailableQuests().size());
 	}
 	
 	@Test
@@ -90,7 +86,7 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		controller.acceptQuest("0");
 		
 		Assert.assertEquals(1, character.getQuestsInProgress().size());
-		Assert.assertEquals(QUEST_NAME, character.getQuestsInProgress().iterator().next().getQuest().getName());
+		Assert.assertEquals("Quest 0", character.getQuestsInProgress().iterator().next().getQuest().getName());
 	}
 	
 	@Test
@@ -101,18 +97,13 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		SystemSetting setting = new SystemSetting();
 		setting.setIntValue(1);
 		
-		Quest quest = new Quest();
-		quest.setName("OTHER_QUEST");
-		
-		Mockito.when(questRepo.findOne(1l)).thenReturn(quest);
-		
 		Mockito.when(settingDao.getSystemSetting(SystemSettings.CHARACTER_MAX_QUESTS)).thenReturn(setting);
 		
 		controller.acceptQuest("0");
 		controller.acceptQuest("1");
 		
 		Assert.assertEquals(1, character.getQuestsInProgress().size());
-		Assert.assertEquals(QUEST_NAME, character.getQuestsInProgress().iterator().next().getQuest().getName());
+		Assert.assertEquals("Quest 0", character.getQuestsInProgress().iterator().next().getQuest().getName());
 	}
 	
 	@Test
@@ -132,6 +123,13 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 	
 	@Test
 	public void acceptQuestTest_OnlyAllowAvailableQuests() {
-		Assert.fail("Implementation incomplete");
+		
+		Quest quest = new Quest();
+		quest.setId(6);
+		quest.setName("Not available");
+		
+		Mockito.when(questRepo.findOne(6l)).thenReturn(quest);
+		
+		Assert.assertEquals("This mission is not currently available to you", controller.acceptQuest("6"));
 	}
 }
