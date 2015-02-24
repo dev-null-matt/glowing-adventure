@@ -13,8 +13,11 @@ import com.arrested.lbmmo.persistence.entity.Character;
 import com.arrested.lbmmo.persistence.entity.Objective;
 import com.arrested.lbmmo.persistence.entity.Quest;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
+import com.arrested.lbmmo.persistence.entity.SystemSetting;
 import com.arrested.lbmmo.persistence.repository.CharacterRepository;
 import com.arrested.lbmmo.persistence.repository.QuestRepository;
+import com.arrested.lbmmo.util.SystemSettingDao;
+import com.arrested.lbmmo.util.SystemSettings;
 import com.arrested.lbmmo.ws.bean.response.LocationBean;
 import com.arrested.lbmmo.ws.bean.response.QuestBean;
 
@@ -27,6 +30,9 @@ public class QuestLogController extends AbstractServiceController {
 	
 	@Autowired
 	private QuestRepository questRepo;
+	
+	@Autowired
+	private SystemSettingDao settingDao;
 	
 	@RequestMapping(value="quest-status", method=RequestMethod.GET)
 	public QuestBean getQuestStatus() {
@@ -97,7 +103,13 @@ public class QuestLogController extends AbstractServiceController {
 		try {
 			questToAdd = questRepo.findOne(Long.parseLong(questId));
 		} catch (NumberFormatException e) {
-			// TODO: Return an error message
+			return "No quests exists with the id " + questId;
+		}
+		
+		SystemSetting maxQuests = settingDao.getSystemSetting(SystemSettings.CHARACTER_MAX_QUESTS);
+		
+		if (maxQuests != null && maxQuests.getIntValue() <= character.getQuestsInProgress().size()) {
+			return "Your mission log is full";
 		}
 		
 		for (QuestInProgress qip : character.getQuestsInProgress()) {
@@ -105,13 +117,13 @@ public class QuestLogController extends AbstractServiceController {
 		}
 		
 		if (isDuplicate) {
-			// TODO: Return an error message
+			return questToAdd.getName() + " is already in your mission log";
 		} else {
 			character.getQuestsInProgress().add(populateQuestInProgress(questToAdd, character));
 			characterRepo.save(character);
 		}
 		
-		return null;
+		return questToAdd.getName() + " added to mission log";
 	}
 	
 	private QuestBean populateQuestBean(QuestInProgress qip) {
@@ -154,6 +166,9 @@ public class QuestLogController extends AbstractServiceController {
 	private QuestInProgress populateQuestInProgress(Quest quest, Character character) {
 
 		QuestInProgress qip = new QuestInProgress();
+		qip.setQuest(quest);
+		qip.setCurrentStep(0);
+		qip.setCharacter(character);
 		
 		return qip;
 	}
