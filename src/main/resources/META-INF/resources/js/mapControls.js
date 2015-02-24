@@ -87,7 +87,7 @@ function parseInactiveQuests(data) {
 	
 	var content = "";
 	
-	if (data) {
+	if (data.length) {
 		data.forEach(function(element, index) {
 			content = content + "<div>" + element.questName + "</div>";
 		});
