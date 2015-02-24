@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import com.arrested.lbmmo.persistence.entity.Character;
 import com.arrested.lbmmo.persistence.entity.Objective;
 import com.arrested.lbmmo.persistence.entity.Quest;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
+import com.arrested.lbmmo.persistence.repository.CharacterRepository;
 import com.arrested.lbmmo.persistence.repository.QuestRepository;
 import com.arrested.lbmmo.ws.bean.response.LocationBean;
 import com.arrested.lbmmo.ws.bean.response.QuestBean;
@@ -19,6 +21,9 @@ import com.arrested.lbmmo.ws.bean.response.QuestBean;
 @RestController
 @RequestMapping("/service/quest-log/")
 public class QuestLogController extends AbstractServiceController {
+	
+	@Autowired
+	private CharacterRepository characterRepo;
 	
 	@Autowired
 	private QuestRepository questRepo;
@@ -82,6 +87,33 @@ public class QuestLogController extends AbstractServiceController {
 		return quests;
 	}
 	
+	@RequestMapping(value="accept-quest/{questId}", method=RequestMethod.POST) 
+	public String acceptQuest(@PathVariable String questId) {
+		
+		Character character = getServiceUser().getLoggedInCharacter();
+		boolean isDuplicate = false;
+		Quest questToAdd = null;
+		
+		try {
+			questToAdd = questRepo.findOne(Long.parseLong(questId));
+		} catch (NumberFormatException e) {
+			// TODO: Return an error message
+		}
+		
+		for (QuestInProgress qip : character.getQuestsInProgress()) {
+			isDuplicate |= qip.getQuest().equals(questToAdd);
+		}
+		
+		if (isDuplicate) {
+			// TODO: Return an error message
+		} else {
+			character.getQuestsInProgress().add(populateQuestInProgress(questToAdd, character));
+			characterRepo.save(character);
+		}
+		
+		return null;
+	}
+	
 	private QuestBean populateQuestBean(QuestInProgress qip) {
 		
 		Objective objective = qip.getCurrentObjective();
@@ -117,5 +149,12 @@ public class QuestLogController extends AbstractServiceController {
 		questBean.setNextObjective(locationBean);
 		
 		return questBean;
+	}
+	
+	private QuestInProgress populateQuestInProgress(Quest quest, Character character) {
+
+		QuestInProgress qip = new QuestInProgress();
+		
+		return qip;
 	}
 }

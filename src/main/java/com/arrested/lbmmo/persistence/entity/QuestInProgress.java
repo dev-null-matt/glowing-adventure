@@ -31,6 +31,14 @@ public class QuestInProgress {
 		return id;
 	}
 
+	public Character getCharacter() {
+		return character;
+	}
+	
+	public void setCharacter(Character character) {
+		this.character = character;
+	}
+	
 	public void setQuest(Quest quest) {
 		this.quest = quest;
 	}
