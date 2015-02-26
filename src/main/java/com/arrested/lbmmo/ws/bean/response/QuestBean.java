@@ -4,6 +4,7 @@ public class QuestBean {
 
 	private LocationBean nextObjective;
 	private String questName;
+	private long questId;
 
 	public LocationBean getNextObjective() {
 		return nextObjective;
@@ -19,5 +20,13 @@ public class QuestBean {
 	
 	public void setQuestName(String questName) {
 		this.questName = questName;
+	}
+	
+	public long getQuestId() {
+		return questId;
+	}
+	
+	public void setQuestId(long questId) {
+		this.questId = questId;
 	}
 }

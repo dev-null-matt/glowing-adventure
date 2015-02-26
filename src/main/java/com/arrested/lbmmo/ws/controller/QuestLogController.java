@@ -147,8 +147,9 @@ public class QuestLogController extends AbstractServiceController {
 		QuestBean questBean = new QuestBean();
 		LocationBean locationBean = new LocationBean();
 
-		questBean.setQuestName(objective.getQuest().getName());
-
+		questBean.setQuestId(qip.getQuest().getId());
+		questBean.setQuestName(qip.getQuest().getName());
+		
 		locationBean.setLatitude(objective.getWaypoint().getLatitude());
 		locationBean.setLongitude(objective.getWaypoint().getLongitude());
 
@@ -162,6 +163,7 @@ public class QuestLogController extends AbstractServiceController {
 		QuestBean questBean = new QuestBean();
 		LocationBean locationBean = new LocationBean();
 
+		questBean.setQuestId(quest.getId());
 		questBean.setQuestName(quest.getName());
 
 		for (Objective objective : quest.getObjectives()) {
