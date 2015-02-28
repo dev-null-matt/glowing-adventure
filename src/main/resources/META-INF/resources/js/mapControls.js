@@ -14,7 +14,10 @@ var availableQuestMarkers;
 // Map info window
 var questLog;
 
-// Lat Long
+// Info window template
+var questInfoTemplate;
+
+// Lat long
 var currentLocation;
 
 // Model //////////////////////////////////////////////////////////////////////
@@ -32,6 +35,10 @@ $(document).ready(function() {
 		questLog = new google.maps.InfoWindow({
 		    content: responseData
 		});
+	});
+	
+	$.get('/ui-elements/questInfo.html').then(function(responseData) {
+		questInfoTemplate = responseData;
 	});
 });
 
@@ -77,6 +84,7 @@ function pinAvailableQuests(data) {
 		data.forEach(function(quest, index) {
 			var latLong = new google.maps.LatLng(quest.nextObjective.latitude, quest.nextObjective.longitude);
 			markers[index] = createMarker(latLong, quest.name, '/images/icons/question.png');
+			addAvailableQuestClickListener(markers[index], quest);
 		});
 		
 		availableQuestMarkers = markers;
@@ -173,6 +181,18 @@ function showPosition(position) {
 }
 
 //Helper functions ///////////////////////////////////////////////////////////
+function addAvailableQuestClickListener(marker, quest) {
+	
+	var infowindow = new google.maps.InfoWindow({
+		content : questInfoTemplate
+	});
+	
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.open(map, marker);
+		$("#questName").html(quest.questName);
+	});
+}
+
 function clearMarkers(markers) {
 	
 	if (!markers) {
