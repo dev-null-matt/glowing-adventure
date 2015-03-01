@@ -190,6 +190,17 @@ function addAvailableQuestClickListener(marker, quest) {
 	google.maps.event.addListener(marker, 'click', function() {
 		infowindow.open(map, marker);
 		$("#questName").html(quest.questName);
+		$("#addToLog").click(function() {
+			$.ajax({
+				type : "POST",
+				url : questLogUrl + "accept-quest/" + quest.questId + "/",
+				success : function(message) {
+					var $resultMessage = $("#resultMessage");
+					$resultMessage.html(message);
+					$resultMessage.removeClass("hidden");
+				}
+			});
+		});
 	});
 }
 
