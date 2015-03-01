@@ -60,7 +60,7 @@ public class QuestLogController extends AbstractServiceController {
 
 		if (character != null) {
 			for (QuestInProgress qip : character.getQuestsInProgress()) {
-				if (trackedQuest != null && trackedQuest.getId() != qip.getId()) {
+				if (trackedQuest == null || trackedQuest.getId() != qip.getId()) {
 					quests.add(populateQuestBean(qip));
 				}
 			}
@@ -112,7 +112,9 @@ public class QuestLogController extends AbstractServiceController {
 		if (isDuplicate) {
 			return questToAdd.getName() + " is already in your mission log";
 		} else {
-			questInProgressRepo.save((populateQuestInProgress(questToAdd, character)));
+			QuestInProgress qip = populateQuestInProgress(questToAdd, character);
+			character.getQuestsInProgress().add(qip);
+			questInProgressRepo.save(qip);
 		}
 
 		return questToAdd.getName() + " added to mission log";
