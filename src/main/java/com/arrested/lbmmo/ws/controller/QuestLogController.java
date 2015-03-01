@@ -121,9 +121,36 @@ public class QuestLogController extends AbstractServiceController {
 	}
 
 	@RequestMapping(value = "track-quest/{questId}", method = RequestMethod.PUT)
-	public String trackQuest(@PathVariable String questId) {
+	public void trackQuest(@PathVariable String questId) {
 		
-		return "";
+		Character character = getServiceUser().getLoggedInCharacter();
+		QuestInProgress newlyTrackedQip = null;
+		long id = -1;
+		
+		try {
+			id = Long.parseLong(questId);
+		} catch (NumberFormatException e) {
+			
+		}
+		
+		for (QuestInProgress qip : character.getQuestsInProgress()) {
+			if ( id == qip.getQuest().getId()) {
+				newlyTrackedQip = qip;
+			}
+		}
+		
+		if (newlyTrackedQip != null) {
+			
+			QuestInProgress oldTrackedQip = character.getTrackedQuestInProgress();
+			
+			if (oldTrackedQip != null) {
+				oldTrackedQip.isTracked(false);
+				questInProgressRepo.save(oldTrackedQip);
+			}
+			
+			newlyTrackedQip.isTracked(true);
+			questInProgressRepo.save(newlyTrackedQip);
+		}
 	}
 	
 	private Set<Quest> findAvailableQuests(Character character) {
@@ -177,8 +204,7 @@ public class QuestLogController extends AbstractServiceController {
 
 			if (objective.getQuestStep() == 0) {
 				locationBean.setLatitude(objective.getWaypoint().getLatitude());
-				locationBean.setLongitude(objective.getWaypoint()
-						.getLongitude());
+				locationBean.setLongitude(objective.getWaypoint().getLongitude());
 			}
 		}
 
@@ -187,8 +213,7 @@ public class QuestLogController extends AbstractServiceController {
 		return questBean;
 	}
 
-	private QuestInProgress populateQuestInProgress(Quest quest,
-			Character character) {
+	private QuestInProgress populateQuestInProgress(Quest quest, Character character) {
 
 		QuestInProgress qip = new QuestInProgress();
 		qip.setQuest(quest);
