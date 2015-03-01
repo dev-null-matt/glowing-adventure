@@ -145,4 +145,27 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		
 		Assert.assertEquals("This mission is not currently available to you", controller.acceptQuest("6"));
 	}
+	
+	@Test
+	public void trackQuestTest_smokeTest() {
+		
+		controller.trackQuest("2");
+		
+		Assert.assertEquals(2, character.getTrackedQuestInProgress().getId());
+	}
+	
+	@Test
+	public void trackQuestTest_clearExistingTrackedQuest() {
+
+		controller.trackQuest("2");
+		controller.trackQuest("3");
+		
+		Assert.assertEquals(3, character.getTrackedQuestInProgress().getId());
+		
+		for (QuestInProgress qip : character.getQuestsInProgress()) {
+			if (3 != qip.getId()) {
+				Assert.assertFalse(qip.isTracked());
+			}
+		}
+	}
 }

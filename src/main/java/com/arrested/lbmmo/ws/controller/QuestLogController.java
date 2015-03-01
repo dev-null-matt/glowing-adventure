@@ -120,6 +120,12 @@ public class QuestLogController extends AbstractServiceController {
 		return questToAdd.getName() + " added to mission log";
 	}
 
+	@RequestMapping(value = "track-quest/{questId}", method = RequestMethod.PUT)
+	public String trackQuest(@PathVariable String questId) {
+		
+		return "";
+	}
+	
 	private Set<Quest> findAvailableQuests(Character character) {
 
 		Set<QuestInProgress> inProgress = character.getQuestsInProgress();
