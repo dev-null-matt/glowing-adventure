@@ -14,7 +14,7 @@ import com.arrested.lbmmo.persistence.entity.Objective;
 import com.arrested.lbmmo.persistence.entity.Quest;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
 import com.arrested.lbmmo.persistence.entity.SystemSetting;
-import com.arrested.lbmmo.persistence.repository.CharacterRepository;
+import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.persistence.repository.QuestRepository;
 import com.arrested.lbmmo.util.SystemSettingDao;
 import com.arrested.lbmmo.util.SystemSettings;
@@ -26,11 +26,11 @@ import com.arrested.lbmmo.ws.bean.response.QuestBean;
 public class QuestLogController extends AbstractServiceController {
 
 	@Autowired
-	private CharacterRepository characterRepo;
-
-	@Autowired
 	private QuestRepository questRepo;
 
+	@Autowired
+	private QuestInProgressRepository questInProgressRepo;
+	
 	@Autowired
 	private SystemSettingDao settingDao;
 
@@ -112,8 +112,7 @@ public class QuestLogController extends AbstractServiceController {
 		if (isDuplicate) {
 			return questToAdd.getName() + " is already in your mission log";
 		} else {
-			character.getQuestsInProgress().add(populateQuestInProgress(questToAdd, character));
-			characterRepo.save(character);
+			questInProgressRepo.save((populateQuestInProgress(questToAdd, character)));
 		}
 
 		return questToAdd.getName() + " added to mission log";
