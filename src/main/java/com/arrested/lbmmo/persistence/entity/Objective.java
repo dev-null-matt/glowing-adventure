@@ -43,15 +43,23 @@ public class Objective {
 	public Quest getQuest() {
 		return quest;
 	}
-
+	
 	public Waypoint getWaypoint() {
 		return waypoint;
 	}
 
+	public void setWaypoint(Waypoint waypoint) {
+		this.waypoint = waypoint;
+	}
+	
 	public int getQuestStep() {
 		return questStep;
 	}
 
+	public void setQuestStep(int questStep) {
+		this.questStep = questStep;
+	}
+	
 	public ObjectiveType getType() {
 		return type;
 	}

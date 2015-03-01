@@ -6,7 +6,7 @@ var questLogUrl = "/service/quest-log/";
 // Map
 var map;
 
-//Map markers
+// Map markers
 var youAreHereMarker;
 var nextObjectiveMarker;
 var availableQuestMarkers;
@@ -14,12 +14,19 @@ var availableQuestMarkers;
 // Map info window
 var questLog;
 
-// Lat Long
-var currentLocation;
+// Info window template
+var questInfoTemplate;
 
 // Model //////////////////////////////////////////////////////////////////////
+// Quest lists
 var pinnedQuest;
 var inactiveQuests;
+
+// Lat long
+var currentLocation;
+
+// Persistent options
+var showAvailableMissions = false;
 
 // Setup //////////////////////////////////////////////////////////////////////
 $(document).ready(function() {
@@ -32,6 +39,10 @@ $(document).ready(function() {
 		questLog = new google.maps.InfoWindow({
 		    content: responseData
 		});
+	});
+	
+	$.get('/ui-elements/questInfo.html').then(function(responseData) {
+		questInfoTemplate = responseData;
 	});
 });
 
@@ -77,6 +88,7 @@ function pinAvailableQuests(data) {
 		data.forEach(function(quest, index) {
 			var latLong = new google.maps.LatLng(quest.nextObjective.latitude, quest.nextObjective.longitude);
 			markers[index] = createMarker(latLong, quest.name, '/images/icons/question.png');
+			addAvailableQuestClickListener(markers[index], quest);
 		});
 		
 		availableQuestMarkers = markers;
@@ -100,7 +112,14 @@ function parseInactiveQuests(data) {
 
 // Controls ///////////////////////////////////////////////////////////////////
 function showAvailableUpdated() {
-	if ($("#showAvailable").prop('checked')) {
+	
+	var $showAvailable = $("#showAvailable");
+	
+	if ($showAvailable.size() > 0) {
+		showAvailableMissions = $showAvailable.prop('checked');
+	}
+	
+	if (showAvailableMissions) {
 		$.ajax({
 			type: "GET",
 			url: questLogUrl + "available-quests",
@@ -173,6 +192,31 @@ function showPosition(position) {
 }
 
 //Helper functions ///////////////////////////////////////////////////////////
+function addAvailableQuestClickListener(marker, quest) {
+	
+	var infowindow = new google.maps.InfoWindow({
+		content : questInfoTemplate
+	});
+	
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.open(map, marker);
+		$("#questName").html(quest.questName);
+		$("#addToLog").click(function() {
+			$.ajax({
+				type : "POST",
+				url : questLogUrl + "accept-quest/" + quest.questId + "/",
+				success : function(message) {
+					
+					showAvailableUpdated();
+					readInactiveQuests();
+					
+					new google.maps.InfoWindow({content : message}).open(map, youAreHereMarker);
+				}
+			});
+		});
+	});
+}
+
 function clearMarkers(markers) {
 	
 	if (!markers) {
