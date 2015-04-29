@@ -75,7 +75,7 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 	@Test
 	public void getInactiveQuestsTest() {
 		
-		addQuestToQuestsInProgress(character);
+		addQuestToQuestsInProgress(character, 0l);
 		
 		Assert.assertEquals(1, controller.getInactiveQuests().size());
 	}
@@ -83,18 +83,9 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 	@Test
 	public void getAvailableQuestsTest() {
 		
-		addQuestToQuestsInProgress(character);
+		addQuestToQuestsInProgress(character, 0l);
 		
 		Assert.assertEquals("Proper number of quests", QUESTS_IN_LOG - 1, controller.getAvailableQuests().size());
-	}
-	
-	private void addQuestToQuestsInProgress(Character character) {
-		
-		QuestInProgress qip = new QuestInProgress();
-		qip.setQuest(questRepo.findOne(0l));
-		qip.setCurrentStep(0);
-		
-		character.getQuestsInProgress().add(qip);
 	}
 	
 	@Test
@@ -144,5 +135,53 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		Mockito.when(questRepo.findOne(6l)).thenReturn(quest);
 		
 		Assert.assertEquals("This mission is not currently available to you", controller.acceptQuest("6"));
+	}
+	
+	@Test
+	public void trackQuestTest_smokeTest() {
+		
+		addQuestToQuestsInProgress(character, 2l);
+		
+		controller.trackQuest("2");
+		
+		Assert.assertEquals(2, character.getTrackedQuestInProgress().getQuest().getId());
+	}
+	
+	@Test
+	public void trackQuestTest_clearExistingTrackedQuest() {
+
+		addQuestToQuestsInProgress(character, 2l);
+		addQuestToQuestsInProgress(character, 3l);
+		
+		controller.trackQuest("2");
+		controller.trackQuest("3");
+		
+		Assert.assertEquals(3, character.getTrackedQuestInProgress().getQuest().getId());
+		
+		for (QuestInProgress qip : character.getQuestsInProgress()) {
+			if (3 != qip.getQuest().getId()) {
+				Assert.assertFalse(qip.isTracked());
+			}
+		}
+	}
+	
+	@Test
+	public void trackQuestTest_invalidNewTrackedQuest() {
+		
+		addQuestToQuestsInProgress(character, 2l);
+		
+		controller.trackQuest("2");
+		controller.trackQuest("100");
+		
+		Assert.assertEquals(2, character.getTrackedQuestInProgress().getQuest().getId());
+	}
+	
+	private void addQuestToQuestsInProgress(Character character, long questId) {
+		
+		QuestInProgress qip = new QuestInProgress();
+		qip.setQuest(questRepo.findOne(questId));
+		qip.setCurrentStep(0);
+		
+		character.getQuestsInProgress().add(qip);
 	}
 }

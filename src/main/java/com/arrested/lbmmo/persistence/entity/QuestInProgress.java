@@ -62,6 +62,10 @@ public class QuestInProgress {
 		return tracked;
 	}
 	
+	public void isTracked(boolean tracked) {
+		this.tracked = tracked;
+	}
+	
 	public Objective getCurrentObjective() {
 		
 		for (Objective objective : quest.getObjectives()) {
