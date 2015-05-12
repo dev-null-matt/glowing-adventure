@@ -34,13 +34,13 @@ $(document).ready(function() {
 	readQuestObjectives();
 	readInactiveQuests();
 	window.setInterval(sendLocationToServer, 4500);
-	
+
 	$.get('/ui-elements/questLog.html').then(function(responseData) {
 		questLog = new google.maps.InfoWindow({
 		    content: responseData
 		});
 	});
-	
+
 	$.get('/ui-elements/questInfo.html').then(function(responseData) {
 		questInfoTemplate = responseData;
 	});
@@ -49,7 +49,7 @@ $(document).ready(function() {
 function initialize() {
 	if (navigator.geolocation) {
 		map = new google.maps.Map(document.getElementById('map-canvas'), {zoom : 14});
-		navigator.geolocation.watchPosition(showPosition);
+		navigator.geolocation.watchPosition(showPosition, undefined, {enableHighAccuracy : true});
 	} else {
 		alert("Geolocation is not supported by this browser.");
 	}
@@ -70,13 +70,13 @@ function pinNextObjective(data) {
 
 			nextObjectiveMarker.setPosition(latLong);
 		}
-		
+
 		pinnedQuest = data.questName;
-		
+
 		if ($("#pinnedQuest")) {
 			updatePinnedMission();
 		}
-		
+
 	} else {
 		// TODO: Remove nextObjective marker
 	}
@@ -85,24 +85,24 @@ function pinNextObjective(data) {
 function pinAvailableQuests(data) {
 
 	if (data) {
-		
+
 		var markers = [];
 		clearMarkers(availableQuestMarkers);
-		
+
 		data.forEach(function(quest, index) {
 			var latLong = new google.maps.LatLng(quest.nextObjective.latitude, quest.nextObjective.longitude);
 			markers[index] = createMarker(latLong, quest.name, '/images/icons/question.png');
 			addAvailableQuestClickListener(markers[index], quest);
 		});
-		
+
 		availableQuestMarkers = markers;
 	}
 }
 
 function parseInactiveQuests(data) {
-	
+
 	var content = "";
-	
+
 	if (data.length) {
 		data.forEach(function(element, index) {
 			content = content + "<div data-quest-id='"+ element.questId +"' class='inactiveQuest'>" + element.questName + "</div>";
@@ -110,9 +110,9 @@ function parseInactiveQuests(data) {
 	} else {
 		content = "No inactive missions";
 	}
-	
+
 	inactiveQuests = content;
-	
+
 	if ($("#inactiveQuests")) {
 		updateInactiveMissions();
 	}
@@ -120,13 +120,13 @@ function parseInactiveQuests(data) {
 
 // Controls ///////////////////////////////////////////////////////////////////
 function showAvailableUpdated() {
-	
+
 	var $showAvailable = $("#showAvailable");
-	
+
 	if ($showAvailable.size() > 0) {
 		showAvailableMissions = $showAvailable.prop('checked');
 	}
-	
+
 	if (showAvailableMissions) {
 		$.ajax({
 			type: "GET",
@@ -140,7 +140,7 @@ function showAvailableUpdated() {
 }
 
 function trackMission() {
-	
+
 	$.ajax({
 		type: "PUT",
 		url : questLogUrl + "track-quest/" + this.dataset.questId + "/",
@@ -171,12 +171,12 @@ function readInactiveQuests() {
 function sendLocationToServer() {
 
 	if (currentLocation) {
-	
+
 		var data = {
 			"latitude" : currentLocation.lat(),
 			"longitude" : currentLocation.lng()
 		};
-	
+
 		$.ajax({
 			type : "PUT",
 			url : mapUrl + "set-new-position",
@@ -201,7 +201,7 @@ function showPosition(position) {
 		    updateInactiveMissions();
 		    $("#showAvailable").change(showAvailableUpdated);
 		});
-		
+
 	} else {
 
 		youAreHereMarker.setPosition(latLong);
@@ -213,11 +213,11 @@ function showPosition(position) {
 
 //Helper functions ///////////////////////////////////////////////////////////
 function addAvailableQuestClickListener(marker, quest) {
-	
+
 	var infowindow = new google.maps.InfoWindow({
 		content : questInfoTemplate
 	});
-	
+
 	google.maps.event.addListener(marker, 'click', function() {
 		infowindow.open(map, marker);
 		$("#questName").html(quest.questName);
@@ -226,10 +226,10 @@ function addAvailableQuestClickListener(marker, quest) {
 				type : "POST",
 				url : questLogUrl + "accept-quest/" + quest.questId + "/",
 				success : function(message) {
-					
+
 					showAvailableUpdated();
 					readInactiveQuests();
-					
+
 					new google.maps.InfoWindow({content : message}).open(map, youAreHereMarker);
 				}
 			});
@@ -247,18 +247,18 @@ function updateInactiveMissions() {
 }
 
 function clearMarkers(markers) {
-	
+
 	if (!markers) {
 		return;
 	}
-	
+
 	markers.forEach(function(element) {
 		element.setMap(null);
 	});
 }
 
 function createMarker(latLong, label, imageUrl) {
-	
+
 	var image = {
 		url : imageUrl,
 		size : new google.maps.Size(32, 32),
