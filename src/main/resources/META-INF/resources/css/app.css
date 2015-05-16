@@ -45,6 +45,7 @@ html, body {
 }
 
 .inputField button {
+  font-size: 3vmin;
 	border: 2px solid #000000;
 	background-color: #A1A1A1;
 	border-radius: 3px;
@@ -60,9 +61,11 @@ html, body {
 }
 
 .controlTextContainer {
+  font-size: 3vmin;
+  width: 40vmin;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-around;
 	cursor: pointer;
 	border: 2px solid #000000;
 	background-color: #A1A1A1;
