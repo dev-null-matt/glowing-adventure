@@ -28,11 +28,12 @@ html, body {
 }
 
 .instruction {
-	width: 80px;
+  font-size: 3vmin;
+	width: 15vmin;
 }
 
 .wide {
-	width: 160px;
+  width: 40vmin;
 }
 
 .error {
@@ -50,6 +51,10 @@ html, body {
 	padding: 1px;
 }
 
+.inputField input {
+  width: 25vmin;
+}
+
 .controlContainer {
 	padding: 5px;
 }
@@ -62,8 +67,4 @@ html, body {
 	border: 2px solid #000000;
 	background-color: #A1A1A1;
 	border-radius: 3px;
-}
-
-.emphasized {
-	font-weight: bold;
 }
