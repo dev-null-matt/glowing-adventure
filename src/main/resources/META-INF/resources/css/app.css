@@ -1,16 +1,16 @@
 html, body {
-  margin: 20px;
+  margin: 2.5vmin;
 }
 
 .contentContainer {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-	min-height: 180px;
-	width: 360px;
+  min-height: 30vmin;
+  width: 50vmin;
 	border: 2px solid #a1a1a1;
-    background: #dddddd;
-    border-radius: 5px;
+  background: #dddddd;
+  border-radius: 5px;
 }
 
 .mainContent {
@@ -32,7 +32,7 @@ html, body {
 }
 
 .wide {
-	width: 160px;	
+	width: 160px;
 }
 
 .error {
