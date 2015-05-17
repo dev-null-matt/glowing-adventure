@@ -32,6 +32,10 @@ html, body {
 	width: 15vmin;
 }
 
+.small {
+  font-size: 2vmin;
+}
+
 .wide {
   width: 40vmin;
 }
