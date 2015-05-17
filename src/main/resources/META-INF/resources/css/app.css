@@ -1,69 +1,83 @@
 html, body {
-  margin: 20px;
+  margin: 2.5vmin;
 }
 
 .contentContainer {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	min-height: 180px;
-	width: 360px;
-	border: 2px solid #a1a1a1;
-    background: #dddddd;
-    border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  min-height: 30vmin;
+  width: 50vmin;
+  border: 2px solid #a1a1a1;
+  background: #dddddd;
+  border-radius: 5px;
 }
 
 .mainContent {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px;
 }
+
+/* Input tag styling */
 
 .inputField {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	padding: 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 1px;
 }
 
-.instruction {
-	width: 80px;
-}
-
-.wide {
-	width: 160px;	
-}
-
-.error {
-	color: red;
-}
-
-.hidden {
-	display: none;
+.inputField input {
+  width: 25vmin;
 }
 
 .inputField button {
-	border: 2px solid #000000;
-	background-color: #A1A1A1;
-	border-radius: 3px;
-	padding: 1px;
+  font-size: 3vmin;
+  border: 2px solid #000000;
+  background-color: #A1A1A1;
+  border-radius: 3px;
+  padding: 1px;
 }
 
+/* Character selection screen specific */
+
 .controlContainer {
-	padding: 5px;
+  padding: 5px;
 }
 
 .controlTextContainer {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	cursor: pointer;
-	border: 2px solid #000000;
-	background-color: #A1A1A1;
-	border-radius: 3px;
+  font-size: 3vmin;
+  width: 40vmin;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  cursor: pointer;
+  border: 2px solid #000000;
+  background-color: #A1A1A1;
+  border-radius: 3px;
 }
 
-.emphasized {
-	font-weight: bold;
+/* Instructions and modifiers for instructions */
+.instruction {
+  font-size: 3vmin;
+  width: 15vmin;
+}
+
+.small {
+  font-size: 2vmin;
+}
+
+.wide {
+  width: 40vmin;
+}
+
+.error {
+  color: red;
+}
+
+/* Modifier to hide and remove an element */
+.hidden {
+  display: none;
 }

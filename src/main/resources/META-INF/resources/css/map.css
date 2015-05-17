@@ -1,6 +1,6 @@
-html, body, #map-canvas { 
-	height: 100%; 
-	margin: 0; 
+html, body, #map-canvas {
+	height: 100%;
+	margin: 0;
 	padding: 0;
 }
 
@@ -8,6 +8,7 @@ html, body, #map-canvas {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
+	font-size: 3.5vmin;
 }
 
 .questContainer {
@@ -15,13 +16,14 @@ html, body, #map-canvas {
 	flex-direction: column;
 	justify-content: space-around;
 	border: 2px solid #a1a1a1;
-    background: #dddddd;
-    border-radius: 5px;
+	background: #dddddd;
+	border-radius: 5px;
 }
 
 .questLogSection {
-	width: 200px;
+	width: 40vmin;
+	font-size: 2.5vmin;
 	border: 2px solid #a1a1a1;
-    background: #ffffff;
-    border-radius: 5px;
+	background: #ffffff;
+	border-radius: 5px;
 }
