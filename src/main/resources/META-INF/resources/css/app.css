@@ -3,30 +3,30 @@ html, body {
 }
 
 .contentContainer {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   min-height: 30vmin;
   width: 50vmin;
-	border: 2px solid #a1a1a1;
+  border: 2px solid #a1a1a1;
   background: #dddddd;
   border-radius: 5px;
 }
 
 .mainContent {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px;
 }
 
 /* Input tag styling */
 
 .inputField {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	padding: 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 1px;
 }
 
 .inputField input {
@@ -35,34 +35,34 @@ html, body {
 
 .inputField button {
   font-size: 3vmin;
-	border: 2px solid #000000;
-	background-color: #A1A1A1;
-	border-radius: 3px;
-	padding: 1px;
+  border: 2px solid #000000;
+  background-color: #A1A1A1;
+  border-radius: 3px;
+  padding: 1px;
 }
 
 /* Character selection screen specific */
 
 .controlContainer {
-	padding: 5px;
+  padding: 5px;
 }
 
 .controlTextContainer {
   font-size: 3vmin;
   width: 40vmin;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	cursor: pointer;
-	border: 2px solid #000000;
-	background-color: #A1A1A1;
-	border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  cursor: pointer;
+  border: 2px solid #000000;
+  background-color: #A1A1A1;
+  border-radius: 3px;
 }
 
 /* Instructions and modifiers for instructions */
 .instruction {
   font-size: 3vmin;
-	width: 15vmin;
+  width: 15vmin;
 }
 
 .small {
@@ -74,10 +74,10 @@ html, body {
 }
 
 .error {
-	color: red;
+  color: red;
 }
 
 /* Modifier to hide and remove an element */
 .hidden {
-	display: none;
+  display: none;
 }
