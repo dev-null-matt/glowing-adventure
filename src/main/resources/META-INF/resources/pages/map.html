@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!--
+      The entire page content requires google maps,
+      so loading the js for it in the header should be fine.
+    -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCoGRh6rFqOe8mPb8o5B061UI54-1wi1Rs"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="/js/mapControls.js"></script>
-	<link rel="stylesheet" href="/css/app.css">
-	<link rel="stylesheet" href="/css/map.css">
+	  <link rel="stylesheet" href="/css/app.css">
+	  <link rel="stylesheet" href="/css/map.css">
   </head>
   <body>
-	<div id="map-canvas"></div>
+	   <div id="map-canvas"></div>
   </body>
+  <footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  	<script src="/js/mapControls.js"></script>
+  </footer>
 </html>
