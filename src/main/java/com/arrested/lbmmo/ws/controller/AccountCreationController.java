@@ -13,7 +13,7 @@ import com.arrested.lbmmo.persistence.repository.UserRepository;
 
 @RestController
 @RequestMapping(value="/service/account-creation/")
-public class AccountCreationController extends AbstractServiceController {
+public class AccountCreationController {
 
 	@Autowired
 	private UserRepository userRepo;
@@ -21,13 +21,13 @@ public class AccountCreationController extends AbstractServiceController {
 	@RequestMapping(value="isEmailRegistered/{email}", method=RequestMethod.GET)
 	@Transactional
 	public boolean isEmailRegistered(@PathVariable String email) {
-		return ! userRepo.findByEmail(email).isEmpty();
+		return ! userRepo.findByEmailIgnoreCase(email).isEmpty();
 	}
 	
 	@RequestMapping(value="isLoginRegistered/{login}", method=RequestMethod.GET)
 	@Transactional
 	public boolean isLoginRegistered(@PathVariable String login) {
-		return ! userRepo.findByUsername(login).isEmpty();
+		return ! userRepo.findByUsernameIgnoreCase(login).isEmpty();
 	}
 	
 	@RequestMapping(value="create/{login}/{email}", method=RequestMethod.PUT)
