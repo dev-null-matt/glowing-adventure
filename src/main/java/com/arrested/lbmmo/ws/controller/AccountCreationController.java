@@ -21,7 +21,7 @@ public class AccountCreationController {
 	@RequestMapping(value="isEmailRegistered/{email}", method=RequestMethod.GET)
 	@Transactional
 	public boolean isEmailRegistered(@PathVariable String email) {
-		return ! userRepo.findByEmail(email).isEmpty();
+		return ! userRepo.findByEmailIgnoreCase(email).isEmpty();
 	}
 	
 	@RequestMapping(value="isLoginRegistered/{login}", method=RequestMethod.GET)

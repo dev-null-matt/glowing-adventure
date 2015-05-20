@@ -16,6 +16,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value="select * from USER_ACCOUNT where lower(username) = lower(?1)", nativeQuery = true)
 	public List<User> findByUsernameIgnoreCase(String username);
 	
+	@Query(value="select * from USER_ACCOUNT where lower(email) = lower(?1)", nativeQuery = true)
+	public List<User> findByEmailIgnoreCase(String email);
+	
 	@Modifying
 	@Query(value = "insert into USER_ACCOUNT (username,password,email,enabled) values (?1, crypt(?3, gen_salt('bf')), ?2,true)", nativeQuery = true)
 	public void createAccount(String username, String email, String password);

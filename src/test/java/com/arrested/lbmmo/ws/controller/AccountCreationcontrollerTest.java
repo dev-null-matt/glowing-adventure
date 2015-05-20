@@ -32,7 +32,7 @@ public class AccountCreationcontrollerTest {
 		
 		String testEmail = "foo@bar.com";
 		
-		Mockito.when(userRepo.findByEmail(Mockito.eq(testEmail))).thenReturn(Arrays.asList(new User()));
+		Mockito.when(userRepo.findByEmailIgnoreCase(Mockito.eq(testEmail))).thenReturn(Arrays.asList(new User()));
 		
 		Assert.assertTrue(controller.isEmailRegistered(testEmail));
 	}
@@ -42,7 +42,7 @@ public class AccountCreationcontrollerTest {
 
 		String testEmail = "foo@bar.com";
 		
-		Mockito.when(userRepo.findByEmail(Mockito.eq(testEmail))).thenReturn(new ArrayList<User>());
+		Mockito.when(userRepo.findByEmailIgnoreCase(Mockito.eq(testEmail))).thenReturn(new ArrayList<User>());
 		
 		Assert.assertFalse(controller.isEmailRegistered(testEmail));
 	}
