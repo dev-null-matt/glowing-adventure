@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import com.arrested.lbmmo.persistence.entity.Character;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
 import com.arrested.lbmmo.persistence.entity.User;
-import com.arrested.lbmmo.util.ActiveUserService;
+import com.arrested.lbmmo.service.ActiveUserService;
 
 public abstract class AbstractMockedActiveUserServiceTest {
 
