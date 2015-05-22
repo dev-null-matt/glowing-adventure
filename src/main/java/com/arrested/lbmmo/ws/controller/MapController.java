@@ -10,7 +10,7 @@ import com.arrested.lbmmo.persistence.entity.Character;
 import com.arrested.lbmmo.persistence.entity.Objective;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
 import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
-import com.arrested.lbmmo.util.DistanceUtils;
+import com.arrested.lbmmo.service.DistanceCalculationService;
 import com.arrested.lbmmo.ws.bean.request.PositionBean;
 import com.arrested.lbmmo.ws.bean.response.EncounterBean;
 
@@ -18,6 +18,9 @@ import com.arrested.lbmmo.ws.bean.response.EncounterBean;
 @RequestMapping("/service/map/")
 public class MapController extends AbstractServiceController {
 
+	@Autowired
+	private DistanceCalculationService distanceService;
+	
 	@Autowired
 	private QuestInProgressRepository qipRepo;
 	
@@ -33,11 +36,11 @@ public class MapController extends AbstractServiceController {
 			return encounter;
 		}
 		
-		double distance = distanceToObjective(position, character.getTrackedQuestInProgress().getCurrentObjective());
+		double distance = distanceService.distanceToObjective(position, character.getTrackedQuestInProgress().getCurrentObjective());
 		
 		for (QuestInProgress qip : character.getQuestsInProgress()) {
 			Objective objective = qip.getCurrentObjective();
-			if (objective != null && distanceToObjective(position,objective) < WAYPOINT_RADIUS) {
+			if (objective != null && distanceService.distanceToObjective(position,objective) < WAYPOINT_RADIUS) {
 				encounter.getMessages().add("Updating " + objective.getQuest().getName());
 				qip.setCurrentStep(qip.getCurrentStep()+1);
 				qipRepo.save(qip);
@@ -48,9 +51,5 @@ public class MapController extends AbstractServiceController {
 		encounter.setCombatEncounter(false);
 
 		return encounter;
-	}
-
-	private double distanceToObjective(PositionBean position, Objective objective) {
-		return DistanceUtils.distance(objective.getWaypoint().getLatitude(), objective.getWaypoint().getLongitude(), position.getLatitude(), position.getLongitude());
 	}
 }

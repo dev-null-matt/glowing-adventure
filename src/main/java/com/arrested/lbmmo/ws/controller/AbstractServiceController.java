@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
-import com.arrested.lbmmo.util.ActiveUserService;
+import com.arrested.lbmmo.service.ActiveUserService;
 
 @RequestMapping("/service")
 public abstract class AbstractServiceController {

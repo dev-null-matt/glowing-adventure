@@ -1,4 +1,4 @@
-package com.arrested.lbmmo.util;
+package com.arrested.lbmmo.service;
 
 import java.util.List;
 

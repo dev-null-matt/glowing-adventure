@@ -66,4 +66,58 @@ public class AccountCreationcontrollerTest {
 		
 		Assert.assertFalse(controller.isLoginRegistered(testLogin));
 	}
+	
+	@Test
+	public void createUserTest_happyPath() {
+		
+		long testId = 1337;
+		
+		String testLogin = "foo.bar";
+		String testEmail = "foo@bar.com";
+		String testPassword = "foobaz";
+		
+		User testUser = new User();
+		testUser.setId(testId);
+		
+		Mockito.when(userRepo.findByUsernameIgnoreCase(Mockito.eq(testLogin))).thenReturn(new ArrayList<User>());
+		Mockito.when(userRepo.findByEmailIgnoreCase(Mockito.eq(testEmail))).thenReturn(new ArrayList<User>());
+		Mockito.when(userRepo.findByUsername(testLogin)).thenReturn(Arrays.asList(testUser));
+		
+		Assert.assertTrue(controller.createUser(testLogin, testEmail, testPassword));
+		
+		Mockito.verify(userRepo).findByUsernameIgnoreCase(testLogin);
+		Mockito.verify(userRepo).findByEmailIgnoreCase(testEmail);
+		Mockito.verify(userRepo).createAccount(testLogin, testEmail, testPassword);
+		Mockito.verify(userRepo).giveUserRole(testId, "USER");
+	}
+	
+	@Test
+	public void createUserTest_duplicateLogin() {
+		
+		String testLogin = "foo.bar";
+		String testEmail = "foo@bar.com";
+		String testPassword = "foobaz";
+		
+		Mockito.when(userRepo.findByUsernameIgnoreCase(Mockito.eq(testLogin))).thenReturn(Arrays.asList(new User()));
+
+		Assert.assertFalse(controller.createUser(testLogin, testEmail, testPassword));
+		
+		Mockito.verify(userRepo, Mockito.never()).findByEmailIgnoreCase(Mockito.anyString());
+		Mockito.verify(userRepo, Mockito.never()).createAccount(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+	}
+	
+	@Test
+	public void createUserTest_duplicateEmail() {
+		
+		String testLogin = "foo.bar";
+		String testEmail = "foo@bar.com";
+		String testPassword = "foobaz";
+		
+		Mockito.when(userRepo.findByUsernameIgnoreCase(Mockito.eq(testLogin))).thenReturn(new ArrayList<User>());
+		Mockito.when(userRepo.findByEmailIgnoreCase(Mockito.eq(testEmail))).thenReturn(Arrays.asList(new User()));
+
+		Assert.assertFalse(controller.createUser(testLogin, testEmail, testPassword));
+		
+		Mockito.verify(userRepo, Mockito.never()).createAccount(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+	}
 }
