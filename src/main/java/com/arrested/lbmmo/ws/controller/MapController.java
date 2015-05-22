@@ -11,7 +11,6 @@ import com.arrested.lbmmo.persistence.entity.Objective;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
 import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.service.DistanceCalculationService;
-import com.arrested.lbmmo.util.DistanceUtils;
 import com.arrested.lbmmo.ws.bean.request.PositionBean;
 import com.arrested.lbmmo.ws.bean.response.EncounterBean;
 

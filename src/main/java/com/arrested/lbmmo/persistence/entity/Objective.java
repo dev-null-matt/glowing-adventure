@@ -44,6 +44,10 @@ public class Objective {
 		return quest;
 	}
 	
+	public void setQuest(Quest quest) {
+		this.quest = quest;
+	}
+	
 	public Waypoint getWaypoint() {
 		return waypoint;
 	}
