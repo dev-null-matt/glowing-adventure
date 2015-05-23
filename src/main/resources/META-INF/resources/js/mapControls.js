@@ -40,7 +40,7 @@ $(document).ready(function() {
 
 	$.get('/ui-elements/questLog.html').then(function(responseData) {
 		questLog = new google.maps.InfoWindow({
-		    content: responseData
+			content: responseData
 		});
 	});
 
@@ -200,13 +200,13 @@ function showPosition(position) {
 
 		google.maps.event.addListener(youAreHereMarker, 'click', function() {
 
-				closeOpenWindow();
+			closeOpenWindow();
 
-				currentInfoWindow = questLog;
-		    questLog.open(map, youAreHereMarker);
-		    updatePinnedMission();
-		    updateInactiveMissions();
-		    $("#showAvailable").change(showAvailableUpdated);
+			currentInfoWindow = questLog;
+			questLog.open(map, youAreHereMarker);
+			updatePinnedMission();
+			updateInactiveMissions();
+			$("#showAvailable").change(showAvailableUpdated);
 		});
 
 	} else {
@@ -264,7 +264,7 @@ function updatePinnedMission() {
 
 function updateInactiveMissions() {
 	$("#inactiveQuests").html(inactiveQuests);
-    $("#inactiveQuests .inactiveQuest").click(trackMission);
+	$("#inactiveQuests .inactiveQuest").click(trackMission);
 }
 
 function clearMarkers(markers) {
