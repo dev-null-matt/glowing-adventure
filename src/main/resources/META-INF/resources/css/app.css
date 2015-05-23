@@ -77,7 +77,12 @@ html, body {
   color: red;
 }
 
-/* Modifier to hide and remove an element */
+/* Modifiers for individual ui elements */
+button.inactive {
+  background-color: #dddddd;
+  color: #777777;
+}
+
 .hidden {
   display: none;
 }
