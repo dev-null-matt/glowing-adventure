@@ -17,7 +17,7 @@ function validateName() {
 
 	var name = $name.val();
 
-	if (lastCheckedName !== name) {
+	if (name && lastCheckedName !== name) {
 		$.ajax({
 			type : "GET",
 			url : characterCreationUrl + "isNameAvailable/" + name + "/",
@@ -35,7 +35,7 @@ function validateName() {
 				lastCheckedName = name;
 			}
 		});
-	} else {
+	} else if (name === "") {
 		$create.addClass("inactive");
 		$create.attr("disabled", "disabled");
 	}
