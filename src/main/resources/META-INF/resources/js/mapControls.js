@@ -17,6 +17,9 @@ var questLog;
 // Info window template
 var questInfoTemplate;
 
+// Currently open map info window
+var currentInfoWindow;
+
 // Model //////////////////////////////////////////////////////////////////////
 // Quest lists
 var pinnedQuest;
@@ -37,7 +40,7 @@ $(document).ready(function() {
 
 	$.get('/ui-elements/questLog.html').then(function(responseData) {
 		questLog = new google.maps.InfoWindow({
-		    content: responseData
+			content: responseData
 		});
 	});
 
@@ -196,10 +199,14 @@ function showPosition(position) {
 		youAreHereMarker = createMarker(latLong, 'You are here', '/images/icons/user.png');
 
 		google.maps.event.addListener(youAreHereMarker, 'click', function() {
-		    questLog.open(map, youAreHereMarker);
-		    updatePinnedMission();
-		    updateInactiveMissions();
-		    $("#showAvailable").change(showAvailableUpdated);
+
+			closeOpenWindow();
+
+			currentInfoWindow = questLog;
+			questLog.open(map, youAreHereMarker);
+			updatePinnedMission();
+			updateInactiveMissions();
+			$("#showAvailable").change(showAvailableUpdated);
 		});
 
 	} else {
@@ -219,6 +226,10 @@ function addAvailableQuestClickListener(marker, quest) {
 	});
 
 	google.maps.event.addListener(marker, 'click', function() {
+
+		closeOpenWindow();
+
+		currentInfoWindow = infowindow;
 		infowindow.open(map, marker);
 		$("#questName").html(quest.questName);
 		$("#addToLog").click(function() {
@@ -230,11 +241,21 @@ function addAvailableQuestClickListener(marker, quest) {
 					showAvailableUpdated();
 					readInactiveQuests();
 
-					new google.maps.InfoWindow({content : message}).open(map, youAreHereMarker);
+					closeOpenWindow();
+
+					currentInfoWindow = new google.maps.InfoWindow({content : message});
+
+					currentInfoWindow.open(map, youAreHereMarker);
 				}
 			});
 		});
 	});
+}
+
+function closeOpenWindow() {
+	if (currentInfoWindow) {
+		currentInfoWindow.close();
+	}
 }
 
 function updatePinnedMission() {
@@ -243,7 +264,7 @@ function updatePinnedMission() {
 
 function updateInactiveMissions() {
 	$("#inactiveQuests").html(inactiveQuests);
-    $("#inactiveQuests .inactiveQuest").click(trackMission);
+	$("#inactiveQuests .inactiveQuest").click(trackMission);
 }
 
 function clearMarkers(markers) {
