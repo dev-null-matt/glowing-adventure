@@ -34,7 +34,7 @@ public class CharacterCreationController extends AbstractServiceController {
 	
 	@RequestMapping(value="isNameAvailable/{name}", method=RequestMethod.GET)
 	public boolean isNameAvailable(@PathVariable String name) {
-		return characterRepo.findByNameAndUserId(name, getServiceUser().getId()).isEmpty();
+		return characterRepo.findByNameIgnoreCaseAndUserId(name, getServiceUser().getId()).isEmpty();
 	}
 	
 	@RequestMapping(value="create-character/{characterName}", method=RequestMethod.PUT)
@@ -43,7 +43,7 @@ public class CharacterCreationController extends AbstractServiceController {
 		
 		User user = getServiceUser();
 		
-		if (!characterRepo.findByNameAndUserId(characterName, user.getId()).isEmpty()) {
+		if (!isNameAvailable(characterName)) {
 			return false;
 		}
 		
