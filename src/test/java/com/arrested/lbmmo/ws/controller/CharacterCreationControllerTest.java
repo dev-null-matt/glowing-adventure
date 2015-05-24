@@ -53,7 +53,7 @@ public class CharacterCreationControllerTest extends AbstractMockedActiveUserSer
 	@Test
 	public void createCharacterNameExistsTest() {
 		
-		Mockito.when(characterRepo.findByNameAndUserId("testCharacter", 1)).thenReturn(characters);
+		Mockito.when(characterRepo.findByNameIgnoreCaseAndUserId("testCharacter", 1)).thenReturn(characters);
 		
 		Assert.assertFalse(controller.createCharacter("testCharacter"));
 	}
