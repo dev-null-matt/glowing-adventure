@@ -27,3 +27,13 @@ html, body, #map-canvas {
 	background: #ffffff;
 	border-radius: 5px;
 }
+
+.toastWindow-displayDiv {
+	border: 2px solid #a1a1a1;
+	background: #dddddd;
+}
+
+.toastWindow-messageDiv {
+	font-size: 3.5vmin;
+	padding: 1vmin;
+}

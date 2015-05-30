@@ -20,6 +20,9 @@ var questInfoTemplate;
 // Currently open map info window
 var currentInfoWindow;
 
+// Toast window
+var toastWindow;
+
 // Model //////////////////////////////////////////////////////////////////////
 // Quest lists
 var pinnedQuest;
@@ -36,6 +39,7 @@ $(document).ready(function() {
 	google.maps.event.addDomListener(window, 'load', initialize);
 	readQuestObjectives();
 	readInactiveQuests();
+
 	window.setInterval(sendLocationToServer, 4500);
 
 	$.get('/ui-elements/questLog.html').then(function(responseData) {
@@ -51,8 +55,12 @@ $(document).ready(function() {
 
 function initialize() {
 	if (navigator.geolocation) {
+
 		map = new google.maps.Map(document.getElementById('map-canvas'), {zoom : 14});
 		navigator.geolocation.watchPosition(showPosition, undefined, {enableHighAccuracy : true});
+
+		toastWindow = new arrested.maps.ToastWindow(map);
+
 	} else {
 		alert("Geolocation is not supported by this browser.");
 	}
@@ -121,6 +129,16 @@ function parseInactiveQuests(data) {
 	}
 }
 
+function processEvent(data) {
+	if (data.messages) {
+		data.messages.forEach(
+				function(currentValue) {
+					toastWindow.queueMessage(currentValue);
+				}
+		);
+	}
+}
+
 // Controls ///////////////////////////////////////////////////////////////////
 function showAvailableUpdated() {
 
@@ -184,8 +202,8 @@ function sendLocationToServer() {
 			type : "PUT",
 			url : mapUrl + "set-new-position",
 			data : JSON.stringify(data),
-			dataType : "application/json",
-			contentType : "application/json"
+			contentType : "application/json",
+			success : processEvent
 		});
 	}
 }
