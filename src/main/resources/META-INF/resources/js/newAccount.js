@@ -24,6 +24,10 @@ $(document).ready(function() {
 var lastSubmittedLogin = "";
 var lastSubmittedEmail = "";
 
+var loginValid = false;
+var emailValid = false;
+var passwordValid = false;
+
 function validateLogin() {
 
 	var login = $login.val();
@@ -39,17 +43,23 @@ function validateLogin() {
 			type : "GET",
 			url : baseUrl + "isLoginRegistered/" + login + "/",
 			success : function (data) {
-				if (data) {
-					$loginTaken.removeClass("hidden");
-				} else {
-					$loginTaken.addClass("hidden");
-				}
-
+				loginPassedValidation(!data);
 				lastSubmittedLogin = login;
 			}
 		});
 	} else {
 		$loginTaken.addClass("hidden");
+		loginValid = false;
+	}
+}
+
+function loginPassedValidation(toggle) {
+	loginValid = toggle;
+
+	if (toggle) {
+		$loginTaken.addClass("hidden");
+	} else {
+		$loginTaken.removeClass("hidden");
 	}
 }
 
@@ -72,35 +82,55 @@ function validateEmails() {
 				type : "GET",
 				url : baseUrl +  "isEmailRegistered/" + email + "/",
 				success : function (data) {
-					if (data) {
-						$emailTaken.removeClass("hidden");
-					} else {
-						$emailTaken.addClass("hidden");
-					}
-
+					emailTaken(data);
 					lastSubmittedEmail = email;
 				}
 			});
 		} else {
-			$emailNoMatch.removeClass("hidden");
-			$emailTaken.addClass("hidden");
+			emailNoMatch(true);
 		}
-	} else if (email === "" && emailConfirm === "") {
+	} else if (email === "" || emailConfirm === "") {
+		emailValid = false;
 		$emailNoMatch.addClass("hidden");
 		$emailTaken.addClass("hidden");
+	}
+}
+
+function emailTaken(toggle) {
+	emailValid = toggle;
+
+	if (toggle) {
+		$emailTaken.removeClass("hidden");
+	} else {
+		$emailTaken.addClass("hidden");
+	}
+}
+
+function emailNoMatch(toggle) {
+	emailValid = toggle;
+
+	if (toggle) {
+		$emailNoMatch.removeClass("hidden");
+		$emailTaken.addClass("hidden");
+	} else {
+		$emailNoMatch.addClass("hidden");
 	}
 }
 
 function validatePasswords() {
 	var password = $password.val();
 	var passwordConfirm = $passwordConfirm.val();
+	passwordValid = false;
 
 	if (password && passwordConfirm ) {
 		if (password === passwordConfirm) {
 			$passwordNoMatch.addClass("hidden");
+			passwordValid = true;
 		} else {
 			$passwordNoMatch.removeClass("hidden");
 		}
+	} else {
+		$passwordNoMatch.addClass("hidden");
 	}
 }
 
