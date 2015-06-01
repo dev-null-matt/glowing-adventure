@@ -14,11 +14,14 @@ $(document).ready(function() {
 	$passwordConfirm = $("#passwordConfirm");
 	$passwordNoMatch = $("#passwordNoMatch");
 
+	$create = $("#newUser");
+
 	window.setInterval(validateLogin, 500);
 	window.setInterval(validateEmails, 500);
 	window.setInterval(validatePasswords, 250);
+	window.setInterval(conditionallyEnableSubmit, 100);
 
-	$("#newUser").click(submit);
+	$create.click(submit);
 });
 
 var lastSubmittedLogin = "";
@@ -71,12 +74,12 @@ function validateEmails() {
 	if (email && emailConfirm) {
 		if (email === emailConfirm) {
 
+			$emailNoMatch.addClass("hidden");
+
 			if (email === lastSubmittedEmail) {
 				// Nothing changed, don't validate
 				return;
 			}
-
-			$emailNoMatch.addClass("hidden");
 
 			$.ajax({
 				type : "GET",
@@ -87,6 +90,7 @@ function validateEmails() {
 				}
 			});
 		} else {
+			lastSubmittedEmail = "";
 			emailNoMatch(true);
 		}
 	} else if (email === "" || emailConfirm === "") {
@@ -97,7 +101,7 @@ function validateEmails() {
 }
 
 function emailTaken(toggle) {
-	emailValid = toggle;
+	emailValid = !toggle;
 
 	if (toggle) {
 		$emailTaken.removeClass("hidden");
@@ -107,7 +111,7 @@ function emailTaken(toggle) {
 }
 
 function emailNoMatch(toggle) {
-	emailValid = toggle;
+	emailValid = !toggle;
 
 	if (toggle) {
 		$emailNoMatch.removeClass("hidden");
@@ -131,6 +135,16 @@ function validatePasswords() {
 		}
 	} else {
 		$passwordNoMatch.addClass("hidden");
+	}
+}
+
+function conditionallyEnableSubmit() {
+	if (loginValid && emailValid && passwordValid) {
+		$create.removeClass("inactive");
+		$create.removeAttr("disabled");
+	} else {
+		$create.addClass("inactive");
+		$create.attr("disabled", "disabled");
 	}
 }
 
