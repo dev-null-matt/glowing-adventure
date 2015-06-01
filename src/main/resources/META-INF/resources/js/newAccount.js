@@ -14,11 +14,8 @@ $(document).ready(function() {
 	$passwordConfirm = $("#passwordConfirm");
 	$passwordNoMatch = $("#passwordNoMatch");
 
-	$login.change(validateLogin);
-
-	$email.change(validateEmails);
-	$emailConfirm.change(validateEmails);
-
+	window.setInterval(validateLogin, 500);
+	window.setInterval(validateEmails, 500);
 	window.setInterval(validatePasswords, 250);
 
 	$("#newUser").click(submit);
@@ -51,6 +48,8 @@ function validateLogin() {
 				lastSubmittedLogin = login;
 			}
 		});
+	} else {
+		$loginTaken.addClass("hidden");
 	}
 }
 
@@ -59,7 +58,7 @@ function validateEmails() {
 	var email = $email.val();
 	var emailConfirm = $emailConfirm.val();
 
-	if (email && emailConfirm ) {
+	if (email && emailConfirm) {
 		if (email === emailConfirm) {
 
 			if (email === lastSubmittedEmail) {
@@ -86,6 +85,9 @@ function validateEmails() {
 			$emailNoMatch.removeClass("hidden");
 			$emailTaken.addClass("hidden");
 		}
+	} else if (email === "" && emailConfirm === "") {
+		$emailNoMatch.addClass("hidden");
+		$emailTaken.addClass("hidden");
 	}
 }
 
