@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	baseUrl = "/service/account-creation/";
-	
+
 	$login = $("#username");
 	$loginTaken = $("#loginTaken");
 
@@ -9,27 +9,35 @@ $(document).ready(function() {
 	$emailConfirm = $("#emailConfirm");
 	$emailNoMatch = $("#emailNoMatch");
 	$emailTaken = $("#emailTaken");
-	
+
 	$password = $("#password");
 	$passwordConfirm = $("#passwordConfirm");
 	$passwordNoMatch = $("#passwordNoMatch");
-	
+
 	$login.change(validateLogin);
-	
+
 	$email.change(validateEmails);
 	$emailConfirm.change(validateEmails);
-	
-	$password.change(validatePasswords);
-	$passwordConfirm.change(validatePasswords);
-	
+
+	window.setInterval(validatePasswords, 250);
+
 	$("#newUser").click(submit);
 });
 
+var lastSubmittedLogin = "";
+var lastSubmittedEmail = "";
+
 function validateLogin() {
-	
+
 	var login = $login.val();
-	
+
 	if (login) {
+
+		if (login === lastSubmittedLogin) {
+			// Nothing changed, don't validate
+			return;
+		}
+
 		$.ajax({
 			type : "GET",
 			url : baseUrl + "isLoginRegistered/" + login + "/",
@@ -39,20 +47,28 @@ function validateLogin() {
 				} else {
 					$loginTaken.addClass("hidden");
 				}
+
+				lastSubmittedLogin = login;
 			}
 		});
 	}
 }
 
 function validateEmails() {
-		
+
 	var email = $email.val();
 	var emailConfirm = $emailConfirm.val();
 
 	if (email && emailConfirm ) {
 		if (email === emailConfirm) {
+
+			if (email === lastSubmittedEmail) {
+				// Nothing changed, don't validate
+				return;
+			}
+
 			$emailNoMatch.addClass("hidden");
-			
+
 			$.ajax({
 				type : "GET",
 				url : baseUrl +  "isEmailRegistered/" + email + "/",
@@ -62,6 +78,8 @@ function validateEmails() {
 					} else {
 						$emailTaken.addClass("hidden");
 					}
+
+					lastSubmittedEmail = email;
 				}
 			});
 		} else {
@@ -77,7 +95,7 @@ function validatePasswords() {
 
 	if (password && passwordConfirm ) {
 		if (password === passwordConfirm) {
-			$passwordNoMatch.addClass("hidden");	
+			$passwordNoMatch.addClass("hidden");
 		} else {
 			$passwordNoMatch.removeClass("hidden");
 		}
