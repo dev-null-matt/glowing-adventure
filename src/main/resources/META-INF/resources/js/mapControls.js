@@ -131,6 +131,11 @@ function parseInactiveQuests(data) {
 }
 
 function processEvent(data) {
+
+	if (data.trackedObjectiveUpdated) {
+		readQuestObjectives();
+	}
+
 	if (data.messages) {
 		data.messages.forEach(
 				function(currentValue) {
