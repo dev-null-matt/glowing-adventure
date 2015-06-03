@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import com.arrested.lbmmo.persistence.entity.Character;
 import com.arrested.lbmmo.persistence.entity.Objective;
 import com.arrested.lbmmo.persistence.entity.Quest;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
@@ -30,12 +29,9 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 	@InjectMocks
 	private MapController controller;
 	
-	private Character character;
-	
 	@Before
 	public void init() {
 		activeUserService.getActiveUser().getCharacters().iterator().next().isLoggedIn(true);
-		character = activeUserService.getActiveUser().getLoggedInCharacter();
 	}
 	
 	@Test
@@ -52,7 +48,7 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 	@Test
 	public void setNewPositionTest_trackedQip_noObjectiveComplete() {
 		
-		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(generateQuestInProgress());
+		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(generateQuestInProgress(false));
 		
 		PositionBean position = new PositionBean(3.14, 3.14);
 		
@@ -62,12 +58,13 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		
 		Assert.assertTrue(encounter.getMessages().isEmpty());
 		Assert.assertFalse(encounter.isCombatEncounter());
+		Assert.assertFalse(encounter.isTrackedObjectiveUpdated());
 	}
 	
 	@Test
-	public void setNewPositionTest_trackedQip_objectiveComplete() {
+	public void setNewPositionTest_untrackedQip_objectiveComplete() {
 		
-		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(generateQuestInProgress());
+		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(generateQuestInProgress(false));
 		
 		PositionBean position = new PositionBean(3.14, 3.14);
 		
@@ -76,12 +73,29 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		EncounterBean encounter = controller.setNewPosition(position);
 		
 		Assert.assertEquals(1, encounter.getMessages().size());
-		
 		Assert.assertTrue(encounter.getMessages().contains("Updating TEST_QUEST"));
 		Assert.assertFalse(encounter.isCombatEncounter());
+		Assert.assertFalse(encounter.isTrackedObjectiveUpdated());
 	}
 	
-	public QuestInProgress generateQuestInProgress() {
+	@Test
+	public void setNewPositionTest_trackedQip_objectiveComplete() {
+		
+		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(generateQuestInProgress(true));
+		
+		PositionBean position = new PositionBean(3.14, 3.14);
+		
+		Mockito.when(distanceService.distanceToObjective(Mockito.any(PositionBean.class), Mockito.any(Objective.class))).thenReturn(5.0);
+		
+		EncounterBean encounter = controller.setNewPosition(position);
+		
+		Assert.assertEquals(1, encounter.getMessages().size());
+		Assert.assertTrue(encounter.getMessages().contains("Updating TEST_QUEST"));
+		Assert.assertFalse(encounter.isCombatEncounter());
+		Assert.assertTrue(encounter.isTrackedObjectiveUpdated());
+	}
+	
+	public QuestInProgress generateQuestInProgress(boolean tracked) {
 
 		Quest quest = new Quest();
 		quest.setName("TEST_QUEST");
@@ -95,7 +109,7 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		QuestInProgress qip = new QuestInProgress();
 		qip.setQuest(quest);
 		qip.getQuest().setObjectives(objectives);
-		qip.isTracked(true);
+		qip.isTracked(tracked);
 		
 		return qip;
 	}

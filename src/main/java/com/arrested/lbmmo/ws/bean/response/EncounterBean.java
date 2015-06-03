@@ -11,9 +11,12 @@ public class EncounterBean {
 	
 	private boolean combatEncounter;
 
+	private boolean trackedObjectiveUpdated;
+	
 	public EncounterBean() {
 		messages = new ArrayList<String>();
 		combatEncounter = false;
+		trackedObjectiveUpdated = false;
 	}
 	
 	public List<String> getMessages() {
@@ -30,6 +33,14 @@ public class EncounterBean {
 
 	public void setCombatEncounter(boolean combatEncounter) {
 		this.combatEncounter = combatEncounter;
+	}
+	
+	public boolean isTrackedObjectiveUpdated() {
+		return trackedObjectiveUpdated;
+	}
+	
+	public void setTrackedObjectiveUpdated(boolean objectiveUpdated) {
+		this.trackedObjectiveUpdated = objectiveUpdated;
 	}
 	
 	public double getMetersToNextObjective() {

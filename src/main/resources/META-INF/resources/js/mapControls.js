@@ -41,6 +41,7 @@ $(document).ready(function() {
 	readInactiveQuests();
 
 	window.setInterval(sendLocationToServer, 4500);
+	window.setInterval(readQuestObjectives, 60 * 1000);
 
 	$.get('/ui-elements/questLog.html').then(function(responseData) {
 		questLog = new google.maps.InfoWindow({
@@ -130,6 +131,11 @@ function parseInactiveQuests(data) {
 }
 
 function processEvent(data) {
+
+	if (data.trackedObjectiveUpdated) {
+		readQuestObjectives();
+	}
+
 	if (data.messages) {
 		data.messages.forEach(
 				function(currentValue) {

@@ -32,11 +32,9 @@ public class MapController extends AbstractServiceController {
 		EncounterBean encounter = new EncounterBean();
 		Character character = getServiceUser().getLoggedInCharacter();
 		
-		if (character == null || character.getTrackedQuestInProgress() == null) {
+		if (character == null) {
 			return encounter;
 		}
-		
-		double distance = distanceService.distanceToObjective(position, character.getTrackedQuestInProgress().getCurrentObjective());
 		
 		for (QuestInProgress qip : character.getQuestsInProgress()) {
 			Objective objective = qip.getCurrentObjective();
@@ -44,10 +42,17 @@ public class MapController extends AbstractServiceController {
 				encounter.getMessages().add("Updating " + objective.getQuest().getName());
 				qip.setCurrentStep(qip.getCurrentStep()+1);
 				qipRepo.save(qip);
+				
+				if (qip.isTracked()) {
+					encounter.setTrackedObjectiveUpdated(true);
+				}
 			}
 		}
 		
-		encounter.setMetersToNextObjective(distance);
+		if (character.getTrackedQuestInProgress() != null) {
+			encounter.setMetersToNextObjective(distanceService.distanceToObjective(position, character.getTrackedQuestInProgress().getCurrentObjective()));
+		}
+		
 		encounter.setCombatEncounter(false);
 
 		return encounter;
