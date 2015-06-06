@@ -41,11 +41,7 @@ public class QuestLogController extends AbstractServiceController {
 		QuestBean questBean = null;
 
 		if (character != null) {
-			QuestInProgress qip = character.getTrackedQuestInProgress();
-
-			if (qip != null) {
-				questBean = populateQuestBean(qip);
-			}
+			questBean = populateQuestBean(character.getTrackedQuestInProgress());
 		}
 
 		return questBean;
@@ -130,7 +126,7 @@ public class QuestLogController extends AbstractServiceController {
 		try {
 			id = Long.parseLong(questId);
 		} catch (NumberFormatException e) {
-			
+			return;
 		}
 		
 		for (QuestInProgress qip : character.getQuestsInProgress()) {
@@ -176,9 +172,14 @@ public class QuestLogController extends AbstractServiceController {
 	
 	private QuestBean populateQuestBean(QuestInProgress qip) {
 
-		Objective objective = qip.getCurrentObjective();
-
 		QuestBean questBean = new QuestBean();
+		
+		if (qip == null) {
+			return questBean;
+		}
+		
+		Objective objective = qip.getCurrentObjective();
+		
 		LocationBean locationBean = new LocationBean();
 
 		questBean.setQuestId(qip.getQuest().getId());

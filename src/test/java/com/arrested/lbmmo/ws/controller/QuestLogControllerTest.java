@@ -21,6 +21,7 @@ import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.persistence.repository.QuestRepository;
 import com.arrested.lbmmo.util.SystemSettingDao;
 import com.arrested.lbmmo.util.SystemSettings;
+import com.arrested.lbmmo.ws.bean.response.QuestBean;
 
 public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest {
 	
@@ -70,6 +71,16 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		
 		activeUserService.getActiveUser().getCharacters().iterator().next().isLoggedIn(true);
 		character = activeUserService.getActiveUser().getLoggedInCharacter();
+	}
+	
+	@Test
+	public void getQuestStatusTest_noTrackedQuest() {
+		
+		QuestBean qb = controller.getQuestStatus();
+		
+		Assert.assertNull(qb.getQuestName());
+		Assert.assertNull(qb.getQuestId());
+		Assert.assertNull(qb.getNextObjective());
 	}
 	
 	@Test
