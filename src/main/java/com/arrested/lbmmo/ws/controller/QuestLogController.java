@@ -95,6 +95,14 @@ public class QuestLogController extends AbstractServiceController {
 			return "No quests exists with the id " + questId;
 		}
 
+		for (QuestInProgress qip : character.getQuestsInProgress()) {
+			isDuplicate |= qip.getQuest().equals(questToAdd);
+		}
+
+		if (isDuplicate) {
+			return questToAdd.getName() + " is already in your mission log";
+		}
+		
 		if (! findAvailableQuests(character).contains(questToAdd)) {
 			return "This mission is not currently available to you";
 		}
@@ -105,17 +113,9 @@ public class QuestLogController extends AbstractServiceController {
 			return "Your mission log is full";
 		}
 
-		for (QuestInProgress qip : character.getQuestsInProgress()) {
-			isDuplicate |= qip.getQuest().equals(questToAdd);
-		}
-
-		if (isDuplicate) {
-			return questToAdd.getName() + " is already in your mission log";
-		} else {
-			QuestInProgress qip = populateQuestInProgress(questToAdd, character);
-			character.getQuestsInProgress().add(qip);
-			questInProgressRepo.save(qip);
-		}
+		QuestInProgress qip = populateQuestInProgress(questToAdd, character);
+		character.getQuestsInProgress().add(qip);
+		questInProgressRepo.save(qip);
 
 		return questToAdd.getName() + " added to mission log";
 	}

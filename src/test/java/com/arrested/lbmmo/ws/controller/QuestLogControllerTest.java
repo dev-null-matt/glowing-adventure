@@ -119,7 +119,7 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		
 		character.getQuestsInProgress().iterator().next().setCurrentStep(1);
 		
-		controller.acceptQuest("0");
+		Assert.assertEquals("Quest 0 is already in your mission log", controller.acceptQuest("0"));
 		
 		Assert.assertEquals("Only has one quest", 1, character.getQuestsInProgress().size());
 		Assert.assertEquals("Quest is first one added", 1, character.getQuestsInProgress().iterator().next().getCurrentStep());
