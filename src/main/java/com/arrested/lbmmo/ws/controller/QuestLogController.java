@@ -41,11 +41,7 @@ public class QuestLogController extends AbstractServiceController {
 		QuestBean questBean = null;
 
 		if (character != null) {
-			QuestInProgress qip = character.getTrackedQuestInProgress();
-
-			if (qip != null) {
-				questBean = populateQuestBean(qip);
-			}
+			questBean = populateQuestBean(character.getTrackedQuestInProgress());
 		}
 
 		return questBean;
@@ -95,6 +91,14 @@ public class QuestLogController extends AbstractServiceController {
 			return "No quests exists with the id " + questId;
 		}
 
+		for (QuestInProgress qip : character.getQuestsInProgress()) {
+			isDuplicate |= qip.getQuest().equals(questToAdd);
+		}
+
+		if (isDuplicate) {
+			return questToAdd.getName() + " is already in your mission log";
+		}
+		
 		if (! findAvailableQuests(character).contains(questToAdd)) {
 			return "This mission is not currently available to you";
 		}
@@ -105,17 +109,9 @@ public class QuestLogController extends AbstractServiceController {
 			return "Your mission log is full";
 		}
 
-		for (QuestInProgress qip : character.getQuestsInProgress()) {
-			isDuplicate |= qip.getQuest().equals(questToAdd);
-		}
-
-		if (isDuplicate) {
-			return questToAdd.getName() + " is already in your mission log";
-		} else {
-			QuestInProgress qip = populateQuestInProgress(questToAdd, character);
-			character.getQuestsInProgress().add(qip);
-			questInProgressRepo.save(qip);
-		}
+		QuestInProgress qip = populateQuestInProgress(questToAdd, character);
+		character.getQuestsInProgress().add(qip);
+		questInProgressRepo.save(qip);
 
 		return questToAdd.getName() + " added to mission log";
 	}
@@ -130,7 +126,7 @@ public class QuestLogController extends AbstractServiceController {
 		try {
 			id = Long.parseLong(questId);
 		} catch (NumberFormatException e) {
-			
+			return;
 		}
 		
 		for (QuestInProgress qip : character.getQuestsInProgress()) {
@@ -176,9 +172,14 @@ public class QuestLogController extends AbstractServiceController {
 	
 	private QuestBean populateQuestBean(QuestInProgress qip) {
 
-		Objective objective = qip.getCurrentObjective();
-
 		QuestBean questBean = new QuestBean();
+		
+		if (qip == null) {
+			return questBean;
+		}
+		
+		Objective objective = qip.getCurrentObjective();
+		
 		LocationBean locationBean = new LocationBean();
 
 		questBean.setQuestId(qip.getQuest().getId());

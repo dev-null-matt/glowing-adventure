@@ -21,6 +21,7 @@ import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.persistence.repository.QuestRepository;
 import com.arrested.lbmmo.util.SystemSettingDao;
 import com.arrested.lbmmo.util.SystemSettings;
+import com.arrested.lbmmo.ws.bean.response.QuestBean;
 
 public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest {
 	
@@ -73,6 +74,16 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 	}
 	
 	@Test
+	public void getQuestStatusTest_noTrackedQuest() {
+		
+		QuestBean qb = controller.getQuestStatus();
+		
+		Assert.assertNull(qb.getQuestName());
+		Assert.assertNull(qb.getQuestId());
+		Assert.assertNull(qb.getNextObjective());
+	}
+	
+	@Test
 	public void getInactiveQuestsTest() {
 		
 		addQuestToQuestsInProgress(character, 0l);
@@ -119,7 +130,7 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		
 		character.getQuestsInProgress().iterator().next().setCurrentStep(1);
 		
-		controller.acceptQuest("0");
+		Assert.assertEquals("Quest 0 is already in your mission log", controller.acceptQuest("0"));
 		
 		Assert.assertEquals("Only has one quest", 1, character.getQuestsInProgress().size());
 		Assert.assertEquals("Quest is first one added", 1, character.getQuestsInProgress().iterator().next().getCurrentStep());

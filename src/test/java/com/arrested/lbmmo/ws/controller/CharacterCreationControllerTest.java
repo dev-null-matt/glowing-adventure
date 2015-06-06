@@ -40,6 +40,17 @@ public class CharacterCreationControllerTest extends AbstractMockedActiveUserSer
 	}
 	
 	@Test
+	public void canCreateCharacterTest_smokeTest() {
+		
+		SystemSetting setting = new SystemSetting();
+		setting.setIntValue(2);
+
+		Mockito.when(systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS)).thenReturn(setting);
+
+		Assert.assertEquals(true, controller.canCreateCharacter());
+	}
+	
+	@Test
 	public void canCreateCharacterNegativeTest() {
 	
 		SystemSetting setting = new SystemSetting();
@@ -55,17 +66,30 @@ public class CharacterCreationControllerTest extends AbstractMockedActiveUserSer
 		
 		Mockito.when(characterRepo.findByNameIgnoreCaseAndUserId("testCharacter", 1)).thenReturn(characters);
 		
-		Assert.assertFalse(controller.createCharacter("testCharacter"));
+		Assert.assertEquals(false, controller.createCharacter("testCharacter"));
 	}
 	
 	@Test
-	public void createCharacterUserAtMaxTest() {
+	public void createCharacterTest_smokeTest() {
+		
+		SystemSetting setting = new SystemSetting();
+		setting.setIntValue(2);
+
+		Mockito.when(systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS)).thenReturn(setting);
+
+		Assert.assertEquals(true, controller.createCharacter("testCharacter"));
+		
+		Mockito.verify(characterRepo, Mockito.times(1)).save(Mockito.any(Character.class));
+	}
+	
+	@Test
+	public void createCharacterTest_userAtMax() {
 
 		SystemSetting setting = new SystemSetting();
 		setting.setIntValue(1);
 
 		Mockito.when(systemSettingsDao.getSystemSetting(SystemSettings.ACCOUNT_MAX_CHARACTERS)).thenReturn(setting);
 
-		Assert.assertFalse(controller.createCharacter("testCharacter"));
+		Assert.assertEquals(false, controller.createCharacter("testCharacter"));
 	}
 }

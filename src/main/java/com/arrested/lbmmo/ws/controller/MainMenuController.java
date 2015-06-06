@@ -55,7 +55,7 @@ public class MainMenuController extends AbstractServiceController {
 			return;
 		}
 		
-		User user = userRepo.findByUsername(getServiceUser().getUsername()).get(0);
+		User user = getServiceUser();
 		Character oldCharacter = user.getLoggedInCharacter();
 		Character newCharacter = null;
 		
@@ -79,9 +79,9 @@ public class MainMenuController extends AbstractServiceController {
 	@Transactional
 	public void logout() {
 		
-		Character character = userRepo.findByUsername(getServiceUser().getUsername()).get(0).getLoggedInCharacter();
+		Character character = getServiceUser().getLoggedInCharacter();
 		
-		if (character != null && character.isLoggedIn()) {
+		if (character != null) {
 			character.isLoggedIn(false);
 			characterRepo.save(character);
 		}
