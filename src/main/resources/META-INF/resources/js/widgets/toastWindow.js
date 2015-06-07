@@ -1,4 +1,5 @@
-arrested = {maps : {}};
+var arrested = arrested || {};
+arrested.maps = arrested.maps || {};
 
 // A simple toast window for use with google maps.
 arrested.maps.ToastWindow = function constructor(map) {
