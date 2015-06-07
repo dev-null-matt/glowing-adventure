@@ -12,7 +12,7 @@ var nextObjectiveMarker;
 var availableQuestMarkers;
 
 // Map info window
-var questLog;
+var missionLog;
 
 // Info window template
 var questInfoTemplate;
@@ -23,11 +23,6 @@ var currentInfoWindow;
 // Toast window
 var toastWindow;
 
-// Model //////////////////////////////////////////////////////////////////////
-// Quest lists
-var pinnedQuest;
-var inactiveQuests;
-
 // Lat long
 var currentLocation;
 
@@ -36,18 +31,12 @@ var showAvailableMissions = false;
 
 // Setup //////////////////////////////////////////////////////////////////////
 $(document).ready(function() {
+
 	google.maps.event.addDomListener(window, 'load', initialize);
-	readQuestObjectives();
-	readInactiveQuests();
 
 	window.setInterval(sendLocationToServer, 4500);
-	window.setInterval(readQuestObjectives, 60 * 1000);
-
-	$.get('/ui-elements/questLog.html').then(function(responseData) {
-		questLog = new google.maps.InfoWindow({
-			content: responseData
-		});
-	});
+	window.setInterval(readQuestObjectives, 5 * 60 * 1000);
+	window.setInterval(readInactiveQuests, 5 * 60 * 1000)
 
 	$.get('/ui-elements/questInfo.html').then(function(responseData) {
 		questInfoTemplate = responseData;
@@ -60,7 +49,11 @@ function initialize() {
 		map = new google.maps.Map(document.getElementById('map-canvas'), {zoom : 14});
 		navigator.geolocation.watchPosition(showPosition, undefined, {enableHighAccuracy : true});
 
+		missionLog = new arrested.maps.MissionLog(map);
 		toastWindow = new arrested.maps.ToastWindow(map);
+
+		readQuestObjectives();
+		readInactiveQuests();
 
 	} else {
 		alert("Geolocation is not supported by this browser.");
@@ -83,11 +76,7 @@ function pinNextObjective(data) {
 			nextObjectiveMarker.setPosition(latLong);
 		}
 
-		pinnedQuest = data.questName;
-
-		if ($("#pinnedQuest")) {
-			updatePinnedMission();
-		}
+		missionLog.displayPinnedMission(data);
 
 	} else {
 		// TODO: Remove nextObjective marker
@@ -108,25 +97,6 @@ function pinAvailableQuests(data) {
 		});
 
 		availableQuestMarkers = markers;
-	}
-}
-
-function parseInactiveQuests(data) {
-
-	var content = "";
-
-	if (data.length) {
-		data.forEach(function(element, index) {
-			content = content + "<div data-quest-id='"+ element.questId +"' class='inactiveQuest'>" + element.questName + "</div>";
-		});
-	} else {
-		content = "No inactive missions";
-	}
-
-	inactiveQuests = content;
-
-	if ($("#inactiveQuests")) {
-		updateInactiveMissions();
 	}
 }
 
@@ -191,7 +161,9 @@ function readInactiveQuests() {
 	$.ajax({
 		type: "GET",
 		url: questLogUrl + "inactive-quests",
-		success: parseInactiveQuests
+		success: function(data) {
+			missionLog.displayInactiveMissions(data, trackMission);
+		}
 	});
 }
 
@@ -226,11 +198,9 @@ function showPosition(position) {
 
 			closeOpenWindow();
 
-			currentInfoWindow = questLog;
-			questLog.open(map, youAreHereMarker);
-			updatePinnedMission();
-			updateInactiveMissions();
-			$("#showAvailable").change(showAvailableUpdated);
+			currentInfoWindow = missionLog;
+			missionLog.open();
+			missionLog.setShowAvailabileChangeHandler(showAvailableUpdated);
 		});
 
 	} else {
@@ -239,6 +209,8 @@ function showPosition(position) {
 	}
 
 	map.setCenter(latLong);
+	missionLog.setOriginMarker(youAreHereMarker);
+
 	currentLocation = latLong;
 }
 
@@ -280,15 +252,6 @@ function closeOpenWindow() {
 	if (currentInfoWindow) {
 		currentInfoWindow.close();
 	}
-}
-
-function updatePinnedMission() {
-	$("#pinnedQuest").html(pinnedQuest)
-}
-
-function updateInactiveMissions() {
-	$("#inactiveQuests").html(inactiveQuests);
-	$("#inactiveQuests .inactiveQuest").click(trackMission);
 }
 
 function clearMarkers(markers) {
