@@ -27,6 +27,7 @@ arrested.maps.GameMenu = function constructor(map) {
 
     collapsedMenuUi = document.createElement("div");
     collapsedMenuUi.className = "inputField";
+    collapsedMenuUi.style.zIndex = 100;
     collapsedMenuUi.innerHTML = "<div class='controlContainer'><button id='openMenu'>Menu</button></div>";
 
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(collapsedMenuUi);
@@ -46,7 +47,7 @@ arrested.maps.GameMenu = function constructor(map) {
       expandedMenuUi.querySelector("#close").onclick = closeMenu.bind(this);
     });
 
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(expandedMenuUi);
+    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(expandedMenuUi);
   }
 
   // Generic helper functions //////////////////////////////////////////////////
