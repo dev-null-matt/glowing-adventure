@@ -46,7 +46,7 @@ arrested.maps.GameMenu = function constructor(map) {
       expandedMenuUi.querySelector("#close").onclick = closeMenu.bind(this);
     });
 
-    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(expandedMenuUi);
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(expandedMenuUi);
   }
 
   // Generic helper functions //////////////////////////////////////////////////
