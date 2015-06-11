@@ -11,6 +11,9 @@ var youAreHereMarker;
 var nextObjectiveMarker;
 var availableQuestMarkers;
 
+// Game menu
+var gameMenu;
+
 // Map info window
 var missionLog;
 
@@ -51,6 +54,7 @@ function initialize() {
 
 		missionLog = new arrested.maps.MissionLog(map);
 		toastWindow = new arrested.maps.ToastWindow(map);
+		gameMenu = new arrested.maps.GameMenu(map);
 
 		readQuestObjectives();
 		readInactiveQuests();
