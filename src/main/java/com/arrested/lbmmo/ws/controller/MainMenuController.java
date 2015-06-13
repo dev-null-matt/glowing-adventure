@@ -85,7 +85,10 @@ public class MainMenuController extends AbstractServiceController {
 			character.isLoggedIn(false);
 			characterRepo.save(character);
 		}
-		
+	}
+	
+	@RequestMapping(value="exit", method=RequestMethod.PUT)
+	public void exit() {
 		request.getSession().invalidate();
 	}
 }
