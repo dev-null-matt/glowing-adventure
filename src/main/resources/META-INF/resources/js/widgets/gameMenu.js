@@ -7,17 +7,30 @@ arrested.maps.GameMenu = function constructor(map) {
   var collapsedMenuUi = undefined;
   var expandedMenuUi = undefined;
 
+  var logoutCallback = undefined;
+
   // Click handler functions ///////////////////////////////////////////////////
 
-  // Displays the expanded menu when the collapsed menu is clicked.
-  var openMenu = function openMenu() {
-    expandedMenuUi.className = "";
-    applyCallbackToCollapsedUi(closeMenu);
-  }
-
+  // Hides the expanded menu
   var closeMenu = function closeMenu() {
     expandedMenuUi.className = "hidden";
     applyCallbackToCollapsedUi(openMenu);
+  }
+
+  // Logs the currently logged in character out
+  var logout = function logout() {
+
+    if (logoutCallback) {
+      logoutCallback();
+    }
+
+    location = "/pages/characterSelect.html";
+  }
+
+  // Displays the expanded menu
+  var openMenu = function openMenu() {
+    expandedMenuUi.className = "";
+    applyCallbackToCollapsedUi(closeMenu);
   }
 
   // Constructor helper functions //////////////////////////////////////////////
@@ -43,11 +56,16 @@ arrested.maps.GameMenu = function constructor(map) {
 
     $.get('/ui-elements/gameMenu.html').then(function(responseData) {
       expandedMenuUi.innerHTML = responseData;
-      expandedMenuUi.querySelector("#logout");
+      expandedMenuUi.querySelector("#logout").onclick = logout;
       expandedMenuUi.querySelector("#close").onclick = closeMenu.bind(this);
     });
 
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(expandedMenuUi);
+  }
+
+  // Setter functions //////////////////////////////////////////////////////////
+  this.setLogoutCallback = function setLogoutCallback(callback) {
+    logoutCallback = callback;
   }
 
   // Generic helper functions //////////////////////////////////////////////////
@@ -55,6 +73,7 @@ arrested.maps.GameMenu = function constructor(map) {
     collapsedMenuUi.querySelector("#openMenu").onclick = callback.bind(this);
   }
 
+  // Constructor ///////////////////////////////////////////////////////////////
   createExpandedMenu();
   createCollapsedMenu();
 }
