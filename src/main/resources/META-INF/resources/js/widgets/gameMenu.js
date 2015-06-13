@@ -19,6 +19,7 @@ arrested.maps.GameMenu = function constructor(map) {
 
   // Logs the currently logged in character out
   var logout = function logout() {
+
     if (logoutCallback) {
       logoutCallback();
     }
@@ -63,8 +64,8 @@ arrested.maps.GameMenu = function constructor(map) {
   }
 
   // Setter functions //////////////////////////////////////////////////////////
-  this.setLogoutCallback = function setLogoutCallback() {
-
+  this.setLogoutCallback = function setLogoutCallback(callback) {
+    logoutCallback = callback;
   }
 
   // Generic helper functions //////////////////////////////////////////////////

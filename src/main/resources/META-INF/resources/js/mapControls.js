@@ -1,4 +1,5 @@
 // Constants //////////////////////////////////////////////////////////////////
+var mainMenuUrl = "/service/main-menu/";
 var mapUrl = "/service/map/";
 var questLogUrl = "/service/quest-log/";
 
@@ -55,6 +56,8 @@ function initialize() {
 		missionLog = new arrested.maps.MissionLog(map);
 		toastWindow = new arrested.maps.ToastWindow(map);
 		gameMenu = new arrested.maps.GameMenu(map);
+
+		gameMenu.setLogoutCallback(logout);
 
 		readQuestObjectives();
 		readInactiveQuests();
@@ -150,6 +153,13 @@ function trackMission() {
 			readInactiveQuests();
 		}
 	});
+}
+
+function logout() {
+		$.ajax({
+			type : "PUT",
+			url : mainMenuUrl + "logout"
+		});
 }
 
 // Periodic update functions //////////////////////////////////////////////////
