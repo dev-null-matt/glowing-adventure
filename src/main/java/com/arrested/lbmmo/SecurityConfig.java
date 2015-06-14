@@ -21,9 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	private DataSource dataSource;
 	
 	private static final String USER_BY_USERNAME_QUERY = 
-			"select username,password,enabled from user_account where lower(username) = lower(?)";
+			"SELECT username, password, enabled FROM user_account WHERE lower(?) IN (lower(username), lower(email))";
 	private static final String AUTHORITY_BY_USERNAME_QUERY =
-			"select username, role from user_account u, user_role ur where u.id = ur.user_id and lower(u.username) = lower(?)";	
+			"SELECT username, role FROM user_account u JOIN user_role ur ON u.id = ur.user_id WHERE lower(?) IN (lower(username), lower(email))";	
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
