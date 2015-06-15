@@ -8,7 +8,6 @@ $(document).ready(function() {
 	$nameTaken = $("#nameTaken");
 	$create = $("#create");
 
-	//$name.bind("change keyup input", validateName);
 	window.setInterval(validateName, 500);
 	$create.click(submit);
 });
@@ -33,7 +32,8 @@ function validateName() {
 				}
 
 				lastCheckedName = name;
-			}
+			},
+			error : errorCallback
 		});
 	} else if (name === "") {
 		$create.addClass("inactive");
@@ -51,6 +51,13 @@ function submit() {
 			} else {
 				alert("There was a problem creating your new character");
 			}
- 		}
+		},
+		error : errorCallback
 	});
+}
+
+function errorCallback(jqXHR) {
+	if (jqXHR.status == "401") {
+		location = "/index.html";
+	}
 }
