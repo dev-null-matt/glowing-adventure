@@ -135,7 +135,8 @@ function showAvailableUpdated() {
 		$.ajax({
 			type: "GET",
 			url: questLogUrl + "available-quests",
-			success: pinAvailableQuests
+			success: pinAvailableQuests,
+			error : errorCallback
 		});
 	} else {
 		clearMarkers(availableQuestMarkers);
@@ -151,14 +152,16 @@ function trackMission() {
 		success: function() {
 			readQuestObjectives();
 			readInactiveQuests();
-		}
+		},
+		error : errorCallback
 	});
 }
 
 function logout() {
 		$.ajax({
 			type : "PUT",
-			url : mainMenuUrl + "logout"
+			url : mainMenuUrl + "logout",
+			error : errorCallback
 		});
 }
 
@@ -167,7 +170,8 @@ function readQuestObjectives() {
 	$.ajax({
 		type : "GET",
 		url : questLogUrl + "quest-status",
-		success : pinNextObjective
+		success : pinNextObjective,
+		error : errorCallback
 	});
 }
 
@@ -177,7 +181,8 @@ function readInactiveQuests() {
 		url: questLogUrl + "inactive-quests",
 		success: function(data) {
 			missionLog.displayInactiveMissions(data, trackMission);
-		}
+		},
+		error : errorCallback
 	});
 }
 
@@ -195,7 +200,8 @@ function sendLocationToServer() {
 			url : mapUrl + "set-new-position",
 			data : JSON.stringify(data),
 			contentType : "application/json",
-			success : processEvent
+			success : processEvent,
+			error : errorCallback
 		});
 	}
 }
@@ -256,7 +262,8 @@ function addAvailableQuestClickListener(marker, quest) {
 					currentInfoWindow = new google.maps.InfoWindow({content : message});
 
 					currentInfoWindow.open(map, youAreHereMarker);
-				}
+				},
+				error : errorCallback
 			});
 		});
 	});
@@ -294,4 +301,10 @@ function createMarker(latLong, label, imageUrl) {
 		title : label,
 		icon : image
 	});
+}
+
+function errorCallback(jqXHR) {
+	if (jqXHR.status == "401") {
+		location = "/index.html";
+	}
 }
