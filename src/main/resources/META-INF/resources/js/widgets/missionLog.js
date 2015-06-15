@@ -53,7 +53,10 @@ arrested.maps.MissionLog = function constructor(map) {
   	}
 
     missionLogUi.content.querySelector("#inactiveQuests").innerHTML = content;
-    missionLogUi.content.querySelector("#inactiveQuests .inactiveQuest").onclick = callback;
+    Array.prototype.slice.call(missionLogUi.content.querySelectorAll("#inactiveQuests .inactiveQuest")).forEach(
+      function(element) {
+        element.onclick = callback;
+      });
   }
 
   this.setOriginMarker = function setOriginMarker(originMarker) {
