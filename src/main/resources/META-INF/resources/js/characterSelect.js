@@ -5,6 +5,7 @@ var $mainContent = $(".mainContent");
 
 $(document).ready(function() {
 
+	$("#accountSettings").click(goAccountSettings);
 	$("#exitGame").click(exitGame);
 
 	$.ajax({
@@ -74,6 +75,10 @@ function logCharacterIn() {
 		},
 		error : errorCallback
 	});
+}
+
+function goAccountSettings() {
+	location = "/pages/accountSettings.html";
 }
 
 function exitGame() {
