@@ -5,6 +5,8 @@ var $mainContent = $(".mainContent");
 
 $(document).ready(function() {
 
+	$("#exitGame").click(exitGame);
+
 	$.ajax({
 		type : "GET",
 		url : mainMenuUrl + "characters",
@@ -69,6 +71,17 @@ function logCharacterIn() {
 		url : mainMenuUrl + "login/" + characterName,
 		success : function(data) {
 			location = "/pages/map.html";
+		},
+		error : errorCallback
+	});
+}
+
+function exitGame() {
+	$.ajax({
+		type : "PUT",
+		url : mainMenuUrl + "exit",
+		success : function() {
+			location = "/index.html";
 		},
 		error : errorCallback
 	});
