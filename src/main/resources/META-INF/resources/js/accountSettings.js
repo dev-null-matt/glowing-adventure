@@ -3,6 +3,7 @@ var accountSettingsUrl = "/service/account-settings/";
 $(document).ready(function() {
   document.getElementById("changePassword").onclick = toggleChangePassword;
   document.getElementById("doChangePassword").onclick = doChangePassword;
+  document.getElementById("back").onclick = goCharacterSelect;
 
   window.setInterval(validateChangePassword, 500);
 });
@@ -41,6 +42,10 @@ var doChangePassword = function doChangePassword() {
       showMessage("Password updated", 2500);
     }
   });
+}
+
+var goCharacterSelect = function goCharacterSelect() {
+  location = "/pages/characterSelect.html";
 }
 
 // Helper functions ////////////////////////////////////////////////////////////
