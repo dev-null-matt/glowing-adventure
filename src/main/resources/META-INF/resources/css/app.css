@@ -91,6 +91,18 @@ button.inactive {
   color: #777777;
 }
 
+.delete {
+  background-color: #FF0000;
+}
+
+.createNew {
+  background-color: #00FF00;
+}
+
+.settings {
+  background-color: #0099FF;
+}
+
 .hidden {
   display: none;
 }
