@@ -6,6 +6,7 @@ var $mainContent = $(".mainContent");
 $(document).ready(function() {
 
 	document.getElementById("accountSettings").onclick = goAccountSettings;
+	document.getElementById("delete").onclick = goDelete;
 	document.getElementById("exitGame").onclick = exitGame;
 
 	addCreateNew();
@@ -83,6 +84,10 @@ function logCharacterIn() {
 
 function goAccountSettings() {
 	location = "/pages/accountSettings.html";
+}
+
+function goDelete() {
+	location = "/pages/deleteCharacter.html";
 }
 
 function exitGame() {
