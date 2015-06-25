@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arrested.lbmmo.persistence.entity.Character;
@@ -85,6 +86,15 @@ public class MainMenuController extends AbstractServiceController {
 			character.isLoggedIn(false);
 			characterRepo.save(character);
 		}
+	}
+	
+	@RequestMapping(value="delete", method=RequestMethod.DELETE)
+	@Transactional
+	public void delete(@RequestParam("name") String characterName) {
+		
+		Character character = getServiceUser().getCharacterByName(characterName);
+		
+		characterRepo.delete(character);
 	}
 	
 	@RequestMapping(value="exit", method=RequestMethod.PUT)

@@ -5,18 +5,22 @@ var $mainContent = $(".mainContent");
 
 $(document).ready(function() {
 
-	$("#accountSettings").click(goAccountSettings);
-	$("#exitGame").click(exitGame);
+	document.getElementById("accountSettings").onclick = goAccountSettings;
+	document.getElementById("delete").onclick = goDelete;
+	document.getElementById("exitGame").onclick = exitGame;
+
+	addCreateNew();
 
 	$.ajax({
 		type : "GET",
 		url : mainMenuUrl + "characters",
 		success : function(data) {
 
-			data.forEach(updateMainContent);
-			addCreateNew();
+			if (data.length > 0) {
+					document.getElementById("delete").className = "controlContainer";
+			}
 
-			$(".characterInfo").click(logCharacterIn);
+			data.forEach(updateMainContent);
 		},
 		error : errorCallback
 	});
@@ -38,6 +42,7 @@ function updateMainContent(element, index, array) {
 
 	characterInfo.appendChild(name);
 	characterInfo.appendChild(classLevel);
+	characterInfo.onclick = logCharacterIn;
 
 	controlContainer.appendChild(characterInfo);
 
@@ -79,6 +84,10 @@ function logCharacterIn() {
 
 function goAccountSettings() {
 	location = "/pages/accountSettings.html";
+}
+
+function goDelete() {
+	location = "/pages/deleteCharacter.html";
 }
 
 function exitGame() {

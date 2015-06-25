@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/css/app.css">
+	</head>
+	<body>
+		<div class="contentContainer">
+			<div class="mainContent">
+
+				<div id="characterList"></div>
+
+        <div id="confirm" class="hidden">
+          <div class="inputField">
+            <label id="deleteInstruction" for="confirmationText" class="instruction wide" />
+          </div>
+          <div class="inputField">
+            <input id="confirmationText" data-character="" type="text" />
+          </div>
+          <div class="inputField">
+            <button id="confirmButton" type="button" class="inactive" disabled="disabled">Delete</button>
+            <button id="cancelButton" type="button">Cancel</button>
+          </div>
+        </div>
+
+        <div id="back" class="controlContainer">
+          <div class="controlTextContainer back">
+            <div class="emphasized">Back</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+  <footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/js/deleteCharacter.js"></script>
+  </footer>
+</html>
