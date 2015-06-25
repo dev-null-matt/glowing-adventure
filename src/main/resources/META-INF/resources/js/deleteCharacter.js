@@ -2,9 +2,13 @@ var mainMenuUrl = "/service/main-menu/";
 
 var $mainContent = $(".mainContent");
 
+var characterName = "";
+
 $(document).ready(function() {
 
   document.getElementById("back").onclick = goBack;
+  document.getElementById("cancelButton").onclick = doCancel;
+  document.getElementById("confirmButton").onclick = doDelete;
 
   $.ajax({
     type : "GET",
@@ -41,22 +45,47 @@ function updateMainContent(element, index, array) {
 
 function deleteCharacter() {
 
-	var characterName = this.firstChild.textContent;
+	characterName = this.firstChild.textContent;
+
+  document.getElementById("deleteInstruction").innerHTML = "Type " + characterName + " to delete";
+  document.getElementById("characterList").className = "hidden";
+  document.getElementById("confirm").className = "";
+
+  setInterval(validateDeleteButton, 500);
 }
 
 function doDelete() {
 	$.ajax({
-		type : "PUT",
-		url : mainMenuUrl + "login/" + characterName,
-		success : function(data) {
-			location = "/pages/map.html";
-		},
+		type : "DELETE",
+		url : mainMenuUrl + "delete?name=" + characterName,
+		success : goBack,
 		error : errorCallback
 	});
 }
 
+function doCancel() {
+  document.getElementById("confirm").className = "hidden";
+  document.getElementById("characterList").className = "";
+  document.getElementById("deleteInstruction").innerHTML = "";
+  document.getElementById("confirmationText").value = "";
+  clearInterval(validateDeleteButton);
+}
+
 function goBack() {
 	location = "/pages/characterSelect.html";
+}
+
+function validateDeleteButton() {
+
+  var deleteButton = document.getElementById("confirmButton");
+
+  if (characterName && document.getElementById("confirmationText").value === characterName) {
+    deleteButton.className = "delete";
+    deleteButton.disabled = undefined;
+  } else {
+    deleteButton.className = "inactive";
+    deleteButton.disabled = "disabled";
+  }
 }
 
 function errorCallback(jqXHR) {
