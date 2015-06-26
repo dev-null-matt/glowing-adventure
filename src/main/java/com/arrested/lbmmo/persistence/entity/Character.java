@@ -2,6 +2,7 @@ package com.arrested.lbmmo.persistence.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +26,7 @@ public class Character {
 	@JoinColumn(name="USER_ID")
 	private User user;
 	
-	@OneToMany(mappedBy="character")
+	@OneToMany(mappedBy="character", cascade=CascadeType.ALL)
 	private Set<QuestInProgress> questsInProgress;
 	
 	private String name;
