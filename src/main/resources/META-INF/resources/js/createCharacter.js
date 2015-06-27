@@ -10,6 +10,8 @@ $(document).ready(function() {
 
 	window.setInterval(validateName, 500);
 	$create.click(submit);
+
+	document.getElementById("cancel").onclick = function back() {location = "/pages/characterSelect.html"};
 });
 
 function validateName() {
