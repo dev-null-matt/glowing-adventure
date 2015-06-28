@@ -21,6 +21,8 @@ $(document).ready(function() {
 	window.setInterval(validatePasswords, 250);
 	window.setInterval(conditionallyEnableSubmit, 100);
 
+	document.getElementById("cancel").onclick = function cancel() {location = "/"};
+
 	$create.click(submit);
 });
 
