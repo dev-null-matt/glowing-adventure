@@ -1,5 +1,6 @@
 package com.arrested.lbmmo.persistence.entity;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -16,14 +17,14 @@ public class User {
 	@GeneratedValue
 	private long id;
 	
-	private String password;
-	
 	private String email;
 	
 	@OneToMany(mappedBy="user")
 	private Set<Character> characters;
 	
 	private String username;
+	
+	private Date verificationSent;
 	
 	public void setId(long id) {
 		this.id = id;
@@ -33,12 +34,28 @@ public class User {
 		return id;
 	}
 	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
 	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public String getEmail() {
 		return email;
+	}
+	
+	public void setVerificationSent(Date sentDate) {
+		this.verificationSent = sentDate;
+	}
+	
+	public Date getVerificationSent() {
+		return verificationSent;
 	}
 	
 	public void setCharacters(Set<Character> characters) {
