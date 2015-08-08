@@ -6,15 +6,28 @@
 	<body>
 		<div class="contentContainer">
       <div class="mainContent">
-
-				<!-- Change email interface -->
 				<div id="controls">
+
+					<!-- Div for notifications -->
+					<div id="messageContainer" class="hidden">
+	          <div id="message" class="instruction"></div>
+	        </div>
+
+					<!-- Change email button -->
 					<div id="changeEmail" class="controlContainer">
 						<div class="controlTextContainer">
 							<div class="emphasized">Change Email</div>
 						</div>
 					</div>
 
+					<!-- Confirm email button -->
+					<div id="confirmEmail" class="controlContainer hidden">
+						<div class="controlTextContainer">
+							<div class="emphasized">Confirm Email</div>
+						</div>
+					</div>
+
+					<!-- Change email interface -->
 					<div id="emailChange" class="hidden">
 						<div class="inputField">
 	            <label for="email" class="instruction">Email</label>
@@ -29,32 +42,30 @@
 	          </div>
 					</div>
 
-					<!-- Change password interface -->
+					<!-- Change password button -->
 	        <div id="changePassword" class="controlContainer">
 	          <div class="controlTextContainer">
 	            <div class="emphasized">Change Password</div>
 	          </div>
 	        </div>
+
+					<!-- Change password interface -->
+					<div id="passwordChange" class="hidden">
+						<div class="inputField">
+							<label for="password" class="instruction">Password</label>
+							<input type="password" id="password"/>
+						</div>
+						<div class="inputField">
+							<label for="confirm" class="instruction">Confirm</label>
+							<input type="password" id="confirm"/>
+						</div>
+						<div class="inputField">
+							<button id="doChangePassword" class="inactive" disabled="disabled">Update</button>
+						</div>
+					</div>
 				</div>
 
-        <div id="messageContainer" class="hidden">
-          <div id="message" class="instruction"></div>
-        </div>
-
-        <div id="passwordChange" class="hidden">
-          <div class="inputField">
-            <label for="password" class="instruction">Password</label>
-            <input type="password" id="password"/>
-          </div>
-          <div class="inputField">
-            <label for="confirm" class="instruction">Confirm</label>
-            <input type="password" id="confirm"/>
-          </div>
-          <div class="inputField">
-            <button id="doChangePassword" class="inactive" disabled="disabled">Update</button>
-          </div>
-        </div>
-
+				<!-- Back button -->
         <div id="back" class="controlContainer">
           <div class="controlTextContainer">
             <div class="emphasized">Back</div>
