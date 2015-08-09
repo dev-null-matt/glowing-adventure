@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public void createAccount(String username, String email, String password);
 	
 	@Modifying
+	@Deprecated
 	@Query(value = "insert into USER_ROLE (user_id,role) values (?1, ?2)", nativeQuery = true)
 	public void giveUserRole(long id, String role);
 	

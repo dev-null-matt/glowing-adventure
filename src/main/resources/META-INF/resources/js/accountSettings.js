@@ -5,10 +5,21 @@ $(document).ready(function() {
   document.getElementById("changeEmail").onclick = toggleChangeEmail;
   document.getElementById("doChangePassword").onclick = doChangePassword;
   document.getElementById("doChangeEmail").onclick = doChangeEmail;
+  document.getElementById("confirmEmail").onclick = doConfirmEmail;
   document.getElementById("back").onclick = goCharacterSelect;
 
   window.setInterval(validateChangeEmail, 500);
   window.setInterval(validateChangePassword, 500);
+
+  $.ajax({
+    type : "GET",
+    url : accountSettingsUrl + "isVerified",
+    success : function emailChangeSuccess(data) {
+      if (!data) {
+        document.getElementById("confirmEmail").classList.remove("hidden");
+      }
+    }
+  });
 });
 
 // Onclick callbacks ///////////////////////////////////////////////////////////
@@ -66,7 +77,7 @@ var doChangeEmail = function doChangeEmail() {
     type : "PUT",
     url : accountSettingsUrl + "email",
     data : document.getElementById("email").value,
-    success : function pwChangeSuccess() {
+    success : function emailChangeSuccess() {
       toggleChangeEmail();
       showMessage("Email updated", 2500);
     }
@@ -78,9 +89,19 @@ var doChangePassword = function doChangePassword() {
     type : "PUT",
 		url : accountSettingsUrl + "password",
     data : document.getElementById("password").value,
-    success : function emailChangeSuccess() {
+    success : function pwChangeSuccess() {
       toggleChangePassword();
       showMessage("Password updated", 2500);
+    }
+  });
+}
+
+var doConfirmEmail = function doConfirmEmail() {
+  $.ajax({
+    type : "POST",
+		url : accountSettingsUrl + "requestConfirmEmail",
+    success : function emailConfirmSuccess() {
+      showMessage("Confirmation email sent", 2500);
     }
   });
 }
@@ -99,21 +120,14 @@ function comparePasswords() {
 }
 
 var clearMessage = function clearMessage() {
-
   var messageDiv = document.getElementById("messageContainer");
   messageDiv.className = "hidden";
-
-  var message = document.getElementById("messageContainer");
-  message.innerHTML = "";
+  messageDiv.innerHTML = "";
 }
 
 function showMessage(message, timeout) {
-
-  var message = document.getElementById("messageContainer");
-  message.innerHTML = "Password updated";
-
   var messageDiv = document.getElementById("messageContainer");
+  messageDiv.innerHTML = message;
   messageDiv.className = "";
-
   window.setTimeout(clearMessage, timeout);
 }
