@@ -10,6 +10,16 @@ $(document).ready(function() {
 
   window.setInterval(validateChangeEmail, 500);
   window.setInterval(validateChangePassword, 500);
+
+  $.ajax({
+    type : "GET",
+    url : accountSettingsUrl + "isVerified",
+    success : function emailChangeSuccess(data) {
+      if (!data) {
+        document.getElementById("confirmEmail").classList.remove("hidden");
+      }
+    }
+  });
 });
 
 // Onclick callbacks ///////////////////////////////////////////////////////////
