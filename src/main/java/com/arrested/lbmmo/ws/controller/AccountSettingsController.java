@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arrested.lbmmo.persistence.enitity.roles.UserRoleType;
 import com.arrested.lbmmo.persistence.entity.Email;
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.EmailRepository;
@@ -47,6 +48,11 @@ public class AccountSettingsController extends AbstractServiceController {
 		return true;
 	}
 	
+	@RequestMapping(value="isVerified")
+	public boolean doesUserHaveRoleConfirmed() {
+		return getServiceUser().hasRole(UserRoleType.VERIFIED);
+	}
+	
 	@RequestMapping(value="requestConfirmEmail", method=RequestMethod.POST)
 	@Transactional
 	public boolean requestConfirmationEmail() {
@@ -66,7 +72,7 @@ public class AccountSettingsController extends AbstractServiceController {
 		emailRepo.save(email);
 		userRepo.save(user);
 		
-		return false;
+		return true;
 	}
 	
 	@RequestMapping(value="confirmEmail", method={RequestMethod.GET, RequestMethod.POST})
@@ -78,9 +84,10 @@ public class AccountSettingsController extends AbstractServiceController {
 		if (confirmationCodeGenerator.getConfirmationCode(user).equals(confirmationCode)) {
 			
 			user.setVerificationSent(null);
-			
-			userRepo.giveUserRole(user.getId(), "VERIFIED");
+			user.assignRole(UserRoleType.VERIFIED);
 			userRepo.save(user);
+			
+			return true;
 		}
 		
 		return false;

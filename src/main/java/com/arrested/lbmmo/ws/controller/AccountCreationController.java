@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arrested.lbmmo.persistence.enitity.roles.UserRoleType;
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
 
@@ -45,8 +46,9 @@ public class AccountCreationController {
 		userRepo.createAccount(login, email, password);
 		
 		User newUser = userRepo.findByUsername(login).get(0);
-
-		userRepo.giveUserRole(newUser.getId(), "USER");
+		newUser.assignRole(UserRoleType.USER);
+		
+		userRepo.save(newUser);
 		
 		return true;
 	}

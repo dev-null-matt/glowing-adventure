@@ -3,11 +3,14 @@ package com.arrested.lbmmo.persistence.entity;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.arrested.lbmmo.persistence.enitity.roles.UserRoleType;
 
 @Entity
 @Table(name="USER_ACCOUNT")
@@ -21,6 +24,9 @@ public class User {
 	
 	@OneToMany(mappedBy="user")
 	private Set<Character> characters;
+	
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
+	private Set<UserRole> roles;
 	
 	private String username;
 	
@@ -86,5 +92,49 @@ public class User {
 		}
 		
 		return null;
+	}
+	
+	public void assignRole(UserRoleType role) {
+		roles.add(new UserRole(this, role));
+	}
+	
+	public boolean hasRole(UserRoleType role) {
+		return roles.contains(new UserRole(this, role));
+	}
+	
+	public void removeRole(UserRoleType role) {
+		roles.remove(new UserRole(this, role));
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 }
