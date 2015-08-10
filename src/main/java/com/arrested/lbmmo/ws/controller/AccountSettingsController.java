@@ -43,12 +43,16 @@ public class AccountSettingsController extends AbstractServiceController {
 	@Transactional
 	public boolean updateEmail(@RequestBody String email) {
 		
-		userRepo.setEmail(getServiceUser().getUsername(), email);
+		User user = getServiceUser();
+		user.setEmail(email);
+		user.removeRole(UserRoleType.VERIFIED);
+		
+		userRepo.save(user);
 		
 		return true;
 	}
 	
-	@RequestMapping(value="isVerified")
+	@RequestMapping(value="isVerified", method=RequestMethod.GET)
 	public boolean doesUserHaveRoleConfirmed() {
 		return getServiceUser().hasRole(UserRoleType.VERIFIED);
 	}

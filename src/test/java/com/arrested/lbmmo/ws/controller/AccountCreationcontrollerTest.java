@@ -2,6 +2,7 @@ package com.arrested.lbmmo.ws.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,7 +12,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import com.arrested.lbmmo.persistence.enitity.roles.UserRoleType;
 import com.arrested.lbmmo.persistence.entity.User;
+import com.arrested.lbmmo.persistence.entity.UserRole;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
 
 public class AccountCreationcontrollerTest {
@@ -78,17 +81,18 @@ public class AccountCreationcontrollerTest {
 		
 		User testUser = new User();
 		testUser.setId(testId);
+		testUser.setRoles(new HashSet<UserRole>());
 		
 		Mockito.when(userRepo.findByUsernameIgnoreCase(Mockito.eq(testLogin))).thenReturn(new ArrayList<User>());
 		Mockito.when(userRepo.findByEmailIgnoreCase(Mockito.eq(testEmail))).thenReturn(new ArrayList<User>());
 		Mockito.when(userRepo.findByUsername(testLogin)).thenReturn(Arrays.asList(testUser));
 		
 		Assert.assertTrue(controller.createUser(testLogin, testEmail, testPassword));
+		Assert.assertTrue(testUser.hasRole(UserRoleType.USER));
 		
 		Mockito.verify(userRepo).findByUsernameIgnoreCase(testLogin);
 		Mockito.verify(userRepo).findByEmailIgnoreCase(testEmail);
 		Mockito.verify(userRepo).createAccount(testLogin, testEmail, testPassword);
-		Mockito.verify(userRepo).giveUserRole(testId, "USER");
 	}
 	
 	@Test

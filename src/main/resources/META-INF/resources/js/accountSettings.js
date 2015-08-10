@@ -80,6 +80,7 @@ var doChangeEmail = function doChangeEmail() {
     success : function emailChangeSuccess() {
       toggleChangeEmail();
       showMessage("Email updated", 2500);
+      document.getElementById("confirmEmail").classList.remove("hidden");
     }
   });
 }
@@ -102,6 +103,7 @@ var doConfirmEmail = function doConfirmEmail() {
 		url : accountSettingsUrl + "requestConfirmEmail",
     success : function emailConfirmSuccess() {
       showMessage("Confirmation email sent", 2500);
+      document.getElementById("confirmEmail").classList.add("hidden");
     }
   });
 }

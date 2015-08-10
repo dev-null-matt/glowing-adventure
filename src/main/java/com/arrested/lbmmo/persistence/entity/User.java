@@ -25,7 +25,7 @@ public class User {
 	@OneToMany(mappedBy="user")
 	private Set<Character> characters;
 	
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<UserRole> roles;
 	
 	private String username;
@@ -104,6 +104,10 @@ public class User {
 	
 	public void removeRole(UserRoleType role) {
 		roles.remove(new UserRole(this, role));
+	}
+	
+	public void setRoles(Set<UserRole> roles) {
+		this.roles = roles;
 	}
 
 	@Override
