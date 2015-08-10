@@ -26,6 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public void giveUserRole(long id, String role);
 	
 	@Modifying
+	@Deprecated
 	@Query(value = "update USER_ACCOUNT set email = ?2 where username = ?1", nativeQuery = true)
 	public void setEmail(String username, String email);
 	
