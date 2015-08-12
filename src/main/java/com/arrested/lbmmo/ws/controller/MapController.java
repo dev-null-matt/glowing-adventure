@@ -47,7 +47,7 @@ public class MapController extends AbstractServiceController {
 			
 			waypointRepo.save(waypoint);
 			
-			message = "Created new waypoint: " + position.getDescription();
+			message = String.format("Created new waypoint: %s.", position.getDescription());
 		}
 		
 		return message;

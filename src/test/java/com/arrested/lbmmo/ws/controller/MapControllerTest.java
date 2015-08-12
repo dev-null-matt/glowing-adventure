@@ -10,10 +10,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import com.arrested.lbmmo.persistence.enitity.roles.UserRoleType;
 import com.arrested.lbmmo.persistence.entity.Objective;
 import com.arrested.lbmmo.persistence.entity.Quest;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
+import com.arrested.lbmmo.persistence.entity.UserRole;
+import com.arrested.lbmmo.persistence.entity.Waypoint;
 import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
+import com.arrested.lbmmo.persistence.repository.WaypointRepository;
 import com.arrested.lbmmo.service.DistanceCalculationService;
 import com.arrested.lbmmo.ws.bean.request.PositionBean;
 import com.arrested.lbmmo.ws.bean.response.EncounterBean;
@@ -25,6 +29,9 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 	
 	@Mock
 	private QuestInProgressRepository qipRepo;
+	
+	@Mock
+	private WaypointRepository waypointRepo;
 	
 	@InjectMocks
 	private MapController controller;
@@ -93,6 +100,35 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		Assert.assertTrue(encounter.getMessages().contains("Updating TEST_QUEST"));
 		Assert.assertFalse(encounter.isCombatEncounter());
 		Assert.assertTrue(encounter.isTrackedObjectiveUpdated());
+	}
+	
+	@Test
+	public void createWaypoint_unverified() {
+		
+		PositionBean position = new PositionBean(3.14, 3.14, "House of Pi");
+		
+		activeUserService.getActiveUser().setRoles(new HashSet<UserRole>());
+		
+		String message = controller.createWaypoint(position);
+		
+		Mockito.verifyZeroInteractions(waypointRepo);
+		
+		Assert.assertEquals("Only verified users can create new waypoints.", message);
+	}
+	
+	@Test
+	public void createWaypoint_verified() {
+		
+		PositionBean position = new PositionBean(3.14, 3.14, "House of Pi");
+		
+		activeUserService.getActiveUser().setRoles(new HashSet<UserRole>());
+		activeUserService.getActiveUser().assignRole(UserRoleType.VERIFIED);
+		
+		String message = controller.createWaypoint(position);
+		
+		Mockito.verify(waypointRepo).save(Mockito.any(Waypoint.class));
+		
+		Assert.assertEquals("Created new waypoint: House of Pi.", message);
 	}
 	
 	public QuestInProgress generateQuestInProgress(boolean tracked) {
