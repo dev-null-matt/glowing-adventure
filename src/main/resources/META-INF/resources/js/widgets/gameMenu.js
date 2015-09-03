@@ -7,18 +7,28 @@ arrested.maps.GameMenu = function constructor(map) {
   var collapsedMenuUi = undefined;
   var expandedMenuUi = undefined;
 
+  // Sub menu
+  var addWaypointMenu = undefined;
+
   var logoutCallback = undefined;
 
   // Click handler functions ///////////////////////////////////////////////////
 
   // Hides the expanded menu
-  var closeMenu = function closeMenu() {
+  function closeMenu() {
     expandedMenuUi.className = "hidden";
     applyCallbackToCollapsedUi(openMenu);
   }
 
+  // Displays the add waypoint sub-menu
+  function doAddWaypoint() {
+    expandedMenuUi.className = "hidden";
+    applyCallbackToCollapsedUi(false);
+    addWaypointMenu.openMenu();
+  }
+
   // Logs the currently logged in character out
-  var logout = function logout() {
+  function logout() {
 
     if (logoutCallback) {
       logoutCallback();
@@ -28,7 +38,7 @@ arrested.maps.GameMenu = function constructor(map) {
   }
 
   // Displays the expanded menu
-  var openMenu = function openMenu() {
+  function openMenu() {
     expandedMenuUi.className = "";
     applyCallbackToCollapsedUi(closeMenu);
   }
@@ -36,7 +46,7 @@ arrested.maps.GameMenu = function constructor(map) {
   // Constructor helper functions //////////////////////////////////////////////
 
   // Creates the collapsed menu, applying styles and attaching click handlers.
-  var createCollapsedMenu = function createCollapsedMenu() {
+  function createCollapsedMenu() {
 
     collapsedMenuUi = document.createElement("div");
     collapsedMenuUi.className = "inputField";
@@ -49,31 +59,40 @@ arrested.maps.GameMenu = function constructor(map) {
   }
 
   // Creates the expanded menu, applying styles and attaching click handlers.
-  var createExpandedMenu = function createExpandedMenu() {
+  function createExpandedMenu() {
 
     expandedMenuUi = document.createElement("div");
     expandedMenuUi.className = "hidden";
 
     $.get('/ui-elements/gameMenu.html').then(function(responseData) {
       expandedMenuUi.innerHTML = responseData;
+      expandedMenuUi.querySelector("#addWaypoint").onclick = doAddWaypoint;
       expandedMenuUi.querySelector("#logout").onclick = logout;
-      expandedMenuUi.querySelector("#close").onclick = closeMenu.bind(this);
+      expandedMenuUi.querySelector("#close").onclick = closeMenu;
     });
 
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(expandedMenuUi);
   }
 
   // Setter functions //////////////////////////////////////////////////////////
-  this.setLogoutCallback = function setLogoutCallback(callback) {
+  function setLogoutCallback(callback) {
     logoutCallback = callback;
   }
 
   // Generic helper functions //////////////////////////////////////////////////
-  var applyCallbackToCollapsedUi = function applyCallbackToCollapsedUi(callback) {
-    collapsedMenuUi.querySelector("#openMenu").onclick = callback.bind(this);
+  function applyCallbackToCollapsedUi(callback) {
+    if (callback) {
+      collapsedMenuUi.querySelector("#openMenu").onclick = callback.bind(this);
+    } else {
+      collapsedMenuUi.querySelector("#openMenu").onclick = undefined;
+    }
   }
 
   // Constructor ///////////////////////////////////////////////////////////////
   createExpandedMenu();
   createCollapsedMenu();
+
+  this.setLogoutCallback = setLogoutCallback;
+
+  addWaypointMenu = new arrested.maps.AddWaypointMenu(map, openMenu);
 }
