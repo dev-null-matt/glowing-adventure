@@ -23,28 +23,39 @@ arrested.maps.AddWaypointMenu = function constructor(map, onClose) {
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(expandedMenuUi);
   }
 
-  // Displays the expanded menu
-  this.openMenu = function openMenu() {
+  // Displays the expanded sub menu
+  function openMenu() {
     expandedMenuUi.className = "";
   }
 
+  // Hides the expanded sub menu
+  function hideMenu() {
+    expandedMenuUi.className = "hidden";
+  }
+
+  // Submits the new waypoint and closes the sub menu
   function doSubmit() {
 
     console.log("doSubmit() \"" + description.value + "\"");
+    hideMenu();
 
     if (onCloseCallback) {
       onCloseCallback();
     }
   }
 
+  // Closes the sub menu
   function doCancel() {
 
     console.log("doCancel()");
+    hideMenu();
 
     if (onCloseCallback) {
       onCloseCallback();
     }
   }
 
+  // Constructor ///////////////////////////////////////////////////////////////
   createExpandedMenu();
+  this.openMenu = openMenu;
 }
