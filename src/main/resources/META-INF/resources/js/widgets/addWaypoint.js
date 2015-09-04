@@ -47,7 +47,6 @@ arrested.maps.AddWaypointMenu = function constructor(map, onClose) {
   // Closes the sub menu
   function doCancel() {
 
-    console.log("doCancel()");
     hideMenu();
 
     if (onCloseCallback) {

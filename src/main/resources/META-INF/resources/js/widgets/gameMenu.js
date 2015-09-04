@@ -4,6 +4,9 @@ arrested.maps = arrested.maps || {};
 // The main game menu
 arrested.maps.GameMenu = function constructor(map) {
 
+  var accountSettingsUrl = "/service/account-settings/";
+  var isEmailVerified = false;
+
   var collapsedMenuUi = undefined;
   var expandedMenuUi = undefined;
 
@@ -41,6 +44,19 @@ arrested.maps.GameMenu = function constructor(map) {
   function openMenu() {
     expandedMenuUi.className = "";
     applyCallbackToCollapsedUi(closeMenu);
+
+    if (!isEmailVerified) {
+      $.ajax({
+        type : "GET",
+        url : accountSettingsUrl + "isVerified",
+        success : function emailChangeSuccess(data) {
+          if (data) {
+            expandedMenuUi.querySelector("#addWaypoint").parentElement.classList.remove("hidden");
+            isEmailVerified = true;
+          }
+        }
+      });
+    }
   }
 
   // Constructor helper functions //////////////////////////////////////////////
