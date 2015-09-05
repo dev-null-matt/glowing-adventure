@@ -19,7 +19,6 @@ import com.arrested.lbmmo.persistence.entity.Waypoint;
 import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.persistence.repository.WaypointRepository;
 import com.arrested.lbmmo.service.DistanceCalculationService;
-import com.arrested.lbmmo.ws.bean.request.PositionBean;
 import com.arrested.lbmmo.ws.bean.response.EncounterBean;
 
 public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
@@ -44,7 +43,9 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 	@Test
 	public void setNewPositionTest_noTrackedQip() {
 		
-		PositionBean position = new PositionBean(3.14, 3.14);
+		Waypoint position = new Waypoint();
+		position.setLatitude(3.14);
+		position.setLongitude(3.14);
 		
 		EncounterBean encounter = controller.setNewPosition(position);
 		
@@ -57,9 +58,11 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		
 		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(generateQuestInProgress(false));
 		
-		PositionBean position = new PositionBean(3.14, 3.14);
+		Waypoint position = new Waypoint();
+		position.setLatitude(3.14);
+		position.setLongitude(3.14);
 		
-		Mockito.when(distanceService.distanceToObjective(Mockito.any(PositionBean.class), Mockito.any(Objective.class))).thenReturn(100.0);
+		Mockito.when(distanceService.distanceToObjective(Mockito.any(Waypoint.class), Mockito.any(Objective.class))).thenReturn(100.0);
 		
 		EncounterBean encounter = controller.setNewPosition(position);
 		
@@ -73,9 +76,11 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		
 		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(generateQuestInProgress(false));
 		
-		PositionBean position = new PositionBean(3.14, 3.14);
+		Waypoint position = new Waypoint();
+		position.setLatitude(3.14);
+		position.setLongitude(3.14);
 		
-		Mockito.when(distanceService.distanceToObjective(Mockito.any(PositionBean.class), Mockito.any(Objective.class))).thenReturn(5.0);
+		Mockito.when(distanceService.distanceToObjective(Mockito.any(Waypoint.class), Mockito.any(Objective.class))).thenReturn(5.0);
 		
 		EncounterBean encounter = controller.setNewPosition(position);
 		
@@ -90,9 +95,11 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		
 		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(generateQuestInProgress(true));
 		
-		PositionBean position = new PositionBean(3.14, 3.14);
+		Waypoint position = new Waypoint();
+		position.setLatitude(3.14);
+		position.setLongitude(3.14);
 		
-		Mockito.when(distanceService.distanceToObjective(Mockito.any(PositionBean.class), Mockito.any(Objective.class))).thenReturn(5.0);
+		Mockito.when(distanceService.distanceToObjective(Mockito.any(Waypoint.class), Mockito.any(Objective.class))).thenReturn(5.0);
 		
 		EncounterBean encounter = controller.setNewPosition(position);
 		
@@ -105,7 +112,10 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 	@Test
 	public void createWaypoint_unverified() {
 		
-		PositionBean position = new PositionBean(3.14, 3.14, "House of Pi");
+		Waypoint position = new Waypoint();
+		position.setLatitude(3.14);
+		position.setLongitude(3.14);
+		position.setDescription("House of Pi");
 		
 		activeUserService.getActiveUser().setRoles(new HashSet<UserRole>());
 		
@@ -119,7 +129,10 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 	@Test
 	public void createWaypoint_verified() {
 		
-		PositionBean position = new PositionBean(3.14, 3.14, "House of Pi");
+		Waypoint position = new Waypoint();
+		position.setLatitude(3.14);
+		position.setLongitude(3.14);
+		position.setDescription("House of Pi");
 		
 		activeUserService.getActiveUser().setRoles(new HashSet<UserRole>());
 		activeUserService.getActiveUser().assignRole(UserRoleType.VERIFIED);
