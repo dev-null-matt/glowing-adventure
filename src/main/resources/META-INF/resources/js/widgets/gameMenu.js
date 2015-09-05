@@ -49,7 +49,7 @@ arrested.maps.GameMenu = function constructor(map) {
       $.ajax({
         type : "GET",
         url : accountSettingsUrl + "isVerified",
-        success : function emailChangeSuccess(data) {
+        success : function emailVerifiedSuccess(data) {
           if (data) {
             expandedMenuUi.querySelector("#addWaypoint").parentElement.classList.remove("hidden");
             isEmailVerified = true;

@@ -36,7 +36,22 @@ arrested.maps.AddWaypointMenu = function constructor(map, onClose) {
   // Submits the new waypoint and closes the sub menu
   function doSubmit() {
 
-    console.log("doSubmit() \"" + description.value + "\"");
+    var data = {
+      "description" : description.value,
+			"latitude" : currentLocation.lat(),
+			"longitude" : currentLocation.lng()
+		};
+
+    $.ajax({
+      type : "POST",
+      url : mapUrl + "create-waypoint",
+      data : JSON.stringify(data),
+			contentType : "application/json",
+      success : function createWaypointSuccess(data) {
+        toastWindow.queueMessage(data);
+      }
+    });
+
     hideMenu();
 
     if (onCloseCallback) {
