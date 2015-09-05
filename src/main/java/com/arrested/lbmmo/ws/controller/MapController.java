@@ -2,6 +2,7 @@ package com.arrested.lbmmo.ws.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +16,6 @@ import com.arrested.lbmmo.persistence.entity.Waypoint;
 import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.persistence.repository.WaypointRepository;
 import com.arrested.lbmmo.service.DistanceCalculationService;
-import com.arrested.lbmmo.ws.bean.request.PositionBean;
 import com.arrested.lbmmo.ws.bean.response.EncounterBean;
 
 @RestController
@@ -35,26 +35,25 @@ public class MapController extends AbstractServiceController {
 	
 	@RequestMapping(value="create-waypoint", method=RequestMethod.POST, consumes = "application/json")
 	@Transactional	
-	public String createWaypoint(@RequestBody PositionBean position) {
+	public String createWaypoint(@RequestBody Waypoint waypoint) {
 		
 		String message = "Only verified users can create new waypoints.";
 		
 		if (getServiceUser().hasRole(UserRoleType.VERIFIED)) {
-			Waypoint waypoint = new Waypoint();
-			waypoint.setLatitude(position.getLatitude());
-			waypoint.setLongitude(position.getLongitude());
-			waypoint.setDescription(position.getDescription());
+			if (StringUtils.isEmpty(waypoint.getDescription())) {
+				waypoint.setDescription("a waypoint");
+			}
 			
 			waypointRepo.save(waypoint);
 			
-			message = String.format("Created new waypoint: %s.", position.getDescription());
+			message = String.format("Created new waypoint: %s.", waypoint.getDescription());
 		}
 		
 		return message;
 	}
 	
 	@RequestMapping(value="set-new-position", method=RequestMethod.PUT, consumes = "application/json")
-	public EncounterBean setNewPosition(@RequestBody PositionBean position) {
+	public EncounterBean setNewPosition(@RequestBody Waypoint position) {
 		
 		EncounterBean encounter = new EncounterBean();
 		Character character = getServiceUser().getLoggedInCharacter();
