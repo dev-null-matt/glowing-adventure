@@ -25,14 +25,17 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 100vh;
-  width:100vw;
 }
 
 .horizontalCenter {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.maximized {
+  height: 100vh;
+  width:100vw;
 }
 
 /* Input tag styling */
