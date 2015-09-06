@@ -2,28 +2,23 @@ html, body {
   margin: 2.5vmin;
 }
 
-.mainContent {
+.pageContent {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  min-height: 30vmin;
-  width: 50vmin;
   border: 2px solid #a1a1a1;
   background: #dddddd;
+  width: 50vmin;
   border-radius: 5px;
   padding: 5px;
 }
 
-.secondaryContent {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+.main {
+  min-height: 30vmin;
+}
+
+.secondary {
   min-height: 10vmin;
-  border: 2px solid #a1a1a1;
-  background: #dddddd;
-  border-radius: 5px;
-  width: 50vmin;
-  padding: 5px;
 }
 
 .verticalCenter {

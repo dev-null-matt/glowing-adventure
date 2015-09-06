@@ -4,6 +4,16 @@ html, body, #map-canvas {
 	padding: 0;
 }
 
+/* Main menu style */
+.floatingMenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 50vmin;
+  padding: 5px;
+}
+
+/* Quest log styles */
 .questLog {
 	display: flex;
 	flex-direction: column;
@@ -28,6 +38,7 @@ html, body, #map-canvas {
 	border-radius: 5px;
 }
 
+/* Toast window styling */
 .toastWindow-displayDiv {
 	border: 2px solid #a1a1a1;
 	background: #dddddd;
