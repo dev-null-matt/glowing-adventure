@@ -1,7 +1,7 @@
 var mainMenuUrl = "/service/main-menu/";
 var characterCreationUrl = "/service/character-creation/";
 
-var $mainContent = $(".mainContent");
+var $mainContent = $(".pageContent");
 
 $(document).ready(function() {
 

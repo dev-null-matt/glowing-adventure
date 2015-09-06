@@ -1,6 +1,6 @@
 var mainMenuUrl = "/service/main-menu/";
 
-var $mainContent = $(".mainContent");
+var $mainContent = $(".pageContent");
 
 var characterName = "";
 

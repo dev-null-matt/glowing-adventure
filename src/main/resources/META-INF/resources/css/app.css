@@ -2,22 +2,23 @@ html, body {
   margin: 2.5vmin;
 }
 
-.contentContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  min-height: 30vmin;
-  width: 50vmin;
-  border: 2px solid #a1a1a1;
-  background: #dddddd;
-  border-radius: 5px;
-}
-
-.mainContent {
+.pageContent {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  border: 2px solid #a1a1a1;
+  background: #dddddd;
+  width: 50vmin;
+  border-radius: 5px;
   padding: 5px;
+}
+
+.main {
+  min-height: 30vmin;
+}
+
+.secondary {
+  min-height: 10vmin;
 }
 
 .verticalCenter {
@@ -26,6 +27,12 @@ html, body {
   justify-content: space-around;
   height: 100vh;
   width:100vw;
+}
+
+.horizontalCenter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 /* Input tag styling */
@@ -49,6 +56,11 @@ html, body {
   padding: 1px;
 }
 
+.fieldGrouping {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 /* Character selection screen specific */
 
 .controlContainer {
@@ -57,7 +69,6 @@ html, body {
 
 .controlTextContainer {
   font-size: 3vmin;
-  width: 40vmin;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
