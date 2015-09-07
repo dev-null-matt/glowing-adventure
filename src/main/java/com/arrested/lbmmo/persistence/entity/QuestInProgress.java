@@ -1,5 +1,7 @@
 package com.arrested.lbmmo.persistence.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +31,10 @@ public class QuestInProgress {
 	private int currentStep;
 
 	private boolean tracked;
+	
+	private Date startDate;
+	
+	private Date completedDate;
 	
 	public long getId() {
 		return id;
@@ -66,6 +72,22 @@ public class QuestInProgress {
 		this.tracked = tracked;
 	}
 	
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getCompletedDate() {
+		return completedDate;
+	}
+
+	public void setCompletedDate(Date completedDate) {
+		this.completedDate = completedDate;
+	}
+
 	public Objective getCurrentObjective() {
 		
 		for (Objective objective : quest.getObjectives()) {
