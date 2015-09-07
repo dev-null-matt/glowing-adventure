@@ -194,5 +194,7 @@ public class QuestLogControllerTest extends AbstractMockedActiveUserServiceTest 
 		qip.setCurrentStep(0);
 		
 		character.getQuestsInProgress().add(qip);
+		
+		Mockito.when(this.questInProgressRepo.findIncompleteMissions(character.getId())).thenReturn(character.getQuestsInProgress());
 	}
 }

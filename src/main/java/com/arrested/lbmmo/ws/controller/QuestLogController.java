@@ -55,7 +55,7 @@ public class QuestLogController extends AbstractServiceController {
 		Set<QuestBean> quests = new HashSet<QuestBean>();
 
 		if (character != null) {
-			for (QuestInProgress qip : character.getQuestsInProgress()) {
+			for (QuestInProgress qip : questInProgressRepo.findIncompleteMissions(character.getId())) {
 				if (trackedQuest == null || trackedQuest.getId() != qip.getId()) {
 					quests.add(populateQuestBean(qip));
 				}
