@@ -45,6 +45,10 @@ public class Character {
 		loggedIn = false;
 	}
 	
+	public long getId() {
+		return this.id;
+	}
+	
 	public String getName() {
 		return this.name;
 	}
