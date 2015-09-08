@@ -12,6 +12,6 @@ public interface QuestInProgressRepository extends JpaRepository<QuestInProgress
 	@Query(value="select * from quest_in_progress where completed_date is null and character_id = ?1", nativeQuery=true)
 	public Set<QuestInProgress> findIncompleteMissions(long characterId);
 	
-	@Query(value="select * from quest_in_progress where completed_date is not null and character_id = ?1", nativeQuery=true)
+	@Query(value="select * from quest_in_progress where completed_date is not null and character_id = ?1 order by completed_date asc", nativeQuery=true)
 	public Set<QuestInProgress> findCompleteMissions(long characterId);
 }

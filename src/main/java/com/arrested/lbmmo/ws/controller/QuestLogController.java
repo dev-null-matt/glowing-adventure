@@ -64,6 +64,21 @@ public class QuestLogController extends AbstractServiceController {
 
 		return quests;
 	}
+	
+	@RequestMapping(value = "completed-quests", method = RequestMethod.GET)
+	public Set<QuestBean> getCompletedQuests() {
+		
+		Character character = getServiceUser().getLoggedInCharacter();
+		Set<QuestBean> quests = new HashSet<QuestBean>();
+
+		if (character != null) {
+			for (QuestInProgress qip : questInProgressRepo.findCompleteMissions(character.getId())) {
+				quests.add(populateQuestBean(qip));
+			}
+		}
+
+		return quests;
+	}
 
 	@RequestMapping(value = "available-quests", method = RequestMethod.GET)
 	public Set<QuestBean> getAvailableQuests() {
@@ -77,7 +92,7 @@ public class QuestLogController extends AbstractServiceController {
 
 		return questRepresentations;
 	}
-
+	
 	@RequestMapping(value = "accept-quest/{questId}", method = RequestMethod.POST)
 	public String acceptQuest(@PathVariable String questId) {
 
