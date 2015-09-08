@@ -43,6 +43,7 @@ arrested.maps.MissionLog = function constructor(map) {
   this.displayInactiveMissions = function displayInactiveMissions(inactiveMissionData, callback) {
 
   	var content = "";
+  	inactiveMissionData.sort(sortMissionsByName);
 
   	if (inactiveMissionData.length) {
       inactiveMissionData.forEach(function(element, index) {
@@ -67,6 +68,14 @@ arrested.maps.MissionLog = function constructor(map) {
   this.setShowAvailabileChangeHandler = function setShowAvailabileChangeHandler(callback) {
     if (missionLogUi) {
       missionLogUi.content.querySelector('#showAvailable').onchange = callback;
+    }
+  }
+
+  function sortMissionsByName(a, b) {
+    if (a.questName === b.questName) {
+      return 0;
+    } else {
+      return a.questName < b.questName ? -1 : 1;
     }
   }
 }
