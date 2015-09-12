@@ -1,5 +1,7 @@
 package com.arrested.lbmmo.ws.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -65,13 +67,22 @@ public class MapController extends AbstractServiceController {
 		for (QuestInProgress qip : character.getQuestsInProgress()) {
 			Objective objective = qip.getCurrentObjective();
 			if (objective != null && distanceService.distanceToObjective(position,objective) < WAYPOINT_RADIUS) {
-				encounter.getMessages().add("Updating " + objective.getQuest().getName());
-				qip.setCurrentStep(qip.getCurrentStep()+1);
-				qipRepo.save(qip);
 				
 				if (qip.isTracked()) {
 					encounter.setTrackedObjectiveUpdated(true);
 				}
+				
+				qip.setCurrentStep(qip.getCurrentStep()+1);
+				
+				if(qip.isComplete()) {
+					encounter.getMessages().add(objective.getQuest().getName() + " complete");
+					qip.setCompletedDate(new Date());
+					qip.isTracked(false);
+				} else {
+					encounter.getMessages().add("Updating " + objective.getQuest().getName());
+				}
+				
+				qipRepo.save(qip);
 			}
 		}
 		
