@@ -98,4 +98,9 @@ public class QuestInProgress {
 		
 		return null;
 	}
+	
+	public boolean isComplete() {
+		
+		return getCurrentObjective() == null;
+	}
 }
