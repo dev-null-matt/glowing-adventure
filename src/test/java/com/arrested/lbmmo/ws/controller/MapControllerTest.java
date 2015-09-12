@@ -110,6 +110,32 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 	}
 	
 	@Test
+	public void setNewPositionTest_missionComplete() {
+
+		QuestInProgress qip = generateQuestInProgress(true);
+		qip.setCurrentStep(1);
+		
+		activeUserService.getActiveUser().getLoggedInCharacter().getQuestsInProgress().add(qip);
+		
+		Waypoint position = new Waypoint();
+		position.setLatitude(3.14);
+		position.setLongitude(3.14);
+		
+		Mockito.when(distanceService.distanceToObjective(Mockito.any(Waypoint.class), Mockito.any(Objective.class))).thenReturn(5.0);
+		
+		EncounterBean encounter = controller.setNewPosition(position);
+		
+		Assert.assertEquals(1, encounter.getMessages().size());
+		Assert.assertTrue(encounter.getMessages().contains("TEST_QUEST complete"));
+		Assert.assertFalse(encounter.isCombatEncounter());
+		Assert.assertTrue(encounter.isTrackedObjectiveUpdated());
+		
+		Assert.assertEquals(2, qip.getCurrentStep());
+		Assert.assertFalse(qip.isTracked());
+		Assert.assertNotNull(qip.getCompletedDate());
+	}
+	
+	@Test
 	public void createWaypoint_unverified() {
 		
 		Waypoint position = new Waypoint();
@@ -149,11 +175,16 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		Quest quest = new Quest();
 		quest.setName("TEST_QUEST");
 		
-		Objective objective = new Objective();
-		objective.setQuest(quest);
+		Objective objective1 = new Objective();
+		objective1.setQuest(quest);
+
+		Objective objective2 = new Objective();
+		objective2.setQuest(quest);
+		objective2.setQuestStep(1);
 		
 		Set<Objective> objectives = new HashSet<Objective>();
-		objectives.add(objective);
+		objectives.add(objective1);
+		objectives.add(objective2);
 		
 		QuestInProgress qip = new QuestInProgress();
 		qip.setQuest(quest);
