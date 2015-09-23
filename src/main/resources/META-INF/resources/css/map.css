@@ -31,11 +31,30 @@ html, body, #map-canvas {
 }
 
 .questLogSection {
-	width: 40vmin;
+	width: 50vmin;
 	font-size: 2.5vmin;
 	border: 2px solid #a1a1a1;
 	background: #ffffff;
 	border-radius: 5px;
+}
+
+/* Tab control styling */
+.tabControls {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.tabControls div {
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+		border: 2px solid #a1a1a1;
+		border-bottom: 0px;
+		background: #bbbbbb;
+}
+
+.tabControls div.selected {
+		background: #dddddd;
 }
 
 /* Toast window styling */

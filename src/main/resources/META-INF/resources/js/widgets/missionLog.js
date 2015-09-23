@@ -71,6 +71,27 @@ arrested.maps.MissionLog = function constructor(map) {
     }
   }
 
+  this.openTabbedContent = function openTabbedContent(tabId) {
+    Array.prototype.slice.call(missionLogUi.content.querySelector('#questLogTabControls').children).forEach(
+      function(controlDiv) {
+        if (controlDiv.dataset.content === tabId) {
+          controlDiv.classList.add('selected');
+        } else {
+          controlDiv.classList.remove('selected');
+        }
+      }
+    );
+    Array.prototype.slice.call(missionLogUi.content.querySelector('#tabContent').children).forEach(
+      function(contentDiv) {
+        if (contentDiv.id === tabId) {
+          contentDiv.classList.remove('hidden');
+        } else {
+          contentDiv.classList.add('hidden');
+        }
+      }
+    );
+  }
+
   function sortMissionsByName(a, b) {
     if (a.questName === b.questName) {
       return 0;
@@ -78,4 +99,6 @@ arrested.maps.MissionLog = function constructor(map) {
       return a.questName < b.questName ? -1 : 1;
     }
   }
+
+
 }

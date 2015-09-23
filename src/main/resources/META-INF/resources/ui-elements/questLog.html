@@ -1,17 +1,30 @@
 <div class="questLog">
 
-	<div>Mission log</div>
-
-	<div class="questContainer">
-		<div>Pinned mission</div>
-		<div id ="pinnedQuest" class="questLogSection">No pinned mission</div>
-
-		<div>Inactive missions</div>
-		<div id="inactiveQuests" class="questLogSection">No inactive missions</div>
+	<div id="questLogTabControls" class="tabControls">
+		<div class="selected" data-content="currentMissions">Current Missions</div>
+		<div data-content="pastMissions">Past Missions</div>
 	</div>
 
-	<div>
-		<input type="checkbox" id="showAvailable" />
-		<label for="showAvailable" class="instruction small">Show available missions</label>
+	<div id="tabContent">
+		<div id="currentMissions" class="">
+			<div class="questContainer">
+				<div>Pinned mission</div>
+				<div id ="pinnedQuest" class="questLogSection">No pinned mission</div>
+
+				<div>Inactive missions</div>
+				<div id="inactiveQuests" class="questLogSection">No inactive missions</div>
+			</div>
+
+			<div>
+				<input type="checkbox" id="showAvailable" />
+				<label for="showAvailable" class="instruction small">Show available missions</label>
+			</div>
+		</div>
+		<div id="pastMissions" class="hidden">
+			<div class="questContainer">
+				<div>Lorem Ipsum<div>
+				<div id="inactiveQuests" class="questLogSection">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div>
+			</div>
+		</div>
 	</div>
 </div>
