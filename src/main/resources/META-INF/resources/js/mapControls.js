@@ -40,7 +40,8 @@ $(document).ready(function() {
 
 	window.setInterval(sendLocationToServer, 4500);
 	window.setInterval(readQuestObjectives, 5 * 60 * 1000);
-	window.setInterval(readInactiveQuests, 5 * 60 * 1000)
+	window.setInterval(readInactiveQuests, 5 * 60 * 1000);
+	window.setInterval(readCompletedMissions, 5 * 60 * 1000);
 
 	$.get('/ui-elements/questInfo.html').then(function(responseData) {
 		questInfoTemplate = responseData;
@@ -61,6 +62,7 @@ function initialize() {
 
 		readQuestObjectives();
 		readInactiveQuests();
+		readCompletedMissions();
 
 	} else {
 		alert("Geolocation is not supported by this browser.");
@@ -183,6 +185,17 @@ function readInactiveQuests() {
 			missionLog.displayInactiveMissions(data, trackMission);
 		},
 		error : errorCallback
+	});
+}
+
+function readCompletedMissions() {
+	$.ajax({
+		type: "GET",
+		url: questLogUrl + "completed-quests",
+		success: function(data) {
+			missionLog.displayCompletedMissions(data);
+		},
+		error: errorCallback
 	});
 }
 

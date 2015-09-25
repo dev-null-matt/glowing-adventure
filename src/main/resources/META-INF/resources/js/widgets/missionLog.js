@@ -19,6 +19,14 @@ arrested.maps.MissionLog = function constructor(map) {
     var container = document.createElement("div");
     container.innerHTML = responseData;
 
+    Array.prototype.slice.call(container.querySelector('#questLogTabControls').children).forEach(
+      function(controlDiv) {
+        controlDiv.onclick = function() {
+          missionLog.openTabbedContent(this.dataset.content);
+        }
+      }
+    );
+
     missionLogUi.setContent(container);
   });
 
@@ -37,6 +45,22 @@ arrested.maps.MissionLog = function constructor(map) {
   // Displays pinned mission information
   this.displayPinnedMission = function displayPinnedMission(pinnedMissionData) {
   	missionLogUi.content.querySelector("#pinnedQuest").innerHTML = pinnedMissionData.questName;
+  }
+
+  // Displays completed mission information
+  this.displayCompletedMissions = function displayCompletedMissions(completedMissionData) {
+
+    var content = "";
+
+    if (completedMissionData.length) {
+      completedMissionData.forEach(function(element, index) {
+        content = content + "<div data-quest-id='"+ element.questId +"' class='inactiveQuest'>" + element.questName + "</div>";
+      });
+    } else {
+      content = "No completed missions";
+    }
+
+    missionLogUi.content.querySelector("#completedMissions").innerHTML = content;
   }
 
   // Displays inactive mission information
@@ -69,6 +93,27 @@ arrested.maps.MissionLog = function constructor(map) {
     if (missionLogUi) {
       missionLogUi.content.querySelector('#showAvailable').onchange = callback;
     }
+  }
+
+  this.openTabbedContent = function openTabbedContent(tabId) {
+    Array.prototype.slice.call(missionLogUi.content.querySelector('#questLogTabControls').children).forEach(
+      function(controlDiv) {
+        if (controlDiv.dataset.content === tabId) {
+          controlDiv.classList.add('selected');
+        } else {
+          controlDiv.classList.remove('selected');
+        }
+      }
+    );
+    Array.prototype.slice.call(missionLogUi.content.querySelector('#tabContent').children).forEach(
+      function(contentDiv) {
+        if (contentDiv.id === tabId) {
+          contentDiv.classList.remove('hidden');
+        } else {
+          contentDiv.classList.add('hidden');
+        }
+      }
+    );
   }
 
   function sortMissionsByName(a, b) {
