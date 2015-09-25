@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arrested.lbmmo.persistence.entity.Character;
-import com.arrested.lbmmo.persistence.entity.SystemSetting;
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.CharacterRepository;
+import com.arrested.lbmmo.util.SystemSetting;
 import com.arrested.lbmmo.util.SystemSettingDao;
 import com.arrested.lbmmo.util.SystemSettings;
 

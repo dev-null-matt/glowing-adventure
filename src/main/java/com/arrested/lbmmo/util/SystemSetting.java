@@ -1,14 +1,7 @@
-package com.arrested.lbmmo.persistence.entity;
+package com.arrested.lbmmo.util;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table
 public class SystemSetting {
 
-	@Id
 	private String name;
 	
 	private String stringValue;
@@ -25,6 +18,10 @@ public class SystemSetting {
 		return stringValue;
 	}
 
+	public void setStringValue(String value) {
+		this.stringValue = value;
+	}
+	
 	public Integer getIntValue() {
 		return intValue;
 	}
@@ -35,5 +32,9 @@ public class SystemSetting {
 
 	public Boolean getEnabled() {
 		return enabled;
+	}
+	
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 }

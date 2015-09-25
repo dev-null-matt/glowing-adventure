@@ -11,9 +11,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import com.arrested.lbmmo.persistence.entity.Character;
-import com.arrested.lbmmo.persistence.entity.SystemSetting;
 import com.arrested.lbmmo.persistence.repository.CharacterRepository;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
+import com.arrested.lbmmo.util.SystemSetting;
 import com.arrested.lbmmo.util.SystemSettingDao;
 import com.arrested.lbmmo.util.SystemSettings;
 
