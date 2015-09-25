@@ -19,7 +19,7 @@ import com.arrested.lbmmo.persistence.entity.Waypoint;
 import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.persistence.repository.WaypointRepository;
 import com.arrested.lbmmo.service.DistanceCalculationService;
-import com.arrested.lbmmo.ws.bean.response.EncounterBean;
+import com.arrested.lbmmo.ws.response.EncounterResponse;
 
 public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 
@@ -47,7 +47,7 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		position.setLatitude(3.14);
 		position.setLongitude(3.14);
 		
-		EncounterBean encounter = controller.setNewPosition(position);
+		EncounterResponse encounter = controller.setNewPosition(position);
 		
 		Assert.assertTrue(encounter.getMessages().isEmpty());
 		Assert.assertFalse(encounter.isCombatEncounter());
@@ -64,7 +64,7 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		
 		Mockito.when(distanceService.distanceToObjective(Mockito.any(Waypoint.class), Mockito.any(Objective.class))).thenReturn(100.0);
 		
-		EncounterBean encounter = controller.setNewPosition(position);
+		EncounterResponse encounter = controller.setNewPosition(position);
 		
 		Assert.assertTrue(encounter.getMessages().isEmpty());
 		Assert.assertFalse(encounter.isCombatEncounter());
@@ -82,7 +82,7 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		
 		Mockito.when(distanceService.distanceToObjective(Mockito.any(Waypoint.class), Mockito.any(Objective.class))).thenReturn(5.0);
 		
-		EncounterBean encounter = controller.setNewPosition(position);
+		EncounterResponse encounter = controller.setNewPosition(position);
 		
 		Assert.assertEquals(1, encounter.getMessages().size());
 		Assert.assertTrue(encounter.getMessages().contains("Updating TEST_QUEST"));
@@ -101,7 +101,7 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		
 		Mockito.when(distanceService.distanceToObjective(Mockito.any(Waypoint.class), Mockito.any(Objective.class))).thenReturn(5.0);
 		
-		EncounterBean encounter = controller.setNewPosition(position);
+		EncounterResponse encounter = controller.setNewPosition(position);
 		
 		Assert.assertEquals(1, encounter.getMessages().size());
 		Assert.assertTrue(encounter.getMessages().contains("Updating TEST_QUEST"));
@@ -123,7 +123,7 @@ public class MapControllerTest extends AbstractMockedActiveUserServiceTest {
 		
 		Mockito.when(distanceService.distanceToObjective(Mockito.any(Waypoint.class), Mockito.any(Objective.class))).thenReturn(5.0);
 		
-		EncounterBean encounter = controller.setNewPosition(position);
+		EncounterResponse encounter = controller.setNewPosition(position);
 		
 		Assert.assertEquals(1, encounter.getMessages().size());
 		Assert.assertTrue(encounter.getMessages().contains("TEST_QUEST complete"));

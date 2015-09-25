@@ -18,7 +18,7 @@ import com.arrested.lbmmo.persistence.entity.Waypoint;
 import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.persistence.repository.WaypointRepository;
 import com.arrested.lbmmo.service.DistanceCalculationService;
-import com.arrested.lbmmo.ws.bean.response.EncounterBean;
+import com.arrested.lbmmo.ws.response.EncounterResponse;
 
 @RestController
 @RequestMapping("/service/map/")
@@ -55,9 +55,9 @@ public class MapController extends AbstractServiceController {
 	}
 	
 	@RequestMapping(value="set-new-position", method=RequestMethod.PUT, consumes = "application/json")
-	public EncounterBean setNewPosition(@RequestBody Waypoint position) {
+	public EncounterResponse setNewPosition(@RequestBody Waypoint position) {
 		
-		EncounterBean encounter = new EncounterBean();
+		EncounterResponse encounter = new EncounterResponse();
 		Character character = getServiceUser().getLoggedInCharacter();
 		
 		if (character == null) {

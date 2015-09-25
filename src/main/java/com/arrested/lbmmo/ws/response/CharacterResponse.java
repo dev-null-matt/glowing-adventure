@@ -1,12 +1,12 @@
-package com.arrested.lbmmo.ws.bean.response;
+package com.arrested.lbmmo.ws.response;
 
-public class CharacterBean {
+public class CharacterResponse {
 
 	private String name;
 	private String characterClass;
 	private int level;
 	
-	public CharacterBean() {
+	public CharacterResponse() {
 		characterClass = "";
 		level = 1;
 	}

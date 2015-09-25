@@ -13,7 +13,7 @@ import com.arrested.lbmmo.persistence.entity.Character;
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.CharacterRepository;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
-import com.arrested.lbmmo.ws.bean.response.CharacterBean;
+import com.arrested.lbmmo.ws.response.CharacterResponse;
 
 public class MainMenuControllerTest extends AbstractMockedActiveUserServiceTest {
 
@@ -32,7 +32,7 @@ public class MainMenuControllerTest extends AbstractMockedActiveUserServiceTest 
 	@Test
 	public void characterListTest_smokeTest() {
 		
-		CharacterBean[] characters = controller.characterList().toArray(new CharacterBean[0]);
+		CharacterResponse[] characters = controller.characterList().toArray(new CharacterResponse[0]);
 		
 		Assert.assertEquals(1, characters.length);
 		Assert.assertEquals("Character 1", characters[0].getName());
