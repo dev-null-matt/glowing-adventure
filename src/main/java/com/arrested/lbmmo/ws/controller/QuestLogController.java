@@ -1,5 +1,6 @@
 package com.arrested.lbmmo.ws.controller;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -235,6 +236,7 @@ public class QuestLogController extends AbstractServiceController {
 		qip.setQuest(quest);
 		qip.setCurrentStep(0);
 		qip.setCharacter(character);
+		qip.setStartDate(new Date());
 
 		return qip;
 	}
