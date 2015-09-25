@@ -19,6 +19,14 @@ arrested.maps.MissionLog = function constructor(map) {
     var container = document.createElement("div");
     container.innerHTML = responseData;
 
+    Array.prototype.slice.call(container.querySelector('#questLogTabControls').children).forEach(
+      function(controlDiv) {
+        controlDiv.onclick = function() {
+          missionLog.openTabbedContent(this.dataset.content);
+        }
+      }
+    );
+
     missionLogUi.setContent(container);
   });
 
@@ -37,6 +45,22 @@ arrested.maps.MissionLog = function constructor(map) {
   // Displays pinned mission information
   this.displayPinnedMission = function displayPinnedMission(pinnedMissionData) {
   	missionLogUi.content.querySelector("#pinnedQuest").innerHTML = pinnedMissionData.questName;
+  }
+
+  // Displays completed mission information
+  this.displayCompletedMissions = function displayCompletedMissions(completedMissionData) {
+
+    var content = "";
+
+    if (completedMissionData.length) {
+      completedMissionData.forEach(function(element, index) {
+        content = content + "<div data-quest-id='"+ element.questId +"' class='inactiveQuest'>" + element.questName + "</div>";
+      });
+    } else {
+      content = "No completed missions";
+    }
+
+    missionLogUi.content.querySelector("#completedMissions").innerHTML = content;
   }
 
   // Displays inactive mission information
@@ -99,6 +123,4 @@ arrested.maps.MissionLog = function constructor(map) {
       return a.questName < b.questName ? -1 : 1;
     }
   }
-
-
 }
