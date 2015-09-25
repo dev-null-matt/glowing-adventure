@@ -1,16 +1,16 @@
-package com.arrested.lbmmo.ws.bean.response;
+package com.arrested.lbmmo.ws.response;
 
-public class QuestBean {
+public class QuestResponse {
 
-	private LocationBean nextObjective;
+	private LocationResponse nextObjective;
 	private String questName;
 	private Long questId;
 
-	public LocationBean getNextObjective() {
+	public LocationResponse getNextObjective() {
 		return nextObjective;
 	}
 	
-	public void setNextObjective(LocationBean nextObjective) {
+	public void setNextObjective(LocationResponse nextObjective) {
 		this.nextObjective = nextObjective;
 	}
 	

@@ -1,11 +1,11 @@
-package com.arrested.lbmmo.ws.bean.response;
+package com.arrested.lbmmo.ws.response;
 
 import java.util.Set;
 
 import com.arrested.lbmmo.persistence.entity.Quest;
 import com.arrested.lbmmo.persistence.entity.QuestInProgress;
 
-public class QuestLogBean {
+public class QuestLogResponse {
 
 	private QuestInProgress activeQuest;
 	

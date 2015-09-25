@@ -1,6 +1,6 @@
-package com.arrested.lbmmo.ws.bean.response;
+package com.arrested.lbmmo.ws.response;
 
-public class LocationBean {
+public class LocationResponse {
 
 	private double latitude;
 	private double longitude;

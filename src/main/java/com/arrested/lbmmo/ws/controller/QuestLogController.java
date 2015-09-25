@@ -18,8 +18,8 @@ import com.arrested.lbmmo.persistence.repository.QuestInProgressRepository;
 import com.arrested.lbmmo.persistence.repository.QuestRepository;
 import com.arrested.lbmmo.util.SystemSettingDao;
 import com.arrested.lbmmo.util.SystemSettings;
-import com.arrested.lbmmo.ws.bean.response.LocationBean;
-import com.arrested.lbmmo.ws.bean.response.QuestBean;
+import com.arrested.lbmmo.ws.response.LocationResponse;
+import com.arrested.lbmmo.ws.response.QuestResponse;
 
 @RestController
 @RequestMapping("/service/quest-log/")
@@ -35,10 +35,10 @@ public class QuestLogController extends AbstractServiceController {
 	private SystemSettingDao settingDao;
 
 	@RequestMapping(value = "quest-status", method = RequestMethod.GET)
-	public QuestBean getQuestStatus() {
+	public QuestResponse getQuestStatus() {
 
 		Character character = getServiceUser().getLoggedInCharacter();
-		QuestBean questBean = null;
+		QuestResponse questBean = null;
 
 		if (character != null) {
 			questBean = populateQuestBean(character.getTrackedQuestInProgress());
@@ -48,11 +48,11 @@ public class QuestLogController extends AbstractServiceController {
 	}
 
 	@RequestMapping(value = "inactive-quests", method = RequestMethod.GET)
-	public Set<QuestBean> getInactiveQuests() {
+	public Set<QuestResponse> getInactiveQuests() {
 
 		Character character = getServiceUser().getLoggedInCharacter();
 		QuestInProgress trackedQuest = character.getTrackedQuestInProgress();
-		Set<QuestBean> quests = new HashSet<QuestBean>();
+		Set<QuestResponse> quests = new HashSet<QuestResponse>();
 
 		if (character != null) {
 			for (QuestInProgress qip : questInProgressRepo.findIncompleteMissions(character.getId())) {
@@ -66,10 +66,10 @@ public class QuestLogController extends AbstractServiceController {
 	}
 	
 	@RequestMapping(value = "completed-quests", method = RequestMethod.GET)
-	public Set<QuestBean> getCompletedQuests() {
+	public Set<QuestResponse> getCompletedQuests() {
 		
 		Character character = getServiceUser().getLoggedInCharacter();
-		Set<QuestBean> quests = new HashSet<QuestBean>();
+		Set<QuestResponse> quests = new HashSet<QuestResponse>();
 
 		if (character != null) {
 			for (QuestInProgress qip : questInProgressRepo.findCompleteMissions(character.getId())) {
@@ -81,10 +81,10 @@ public class QuestLogController extends AbstractServiceController {
 	}
 
 	@RequestMapping(value = "available-quests", method = RequestMethod.GET)
-	public Set<QuestBean> getAvailableQuests() {
+	public Set<QuestResponse> getAvailableQuests() {
 
 		Set<Quest> quests = findAvailableQuests(getServiceUser().getLoggedInCharacter());
-		Set<QuestBean> questRepresentations = new HashSet<QuestBean>();
+		Set<QuestResponse> questRepresentations = new HashSet<QuestResponse>();
 		
 		for (Quest quest : quests) {
 			questRepresentations.add(populateQuestBean(quest));
@@ -185,9 +185,9 @@ public class QuestLogController extends AbstractServiceController {
 		return quests;
 	}
 	
-	private QuestBean populateQuestBean(QuestInProgress qip) {
+	private QuestResponse populateQuestBean(QuestInProgress qip) {
 
-		QuestBean questBean = new QuestBean();
+		QuestResponse questBean = new QuestResponse();
 		
 		if (qip == null) {
 			return questBean;
@@ -195,7 +195,7 @@ public class QuestLogController extends AbstractServiceController {
 		
 		Objective objective = qip.getCurrentObjective();
 		
-		LocationBean locationBean = new LocationBean();
+		LocationResponse locationBean = new LocationResponse();
 
 		questBean.setQuestId(qip.getQuest().getId());
 		questBean.setQuestName(qip.getQuest().getName());
@@ -208,10 +208,10 @@ public class QuestLogController extends AbstractServiceController {
 		return questBean;
 	}
 
-	private QuestBean populateQuestBean(Quest quest) {
+	private QuestResponse populateQuestBean(Quest quest) {
 
-		QuestBean questBean = new QuestBean();
-		LocationBean locationBean = new LocationBean();
+		QuestResponse questBean = new QuestResponse();
+		LocationResponse locationBean = new LocationResponse();
 
 		questBean.setQuestId(quest.getId());
 		questBean.setQuestName(quest.getName());

@@ -17,7 +17,7 @@ import com.arrested.lbmmo.persistence.entity.Character;
 import com.arrested.lbmmo.persistence.entity.User;
 import com.arrested.lbmmo.persistence.repository.CharacterRepository;
 import com.arrested.lbmmo.persistence.repository.UserRepository;
-import com.arrested.lbmmo.ws.bean.response.CharacterBean;
+import com.arrested.lbmmo.ws.response.CharacterResponse;
 
 @RestController
 @RequestMapping("/service/main-menu/")
@@ -33,13 +33,13 @@ public class MainMenuController extends AbstractServiceController {
 	private HttpServletRequest request;
 	
 	@RequestMapping(value="characters", method=RequestMethod.GET)
-	public List<CharacterBean> characterList() {
+	public List<CharacterResponse> characterList() {
 		
-		List<CharacterBean> characterBeans = new ArrayList<CharacterBean>();
+		List<CharacterResponse> characterBeans = new ArrayList<CharacterResponse>();
 		
 		for (Character character : getServiceUser().getCharacters()) {
 			
-			CharacterBean cb = new CharacterBean();
+			CharacterResponse cb = new CharacterResponse();
 			cb.setName(character.getName());
 			
 			characterBeans.add(cb);

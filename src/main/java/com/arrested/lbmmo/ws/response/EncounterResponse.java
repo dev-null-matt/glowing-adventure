@@ -1,9 +1,9 @@
-package com.arrested.lbmmo.ws.bean.response;
+package com.arrested.lbmmo.ws.response;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EncounterBean {
+public class EncounterResponse {
 
 	private List<String> messages;
 	
@@ -13,7 +13,7 @@ public class EncounterBean {
 
 	private boolean trackedObjectiveUpdated;
 	
-	public EncounterBean() {
+	public EncounterResponse() {
 		messages = new ArrayList<String>();
 		combatEncounter = false;
 		trackedObjectiveUpdated = false;
