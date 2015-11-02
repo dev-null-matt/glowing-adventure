@@ -6,7 +6,7 @@ Glowing Adventure is:
 * Intended to be played with friends
 
 ### Check it out
-<a href="https://github.com/dev-null-matt/glowing-adventure/issues?q=milestone%3ASynergy">Synergy release</a> is currently deployed on <a href="http://dry-river-3039.heroku.com">heroku</a>.
+<a href="https://github.com/dev-null-matt/glowing-adventure/issues?q=milestone%3AExcursion">Excursion release</a> is currently deployed on <a href="http://dry-river-3039.heroku.com">heroku</a>.
 
 ### Contributing
 Contact dev-null-matt to be added as a contributor
